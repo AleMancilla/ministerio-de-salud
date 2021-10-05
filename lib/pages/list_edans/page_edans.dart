@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
+import 'package:ministerio_de_salud/bussiness/database/database.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_expanded.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/title_expansion.dart';
 
@@ -38,38 +38,80 @@ class _PageEdansState extends State<PageEdans> {
   final listKey = GlobalKey<AnimatedListState>();
 
   TextEditingController controllerNombre = TextEditingController();
-
+  TaskDataBase db = TaskDataBase();
+  int number = 0;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        color: Colors.grey[50],
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AppBarWidget(size: size),
-            const SizedBox(width: double.infinity),
-            const Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Text('Lista EDANs NO enviados'),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _datosGenerales(size),
-                    _datosGenerales(size),
-                    _datosGenerales(size),
-                    _datosGenerales(size),
-                    _buttonSelect('Guardar'),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          number = number + 1;
+          db.insert(Task('numero $number --'));
+          setState(() {});
+        },
       ),
+      body: Container(
+          color: Colors.grey[50],
+          child: FutureBuilder(
+            future: db.initDB(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return _showList(context);
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          )
+          // Column(
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //     AppBarWidget(size: size),
+          //     const SizedBox(width: double.infinity),
+          //     const Padding(
+          //       padding: EdgeInsets.all(20.0),
+          //       child: Text('Lista EDANs NO enviados'),
+          //     ),
+          //     Expanded(
+          //       child: SingleChildScrollView(
+          //         child: Column(
+          //           children: [
+          //             _datosGenerales(size),
+          //             _datosGenerales(size),
+          //             _datosGenerales(size),
+          //             _datosGenerales(size),
+          //             _buttonSelect('Guardar'),
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          ),
+    );
+  }
+
+  _showList(BuildContext context) {
+    return FutureBuilder(
+      future: db.getAllTask(),
+      builder: (BuildContext context, AsyncSnapshot<List<Task>> snapshot) {
+        if (snapshot.hasData) {
+          return ListView(
+            children: [
+              for (Task task in snapshot.data!)
+                ListTile(
+                  title: Text(task.name),
+                )
+            ],
+          );
+        } else {
+          return Center(
+            child: Text('agregar'),
+          );
+        }
+      },
     );
   }
 
