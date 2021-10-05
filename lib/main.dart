@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ministerio_de_salud/pages/list_edans/page_edans.dart';
+import 'package:ministerio_de_salud/pages/list_edans/page_not_send.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const PageEdans(),
+      home: const PageNotSend(),
     );
   }
 }
