@@ -58,10 +58,10 @@ class _PageEdansState extends State<PageEdans> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    _datosGenerales(),
-                    _datosGenerales(),
-                    _datosGenerales(),
-                    _datosGenerales(),
+                    _datosGenerales(size),
+                    _datosGenerales(size),
+                    _datosGenerales(size),
+                    _datosGenerales(size),
                     _buttonSelect('Guardar'),
                   ],
                 ),
@@ -73,26 +73,42 @@ class _PageEdansState extends State<PageEdans> {
     );
   }
 
-  Widget _datosGenerales() {
-    return ExpansionTile(
-      title: const TitleExpansion(texto: '1.- DATOS GENERALES'),
-      children: <Widget>[
-        InputExpanded(
-            title: 'Nombre de contacto', controller: controllerNombre),
-        InputExpanded(title: 'Cargo de contacto', controller: controllerNombre),
-        InputExpanded(
-            title: 'Dirección de contacto', controller: controllerNombre),
-        InputExpanded(
-            title: 'Telefono fijo de contacto', controller: controllerNombre),
-        InputExpanded(
-            title: 'Telefono movil de contacto', controller: controllerNombre),
-        InputExpanded(title: 'Comunidad o zona', controller: controllerNombre),
-        InputExpanded(
-            title: 'Para llegar al lugar se parte de (lugar):',
-            controller: controllerNombre),
-        InputExpanded(
-            title: 'Tiempo de llegada al lugar (en horas)',
-            controller: controllerNombre),
+  Widget _datosGenerales(Size size) {
+    return Column(
+      children: [
+        Container(
+          width: size.width - 50,
+          height: 5,
+          decoration: BoxDecoration(
+              color: Colors.blueGrey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(100)),
+        ),
+        ExpansionTile(
+          title: const TitleExpansion(texto: '1.- DATOS GENERALES'),
+          children: <Widget>[
+            InputExpanded(
+                title: 'Nombre de contacto', controller: controllerNombre),
+            InputExpanded(
+                title: 'Cargo de contacto', controller: controllerNombre),
+            InputExpanded(
+                title: 'Dirección de contacto', controller: controllerNombre),
+            InputExpanded(
+                title: 'Telefono fijo de contacto',
+                controller: controllerNombre),
+            InputExpanded(
+                title: 'Telefono movil de contacto',
+                controller: controllerNombre),
+            InputExpanded(
+                title: 'Comunidad o zona', controller: controllerNombre),
+            InputExpanded(
+                title: 'Para llegar al lugar se parte de (lugar):',
+                controller: controllerNombre),
+            InputExpanded(
+                title: 'Tiempo de llegada al lugar (en horas)',
+                controller: controllerNombre),
+          ],
+        ),
+        Divider()
       ],
     );
   }
