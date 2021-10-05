@@ -38,6 +38,7 @@ dependencies:
   # database
   sqflite: ^2.0.0+4
   sqflite_common: ^2.0.1+1
+  sqflite_common_ffi: ^2.0.0+3
 
 dev_dependencies:
   flutter_test:
