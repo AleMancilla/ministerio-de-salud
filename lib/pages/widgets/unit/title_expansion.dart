@@ -7,11 +7,9 @@ class TitleExpansion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text(
-        texto,
-        style: TextStyle(color: Colors.blue),
-      ),
+    return Text(
+      texto,
+      style: const TextStyle(color: Colors.blue),
     );
   }
 }

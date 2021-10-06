@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ministerio_de_salud/bussiness/database/database.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_expanded.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/title_expansion.dart';
@@ -12,30 +11,6 @@ class PageEdans extends StatefulWidget {
 }
 
 class _PageEdansState extends State<PageEdans> {
-  List<Widget> listWidgets = [
-    Container(
-        width: double.infinity,
-        height: 100,
-        padding: EdgeInsets.all(20),
-        color: Colors.red),
-    Container(
-        width: double.infinity,
-        height: 100,
-        padding: EdgeInsets.all(20),
-        color: Colors.blue),
-    Container(
-        width: double.infinity,
-        height: 100,
-        padding: EdgeInsets.all(20),
-        color: Colors.orange),
-  ];
-
-  Widget cont = Container(
-      width: double.infinity,
-      height: 100,
-      padding: EdgeInsets.all(20),
-      color: Colors.blueGrey[900]);
-
   final listKey = GlobalKey<AnimatedListState>();
 
   TextEditingController controllerNombre = TextEditingController();
@@ -43,27 +18,29 @@ class _PageEdansState extends State<PageEdans> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: PreferredSize(
-        child: AppBarWidget(size: size),
-        preferredSize: Size(double.infinity, 50),
-      ),
-      body: Container(
-        color: Colors.grey[50],
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Text('Lista EDANs NO enviados'),
-              ),
-              _datosGenerales(size),
-              _datosGenerales(size),
-              _datosGenerales(size),
-              _datosGenerales(size),
-              _buttonSelect('Guardar'),
-            ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(
+          child: AppBarWidget(size: size),
+          preferredSize: const Size(double.infinity, 50),
+        ),
+        body: Container(
+          color: Colors.grey[50],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Text('Lista EDANs NO enviados'),
+                ),
+                _datosGenerales(size),
+                _datosGenerales(size),
+                _datosGenerales(size),
+                _datosGenerales(size),
+                _buttonSelect('Guardar'),
+              ],
+            ),
           ),
         ),
       ),
@@ -111,7 +88,7 @@ class _PageEdansState extends State<PageEdans> {
                 controller: controllerNombre),
           ],
         ),
-        Divider()
+        const Divider()
       ],
     );
   }
@@ -129,7 +106,7 @@ class _PageEdansState extends State<PageEdans> {
           // color: Colors.cyan[700],
         ),
         onTap: () {
-          print('object');
+          // print('object');
         },
       ),
     );

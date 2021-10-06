@@ -37,7 +37,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                     ),
                   ),
                   () {
-                    print('object');
+                    // print('object');
                   },
                 ),
                 const Expanded(child: Text('data')),
@@ -50,7 +50,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                     ),
                   ),
                   () {
-                    print('object');
+                    // print('object');
                   },
                 ),
               ],

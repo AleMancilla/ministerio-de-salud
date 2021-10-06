@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_edans.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/utils/navigator_route.dart';
-import 'package:ministerio_de_salud/utils/theme_utils.dart';
 
 class PageNotSend extends StatefulWidget {
   const PageNotSend({Key? key}) : super(key: key);
