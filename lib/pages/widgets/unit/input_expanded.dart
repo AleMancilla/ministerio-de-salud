@@ -11,7 +11,7 @@ class InputExpanded extends StatefulWidget {
     Key? key,
     required this.title,
     this.hint = '',
-    this.isRequired = true,
+    this.isRequired = false,
     this.isNumber = false,
     required this.controller,
   }) : super(key: key);
@@ -23,45 +23,89 @@ class InputExpanded extends StatefulWidget {
 class _InputExpandedState extends State<InputExpanded> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       // margin: const EdgeInsets.only(bottom: 10, top: 10),
       width: double.infinity,
-      child: Row(
+      child: _styleView(size),
+    );
+  }
+
+  Widget _styleView(Size size) {
+    if (size.width >= 720) {
+      return Row(
         children: [
-          Container(
-            constraints: BoxConstraints(minWidth: 300, maxWidth: 500),
-            child: Text(
-              widget.title,
-              style: TextStyle(fontWeight: FontWeight.bold),
+          SizedBox(
+            width: 170,
+            child: RichText(
+              text: TextSpan(
+                  text: widget.title,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black),
+                  children: <TextSpan>[
+                    if (widget.isRequired)
+                      const TextSpan(
+                        text: ' *',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.red),
+                      )
+                  ]),
             ),
           ),
           Expanded(
-            child: Container(
-              height: 40,
-              child: TextField(
-                // minLines: (widget.descrip) ? 3 : 1,
-                // maxLines: (widget.descrip) ? 10 : 1,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 15),
-                  border: const OutlineInputBorder(),
-                  hintText: widget.title,
-                  // helperText: widget.helptext,
-                ),
-                keyboardType:
-                    widget.isNumber ? TextInputType.phone : TextInputType.text,
-                controller: widget.controller,
-                onChanged: (value) {
-                  setState(() {});
-                },
-                // onChanged: (n) {
-                //   print("completo########");
-                //   if(!ordenData.flagEdit){ordenData.flagEdit = true;}
-                // },
-              ),
-            ),
+            child: _itemInput(),
           )
         ],
+      );
+    } else {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            child: RichText(
+              text: TextSpan(
+                  text: widget.title,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black),
+                  children: <TextSpan>[
+                    if (widget.isRequired)
+                      const TextSpan(
+                        text: ' *',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.red),
+                      )
+                  ]),
+            ),
+          ),
+          _itemInput(),
+        ],
+      );
+    }
+  }
+
+  SizedBox _itemInput() {
+    return SizedBox(
+      height: 35,
+      child: TextField(
+        // minLines: (widget.descrip) ? 3 : 1,
+        // maxLines: (widget.descrip) ? 10 : 1,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+          border: const OutlineInputBorder(),
+          hintText: widget.title,
+          // helperText: widget.helptext,
+        ),
+        keyboardType:
+            widget.isNumber ? TextInputType.phone : TextInputType.text,
+        controller: widget.controller,
+        onChanged: (value) {
+          setState(() {});
+        },
+        // onChanged: (n) {
+        //   print("completo########");
+        //   if(!ordenData.flagEdit){ordenData.flagEdit = true;}
+        // },
       ),
     );
   }

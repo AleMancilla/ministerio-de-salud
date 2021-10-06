@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
+import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_expanded.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/title_expansion.dart';
 
@@ -38,80 +39,34 @@ class _PageEdansState extends State<PageEdans> {
   final listKey = GlobalKey<AnimatedListState>();
 
   TextEditingController controllerNombre = TextEditingController();
-  TaskDataBase db = TaskDataBase();
   int number = 0;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          number = number + 1;
-          db.insert(Task('numero $number --'));
-          setState(() {});
-        },
+      appBar: PreferredSize(
+        child: AppBarWidget(size: size),
+        preferredSize: Size(double.infinity, 50),
       ),
       body: Container(
-          color: Colors.grey[50],
-          child: FutureBuilder(
-            future: db.initDB(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return _showList(context);
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
-          )
-          // Column(
-          //   crossAxisAlignment: CrossAxisAlignment.start,
-          //   children: [
-          //     AppBarWidget(size: size),
-          //     const SizedBox(width: double.infinity),
-          //     const Padding(
-          //       padding: EdgeInsets.all(20.0),
-          //       child: Text('Lista EDANs NO enviados'),
-          //     ),
-          //     Expanded(
-          //       child: SingleChildScrollView(
-          //         child: Column(
-          //           children: [
-          //             _datosGenerales(size),
-          //             _datosGenerales(size),
-          //             _datosGenerales(size),
-          //             _datosGenerales(size),
-          //             _buttonSelect('Guardar'),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          ),
-    );
-  }
-
-  _showList(BuildContext context) {
-    return FutureBuilder(
-      future: db.getAllTask(),
-      builder: (BuildContext context, AsyncSnapshot<List<Task>> snapshot) {
-        if (snapshot.hasData) {
-          return ListView(
+        color: Colors.grey[50],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              for (Task task in snapshot.data!)
-                ListTile(
-                  title: Text(task.name),
-                )
+              const Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Text('Lista EDANs NO enviados'),
+              ),
+              _datosGenerales(size),
+              _datosGenerales(size),
+              _datosGenerales(size),
+              _datosGenerales(size),
+              _buttonSelect('Guardar'),
             ],
-          );
-        } else {
-          return Center(
-            child: Text('agregar'),
-          );
-        }
-      },
+          ),
+        ),
+      ),
     );
   }
 
@@ -129,9 +84,15 @@ class _PageEdansState extends State<PageEdans> {
           title: const TitleExpansion(texto: '1.- DATOS GENERALES'),
           children: <Widget>[
             InputExpanded(
-                title: 'Nombre de contacto', controller: controllerNombre),
+              title: 'Nombre de contacto',
+              controller: controllerNombre,
+              isRequired: true,
+            ),
             InputExpanded(
-                title: 'Cargo de contacto', controller: controllerNombre),
+              title: 'Cargo de contacto',
+              controller: controllerNombre,
+              isRequired: true,
+            ),
             InputExpanded(
                 title: 'Dirección de contacto', controller: controllerNombre),
             InputExpanded(
@@ -162,9 +123,9 @@ class _PageEdansState extends State<PageEdans> {
         child: Container(
           child: Text(
             text,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           // color: Colors.cyan[700],
         ),
         onTap: () {
