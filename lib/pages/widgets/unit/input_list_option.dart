@@ -24,16 +24,22 @@ class _InputListOptionState extends State<InputListOption> {
   @override
   void initState() {
     super.initState();
-
     widget.options = [' -- Seleccione una opción --', ...widget.options];
     _chosenValue = widget.options[0];
+    if (widget.controller.text != ' -- Seleccione una opción --' ||
+        widget.controller.text != '' ||
+        widget.controller.text.isNotEmpty) {
+      _chosenValue = widget.controller.text;
+    }
     widget.controller.text = _chosenValue;
   }
 
   @override
   void dispose() {
     // print(widget.options);
-    widget.options = [];
+    if (widget.options.contains(' -- Seleccione una opción --')) {
+      widget.options.remove(' -- Seleccione una opción --');
+    }
     super.dispose();
   }
 
