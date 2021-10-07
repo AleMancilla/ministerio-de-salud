@@ -1,41 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:ministerio_de_salud/utils/convert_utils.dart';
 
 // ignore: must_be_immutable
-class InputListOption extends StatefulWidget {
+class InputDateOption extends StatefulWidget {
   final String title;
   final bool isRequired;
   final TextEditingController controller;
-  List<String> options;
 
-  InputListOption({
+  const InputDateOption({
     Key? key,
     required this.title,
     this.isRequired = false,
-    required this.options,
     required this.controller,
   }) : super(key: key);
 
   @override
-  State<InputListOption> createState() => _InputListOptionState();
+  State<InputDateOption> createState() => _InputDateOptionState();
 }
 
-class _InputListOptionState extends State<InputListOption> {
-  late String _chosenValue;
+class _InputDateOptionState extends State<InputDateOption> {
   @override
   void initState() {
     super.initState();
-
-    widget.options = [' -- Seleccione una opción --', ...widget.options];
-    _chosenValue = widget.options[0];
-    widget.controller.text = _chosenValue;
+    getFecha();
+    // widget.options = [' -- Seleccione una opción --', ...widget.options];
+    // _chosenValue = widget.options[0];
+    // widget.controller.text = _chosenValue;
   }
 
-  @override
-  void dispose() {
-    // print(widget.options);
-    widget.options = [];
-    super.dispose();
+  getFecha() {
+    dateList = widget.controller.text.split('/');
+    if (dateList.length == 3) {
+      dia = int.parse(dateList[0]);
+      mes = int.parse(dateList[1]);
+      anio = int.parse(dateList[2]);
+    } else {
+      dia = DateTime.now().day;
+      mes = DateTime.now().month;
+      anio = DateTime.now().year;
+    }
   }
+
+  int dia = 0;
+  int mes = 0;
+  int anio = 0;
+
+  List<String> dateList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -101,37 +112,32 @@ class _InputListOptionState extends State<InputListOption> {
   }
 
   Widget _itemInput() {
-    try {
-      return DropdownButton<String>(
-        focusColor: Colors.white,
-
-        value: _chosenValue,
-        //elevation: 5,
-        style: const TextStyle(color: Colors.white),
-        iconEnabledColor: Colors.black,
-        items: widget.options.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(
-              value,
-              style: const TextStyle(color: Colors.black),
-            ),
-          );
-        }).toList(),
-        hint: Text(
-          widget.title,
-          style: const TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
-        ),
-        onChanged: (value) {
-          setState(() {
-            _chosenValue = value!;
-            widget.controller.text = _chosenValue;
-          });
-        },
-      );
-    } catch (e) {
-      return CircularProgressIndicator();
-    }
+    return TextField(
+      // minLines: (widget.descrip) ? 3 : 1,
+      // maxLines: (widget.descrip) ? 10 : 1,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+        border: const OutlineInputBorder(),
+        hintText: widget.title,
+        // helperText: widget.helptext,
+      ),
+      controller: widget.controller,
+      onTap: () {
+        DatePicker.showDatePicker(context,
+            showTitleActions: true,
+            minTime: DateTime(2020),
+            maxTime: DateTime(DateTime.now().year + 1), onChanged: (date) {
+          print('change $date');
+        }, onConfirm: (date) {
+          widget.controller.text = formatDateTimeToString(date, 'dd/MM/yyyy');
+          getFecha();
+          print('confirm $date');
+        }, currentTime: DateTime(anio, mes, dia), locale: LocaleType.es);
+      },
+      // onChanged: (n) {
+      //   print("completo########");
+      //   if(!ordenData.flagEdit){ordenData.flagEdit = true;}
+      // },
+    );
   }
 }

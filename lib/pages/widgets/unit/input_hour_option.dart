@@ -1,41 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:ministerio_de_salud/utils/convert_utils.dart';
 
 // ignore: must_be_immutable
-class InputListOption extends StatefulWidget {
+class InputHourOption extends StatefulWidget {
   final String title;
   final bool isRequired;
   final TextEditingController controller;
-  List<String> options;
 
-  InputListOption({
+  const InputHourOption({
     Key? key,
     required this.title,
     this.isRequired = false,
-    required this.options,
     required this.controller,
   }) : super(key: key);
 
   @override
-  State<InputListOption> createState() => _InputListOptionState();
+  State<InputHourOption> createState() => _InputHourOptionState();
 }
 
-class _InputListOptionState extends State<InputListOption> {
-  late String _chosenValue;
+class _InputHourOptionState extends State<InputHourOption> {
   @override
   void initState() {
     super.initState();
-
-    widget.options = [' -- Seleccione una opción --', ...widget.options];
-    _chosenValue = widget.options[0];
-    widget.controller.text = _chosenValue;
+    getHour();
+    // widget.options = [' -- Seleccione una opción --', ...widget.options];
+    // _chosenValue = widget.options[0];
+    // widget.controller.text = _chosenValue;
   }
 
-  @override
-  void dispose() {
-    // print(widget.options);
-    widget.options = [];
-    super.dispose();
+  getHour() {
+    dateList = widget.controller.text.split(':');
+    if (dateList.length == 2) {
+      hora = int.parse(dateList[0]);
+      minuto = int.parse(dateList[1]);
+    } else {
+      hora = DateTime.now().hour;
+      minuto = DateTime.now().minute;
+    }
   }
+
+  int hora = 0;
+  int minuto = 0;
+
+  List<String> dateList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -101,37 +109,35 @@ class _InputListOptionState extends State<InputListOption> {
   }
 
   Widget _itemInput() {
-    try {
-      return DropdownButton<String>(
-        focusColor: Colors.white,
-
-        value: _chosenValue,
-        //elevation: 5,
-        style: const TextStyle(color: Colors.white),
-        iconEnabledColor: Colors.black,
-        items: widget.options.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(
-              value,
-              style: const TextStyle(color: Colors.black),
-            ),
-          );
-        }).toList(),
-        hint: Text(
-          widget.title,
-          style: const TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
-        ),
-        onChanged: (value) {
-          setState(() {
-            _chosenValue = value!;
-            widget.controller.text = _chosenValue;
-          });
+    return TextField(
+      // minLines: (widget.descrip) ? 3 : 1,
+      // maxLines: (widget.descrip) ? 10 : 1,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+        border: const OutlineInputBorder(),
+        hintText: widget.title,
+        // helperText: widget.helptext,
+      ),
+      controller: widget.controller,
+      onTap: () {
+        DatePicker.showTimePicker(context,
+            showTitleActions: true,
+            showSecondsColumn: false, onChanged: (date) {
+          print('change $date');
+        }, onConfirm: (date) {
+          widget.controller.text = formatDateTimeHourToString(
+              Duration(hours: date.hour, minutes: date.minute));
+          getHour();
+          print('confirm $date');
         },
-      );
-    } catch (e) {
-      return CircularProgressIndicator();
-    }
+            currentTime: DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day, hora, minuto),
+            locale: LocaleType.es);
+      },
+      // onChanged: (n) {
+      //   print("completo########");
+      //   if(!ordenData.flagEdit){ordenData.flagEdit = true;}
+      // },
+    );
   }
 }

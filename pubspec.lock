@@ -69,13 +69,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_cupertino_date_picker:
+  flutter_datetime_picker:
     dependency: "direct main"
     description:
-      name: flutter_cupertino_date_picker
+      name: flutter_datetime_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.26+2"
+    version: "1.5.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -88,6 +88,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  intl:
+    dependency: "direct main"
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.17.0"
   lints:
     dependency: transitive
     description:

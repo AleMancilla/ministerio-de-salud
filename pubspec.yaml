@@ -41,7 +41,10 @@ dependencies:
   sqflite_common_ffi: ^2.0.0+3
 
   # extra design
-  flutter_cupertino_date_picker: ^1.0.26+2
+  flutter_datetime_picker: ^1.5.1
+
+  # format
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

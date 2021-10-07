@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/input_date_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_expanded.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/input_hour_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/title_expansion.dart';
 
@@ -12,10 +14,28 @@ class PageEdans extends StatefulWidget {
 }
 
 class _PageEdansState extends State<PageEdans> {
-  final listKey = GlobalKey<AnimatedListState>();
-
-  TextEditingController controllerNombre = TextEditingController();
+  TextEditingController controllerEvento = TextEditingController();
+  TextEditingController controllerFecha = TextEditingController();
+  TextEditingController controllerHora = TextEditingController();
+  TextEditingController controllerNombreDeContacto = TextEditingController();
+  TextEditingController controllerCargoDeContacto = TextEditingController();
+  TextEditingController controllerDireccionDeContacto = TextEditingController();
+  TextEditingController controllerTelefonoFijo = TextEditingController();
+  TextEditingController controllerTelefonoMovil = TextEditingController();
+  TextEditingController controllerDepartamento = TextEditingController();
+  TextEditingController controllerMunicipio = TextEditingController();
+  TextEditingController controllerComunidad = TextEditingController();
+  TextEditingController controllerParaLlegar = TextEditingController();
+  TextEditingController controllerTiempoLlegada = TextEditingController();
   int number = 0;
+
+  @override
+  void initState() {
+    controllerFecha.text =
+        '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -63,38 +83,49 @@ class _PageEdansState extends State<PageEdans> {
           children: <Widget>[
             InputListOption(
               title: 'Evento',
-              controller: controllerNombre,
+              controller: controllerEvento,
               isRequired: true,
               options: const ['A', 'B', 'C'],
             ),
+            InputDateOption(
+              title: 'Fecha',
+              controller: controllerFecha,
+              isRequired: true,
+            ),
+            InputHourOption(
+              title: 'Hora probable de inicio',
+              controller: controllerHora,
+              isRequired: true,
+            ),
             InputExpanded(
               title: 'Nombre de contacto',
-              controller: controllerNombre,
+              controller: controllerNombreDeContacto,
               isRequired: true,
             ),
             InputExpanded(
               title: 'Cargo de contacto',
-              controller: controllerNombre,
+              controller: controllerCargoDeContacto,
               isRequired: true,
             ),
             InputExpanded(
-                title: 'Dirección de contacto', controller: controllerNombre),
+                title: 'Dirección de contacto',
+                controller: controllerDireccionDeContacto),
             InputExpanded(
                 title: 'Telefono fijo de contacto',
-                controller: controllerNombre),
+                controller: controllerTelefonoFijo),
             InputExpanded(
                 title: 'Telefono movil de contacto',
-                controller: controllerNombre),
+                controller: controllerTelefonoMovil),
             InputExpanded(
-                title: 'Comunidad o zona', controller: controllerNombre),
+                title: 'Comunidad o zona', controller: controllerComunidad),
             InputExpanded(
               title: 'Para llegar al lugar se parte de (lugar):',
-              controller: controllerNombre,
+              controller: controllerParaLlegar,
               isRequired: true,
             ),
             InputExpanded(
                 title: 'Tiempo de llegada al lugar (en horas)',
-                controller: controllerNombre),
+                controller: controllerTiempoLlegada),
           ],
         ),
         const Divider()
@@ -115,7 +146,7 @@ class _PageEdansState extends State<PageEdans> {
           // color: Colors.cyan[700],
         ),
         onTap: () {
-          // print('object');
+          print(controllerFecha.text);
         },
       ),
     );
