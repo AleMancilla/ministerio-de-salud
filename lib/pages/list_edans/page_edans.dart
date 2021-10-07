@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_expanded.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/input_list_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/title_expansion.dart';
 
 class PageEdans extends StatefulWidget {
@@ -60,6 +61,12 @@ class _PageEdansState extends State<PageEdans> {
         ExpansionTile(
           title: const TitleExpansion(texto: '1.- DATOS GENERALES'),
           children: <Widget>[
+            InputListOption(
+              title: 'Evento',
+              controller: controllerNombre,
+              isRequired: true,
+              options: const ['A', 'B', 'C'],
+            ),
             InputExpanded(
               title: 'Nombre de contacto',
               controller: controllerNombre,
@@ -81,8 +88,10 @@ class _PageEdansState extends State<PageEdans> {
             InputExpanded(
                 title: 'Comunidad o zona', controller: controllerNombre),
             InputExpanded(
-                title: 'Para llegar al lugar se parte de (lugar):',
-                controller: controllerNombre),
+              title: 'Para llegar al lugar se parte de (lugar):',
+              controller: controllerNombre,
+              isRequired: true,
+            ),
             InputExpanded(
                 title: 'Tiempo de llegada al lugar (en horas)',
                 controller: controllerNombre),

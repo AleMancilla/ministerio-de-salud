@@ -37,6 +37,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                     ),
                   ),
                   () {
+                    Navigator.pop(context);
                     // print('object');
                   },
                 ),
