@@ -4,6 +4,7 @@ import 'package:ministerio_de_salud/pages/widgets/unit/input_date_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_expanded.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_hour_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_boolean.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/input_list_check.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/title_expansion.dart';
 
@@ -29,6 +30,7 @@ class _PageEdansState extends State<PageEdans> {
   TextEditingController controllerParaLlegar = TextEditingController();
   TextEditingController controllerTiempoLlegada = TextEditingController();
   TextEditingController controllerdemoboolean = TextEditingController();
+  TextEditingController controllerdemoboolean2 = TextEditingController();
   int number = 0;
 
   @override
@@ -103,6 +105,12 @@ class _PageEdansState extends State<PageEdans> {
             InputListBoolean(
               title: 'Evento boolean',
               controller: controllerdemoboolean,
+              isRequired: true,
+              options: const ['A', 'B', 'C'],
+            ),
+            InputListSelectedCheck(
+              title: 'Evento check',
+              controller: controllerdemoboolean2,
               isRequired: true,
               options: const ['A', 'B', 'C'],
             ),

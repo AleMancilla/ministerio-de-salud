@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class InputListBoolean extends StatefulWidget {
+class InputListSelectedCheck extends StatefulWidget {
   final String title;
   final bool isRequired;
   final TextEditingController controller;
   List<String> options;
 
-  InputListBoolean({
+  InputListSelectedCheck({
     Key? key,
     required this.title,
     this.isRequired = false,
@@ -16,10 +16,10 @@ class InputListBoolean extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<InputListBoolean> createState() => _InputListBooleanState();
+  State<InputListSelectedCheck> createState() => _InputListSelectedCheckState();
 }
 
-class _InputListBooleanState extends State<InputListBoolean> {
+class _InputListSelectedCheckState extends State<InputListSelectedCheck> {
   @override
   void initState() {
     super.initState();
@@ -30,7 +30,28 @@ class _InputListBooleanState extends State<InputListBoolean> {
     if (widget.controller.text.isEmpty) {
       widget.controller.text = widget.options[0];
     }
+    listOptions = widget.controller.text.replaceAll(' ', '').split(',');
+
+    for (var i = 0; i < widget.options.length; i++) {
+      if (listOptions.contains(widget.options[i])) {
+        listSelect.add(true);
+      } else {
+        listSelect.add(false);
+      }
+    }
   }
+
+  @override
+  void dispose() {
+    listSelect = [];
+    listCheckbox = [];
+    listOptions = [];
+    super.dispose();
+  }
+
+  List<bool> listSelect = [];
+  List<Widget> listCheckbox = [];
+  List<String> listOptions = [];
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +116,6 @@ class _InputListBooleanState extends State<InputListBoolean> {
     }
   }
 
-  String _selectedGender = '';
   Widget _itemInput(Size size) {
     try {
       if (size.width > 765) {
@@ -104,45 +124,71 @@ class _InputListBooleanState extends State<InputListBoolean> {
         return listItemsColumn();
       }
     } catch (e) {
-      return CircularProgressIndicator();
+      print(e);
+      return const CircularProgressIndicator();
     }
   }
 
   Widget listItemsColumn() {
+    int i = -1;
     return Column(
-        children: widget.options
-            .map((data) => Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Row(
-                    children: [_selected(data), Text(data)],
-                  ),
-                ))
-            .toList());
+        children: widget.options.map((data) {
+      i++;
+      return Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: Row(
+          children: [_selected(data, i), Text(data)],
+        ),
+      );
+    }).toList());
   }
 
   Widget listItemsRow() {
+    int i = -1;
     return Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: widget.options
-            .map((data) => Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Row(
-                    children: [_selected(data), Text(data)],
-                  ),
-                ))
-            .toList());
+        children: widget.options.map((data) {
+          i++;
+          return Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: Row(
+              children: [_selected(data, i), Text(data)],
+            ),
+          );
+        }).toList());
   }
 
-  Radio<String> _selected(String data) {
-    return Radio(
-      value: data,
-      groupValue: widget.controller.text,
-      onChanged: (String? value) {
+  Widget _selected(String data, int i) {
+    return Checkbox(
+      value: listSelect[i],
+      onChanged: (value) {
         setState(() {
-          widget.controller.text = value!;
-          print(widget.controller.text);
+          listSelect[i] = value!;
         });
+        if (listSelect[i]) {
+          widget.controller.text =
+              widget.controller.text + ',${widget.options[i]}';
+        } else {
+          widget.controller.text = widget.controller.text
+              .replaceAll(',${widget.options[i]}', '')
+              .replaceAll(widget.options[i], '');
+        }
+        print(widget.controller.text);
+        _limpiarComasAlaIzquierda();
       },
     );
+  }
+
+  _limpiarComasAlaIzquierda() {
+    try {
+      if (widget.controller.text.substring(0, 1) == ',') {
+        widget.controller.text = widget.controller.text.substring(1);
+      }
+    } catch (e) {
+      print(e);
+    }
+    // for (var i = 0; i < widget.controller.text.length; i++) {
+    //   print(widget.controller.text.substring(i, i + 1));
+    // }
   }
 }
