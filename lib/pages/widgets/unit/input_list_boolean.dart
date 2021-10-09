@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class InputListOption extends StatefulWidget {
+class InputListBoolean extends StatefulWidget {
   final String title;
   final bool isRequired;
   final TextEditingController controller;
   List<String> options;
 
-  InputListOption({
+  InputListBoolean({
     Key? key,
     required this.title,
     this.isRequired = false,
@@ -16,46 +16,25 @@ class InputListOption extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<InputListOption> createState() => _InputListOptionState();
+  State<InputListBoolean> createState() => _InputListBooleanState();
 }
 
-class _InputListOptionState extends State<InputListOption> {
-  late String _chosenValue;
+class _InputListBooleanState extends State<InputListBoolean> {
   @override
   void initState() {
     super.initState();
-    print(widget.controller.text);
 
-    if (widget.controller.text == ' -- Seleccione una opción --' ||
-        widget.controller.text == '' ||
-        widget.controller.text.isEmpty) {
-      widget.options = [' -- Seleccione una opción --', ...widget.options];
-      _chosenValue = widget.options[0];
-    } else {
-      _chosenValue = widget.controller.text;
-    }
-    widget.controller.text = _chosenValue;
-  }
-
-  @override
-  void dispose() {
-    // print(widget.options);
-    if (widget.options.contains(' -- Seleccione una opción --')) {
-      widget.options.remove(' -- Seleccione una opción --');
-    }
-    super.dispose();
-  }
-
-  agregarPrimeraOpcion() {
-    if (!widget.options.contains(' -- Seleccione una opción --')) {
-      widget.options = [' -- Seleccione una opción --', ...widget.options];
+    // _selectedGender = widget.options[0];
+    print(
+        '==== ${widget.controller.text} 00 ${widget.controller.text.isEmpty}');
+    if (widget.controller.text.isEmpty) {
+      widget.controller.text = widget.options[0];
     }
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    agregarPrimeraOpcion();
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       // margin: const EdgeInsets.only(bottom: 10, top: 10),
@@ -86,7 +65,7 @@ class _InputListOptionState extends State<InputListOption> {
             ),
           ),
           Expanded(
-            child: _itemInput(),
+            child: _itemInput(size),
           )
         ],
       );
@@ -110,45 +89,71 @@ class _InputListOptionState extends State<InputListOption> {
                   ]),
             ),
           ),
-          _itemInput(),
+          _itemInput(size),
         ],
       );
     }
   }
 
-  Widget _itemInput() {
+  String _selectedGender = '';
+  Widget _itemInput(Size size) {
     try {
-      return DropdownButton<String>(
-        focusColor: Colors.white,
-
-        value: _chosenValue,
-        //elevation: 5,
-        style: const TextStyle(color: Colors.white),
-        iconEnabledColor: Colors.black,
-        items: widget.options.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(
-              value,
-              style: const TextStyle(color: Colors.black),
-            ),
-          );
-        }).toList(),
-        hint: Text(
-          widget.title,
-          style: const TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
-        ),
-        onChanged: (value) {
-          setState(() {
-            _chosenValue = value!;
-            widget.controller.text = _chosenValue;
-          });
-        },
-      );
+      if (size.width > 765) {
+        return listItemsRow();
+      } else {
+        return listItemsColumn();
+      }
     } catch (e) {
-      print(widget.options);
       return CircularProgressIndicator();
     }
+  }
+
+  Widget listItemsColumn() {
+    return Column(
+        children: widget.options
+            .map((data) => Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Row(
+                    children: [
+                      Radio(
+                        value: data,
+                        groupValue: widget.controller.text,
+                        onChanged: (String? value) {
+                          setState(() {
+                            widget.controller.text = value!;
+                            print(widget.controller.text);
+                          });
+                        },
+                      ),
+                      Text(data)
+                    ],
+                  ),
+                ))
+            .toList());
+  }
+
+  Widget listItemsRow() {
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: widget.options
+            .map((data) => Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Row(
+                    children: [
+                      Radio(
+                        value: data,
+                        groupValue: widget.controller.text,
+                        onChanged: (String? value) {
+                          setState(() {
+                            widget.controller.text = value!;
+                            print(widget.controller.text);
+                          });
+                        },
+                      ),
+                      Text(data)
+                    ],
+                  ),
+                ))
+            .toList());
   }
 }

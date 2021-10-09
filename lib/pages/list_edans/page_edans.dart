@@ -3,6 +3,7 @@ import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_date_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_expanded.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_hour_option.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/input_list_boolean.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/title_expansion.dart';
 
@@ -27,12 +28,14 @@ class _PageEdansState extends State<PageEdans> {
   TextEditingController controllerComunidad = TextEditingController();
   TextEditingController controllerParaLlegar = TextEditingController();
   TextEditingController controllerTiempoLlegada = TextEditingController();
+  TextEditingController controllerdemoboolean = TextEditingController();
   int number = 0;
 
   @override
   void initState() {
     controllerFecha.text =
         '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
+    controllerHora.text = '${DateTime.now().hour}:${DateTime.now().minute}';
     super.initState();
   }
 
@@ -96,6 +99,12 @@ class _PageEdansState extends State<PageEdans> {
               title: 'Hora probable de inicio',
               controller: controllerHora,
               isRequired: true,
+            ),
+            InputListBoolean(
+              title: 'Evento boolean',
+              controller: controllerdemoboolean,
+              isRequired: true,
+              options: const ['A', 'B', 'C'],
             ),
             InputExpanded(
               title: 'Nombre de contacto',
