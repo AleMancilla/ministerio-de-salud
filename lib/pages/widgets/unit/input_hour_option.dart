@@ -24,7 +24,7 @@ class _InputHourOptionState extends State<InputHourOption> {
   void initState() {
     super.initState();
     getHour();
-    // widget.options = [' -- Seleccione una opción --', ...widget.options];
+    // widget.options = ['- Seleccione una opción -', ...widget.options];
     // _chosenValue = widget.options[0];
     // widget.controller.text = _chosenValue;
   }

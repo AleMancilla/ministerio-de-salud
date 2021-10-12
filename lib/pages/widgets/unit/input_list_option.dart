@@ -26,10 +26,10 @@ class _InputListOptionState extends State<InputListOption> {
     super.initState();
     print(widget.controller.text);
 
-    if (widget.controller.text == ' -- Seleccione una opción --' ||
+    if (widget.controller.text == '- Seleccione una opción -' ||
         widget.controller.text == '' ||
         widget.controller.text.isEmpty) {
-      widget.options = [' -- Seleccione una opción --', ...widget.options];
+      widget.options = ['- Seleccione una opción -', ...widget.options];
       _chosenValue = widget.options[0];
     } else {
       _chosenValue = widget.controller.text;
@@ -40,15 +40,15 @@ class _InputListOptionState extends State<InputListOption> {
   @override
   void dispose() {
     // print(widget.options);
-    if (widget.options.contains(' -- Seleccione una opción --')) {
-      widget.options.remove(' -- Seleccione una opción --');
+    if (widget.options.contains('- Seleccione una opción -')) {
+      widget.options.remove('- Seleccione una opción -');
     }
     super.dispose();
   }
 
   agregarPrimeraOpcion() {
-    if (!widget.options.contains(' -- Seleccione una opción --')) {
-      widget.options = [' -- Seleccione una opción --', ...widget.options];
+    if (!widget.options.contains('- Seleccione una opción -')) {
+      widget.options = ['- Seleccione una opción -', ...widget.options];
     }
   }
 

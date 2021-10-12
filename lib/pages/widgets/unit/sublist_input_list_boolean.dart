@@ -31,7 +31,7 @@ class _SubListInputListBooleanState extends State<SubListInputListBoolean> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      // margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       // margin: const EdgeInsets.only(bottom: 10, top: 10),
       width: double.infinity,
       child: _styleView(size),
@@ -39,57 +39,30 @@ class _SubListInputListBooleanState extends State<SubListInputListBoolean> {
   }
 
   Widget _styleView(Size size) {
-    if (size.width >= 720) {
-      return Row(
-        children: [
-          Expanded(
-            child: _itemInput(size),
-          )
-        ],
-      );
-    } else {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _itemInput(size),
-        ],
-      );
-    }
+    return Wrap(
+      children: [
+        _itemInput(size),
+      ],
+    );
   }
 
-  String _selectedGender = '';
   Widget _itemInput(Size size) {
     try {
-      if (size.width > 765) {
-        return listItemsRow();
-      } else {
-        return listItemsColumn();
-      }
+      return listItemsWrap();
     } catch (e) {
-      return CircularProgressIndicator();
+      return const CircularProgressIndicator();
     }
   }
 
-  Widget listItemsColumn() {
-    return Column(
+  Widget listItemsWrap() {
+    return Wrap(
+        direction: Axis.horizontal,
         children: widget.options
-            .map((data) => Padding(
-                  padding: const EdgeInsets.only(right: 10),
+            .map((data) => Container(
+                  // padding: const EdgeInsets.only(right: 10),
                   child: Row(
-                    children: [_selected(data), Text(data)],
-                  ),
-                ))
-            .toList());
-  }
-
-  Widget listItemsRow() {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: widget.options
-            .map((data) => Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Row(
-                    children: [_selected(data), Text(data)],
+                    mainAxisSize: MainAxisSize.min,
+                    children: [Center(child: _selected(data)), Text(data)],
                   ),
                 ))
             .toList());
@@ -102,7 +75,6 @@ class _SubListInputListBooleanState extends State<SubListInputListBoolean> {
       onChanged: (String? value) {
         setState(() {
           widget.controller.text = value!;
-          print(widget.controller.text);
         });
       },
     );

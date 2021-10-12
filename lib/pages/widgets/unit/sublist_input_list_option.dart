@@ -22,10 +22,10 @@ class _SubListInputListOptionState extends State<SubListInputListOption> {
     super.initState();
     print(widget.controller.text);
 
-    if (widget.controller.text == ' -- Seleccione una opción --' ||
+    if (widget.controller.text == '- Seleccione una opción -' ||
         widget.controller.text == '' ||
         widget.controller.text.isEmpty) {
-      widget.options = [' -- Seleccione una opción --', ...widget.options];
+      widget.options = ['- Seleccione una opción -', ...widget.options];
       _chosenValue = widget.options[0];
     } else {
       _chosenValue = widget.controller.text;
@@ -36,55 +36,55 @@ class _SubListInputListOptionState extends State<SubListInputListOption> {
   @override
   void dispose() {
     // print(widget.options);
-    if (widget.options.contains(' -- Seleccione una opción --')) {
-      widget.options.remove(' -- Seleccione una opción --');
+    if (widget.options.contains('- Seleccione una opción -')) {
+      widget.options.remove('- Seleccione una opción -');
     }
     super.dispose();
   }
 
   agregarPrimeraOpcion() {
-    if (!widget.options.contains(' -- Seleccione una opción --')) {
-      widget.options = [' -- Seleccione una opción --', ...widget.options];
+    if (!widget.options.contains('- Seleccione una opción -')) {
+      widget.options = ['- Seleccione una opción -', ...widget.options];
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     agregarPrimeraOpcion();
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      // margin: const EdgeInsets.only(bottom: 10, top: 10),
-      width: double.infinity,
-      child: _styleView(size),
+      // margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.only(bottom: 0, top: 0),
+      // width: double.infinity,
+      child: _itemInput(),
     );
   }
 
-  Widget _styleView(Size size) {
-    if (size.width >= 720) {
-      return Row(
-        children: [
-          Expanded(
-            child: _itemInput(),
-          )
-        ],
-      );
-    } else {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _itemInput(),
-        ],
-      );
-    }
-  }
+  // Widget _styleView(Size size) {
+  //   if (size.width >= 720) {
+  //     return Row(
+  //       children: [
+  //         Expanded(
+  //           child: _itemInput(),
+  //         )
+  //       ],
+  //     );
+  //   } else {
+  //     return Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         _itemInput(),
+  //       ],
+  //     );
+  //   }
+  // }
 
   Widget _itemInput() {
     try {
       return DropdownButton<String>(
         focusColor: Colors.white,
-
         value: _chosenValue,
+        isDense: true,
+        isExpanded: true,
         //elevation: 5,
         style: const TextStyle(color: Colors.white),
         iconEnabledColor: Colors.black,
@@ -105,8 +105,7 @@ class _SubListInputListOptionState extends State<SubListInputListOption> {
         },
       );
     } catch (e) {
-      print(widget.options);
-      return CircularProgressIndicator();
+      return const CircularProgressIndicator();
     }
   }
 }

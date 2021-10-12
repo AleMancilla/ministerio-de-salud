@@ -24,7 +24,7 @@ class _InputDateOptionState extends State<InputDateOption> {
   void initState() {
     super.initState();
     getFecha();
-    // widget.options = [' -- Seleccione una opción --', ...widget.options];
+    // widget.options = ['- Seleccione una opción -', ...widget.options];
     // _chosenValue = widget.options[0];
     // widget.controller.text = _chosenValue;
   }
