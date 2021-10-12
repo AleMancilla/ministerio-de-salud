@@ -25,8 +25,6 @@ class _InputListSelectedCheckState extends State<InputListSelectedCheck> {
     super.initState();
 
     // _selectedGender = widget.options[0];
-    print(
-        '==== ${widget.controller.text} 00 ${widget.controller.text.isEmpty}');
     if (widget.controller.text.isEmpty) {
       widget.controller.text = widget.options[0];
     }

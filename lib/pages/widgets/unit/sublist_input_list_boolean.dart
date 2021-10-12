@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class InputListBoolean extends StatefulWidget {
-  final String title;
-  final bool isRequired;
+class SubListInputListBoolean extends StatefulWidget {
   final TextEditingController controller;
   List<String> options;
 
-  InputListBoolean({
+  SubListInputListBoolean({
     Key? key,
-    required this.title,
-    this.isRequired = false,
     required this.options,
     required this.controller,
   }) : super(key: key);
 
   @override
-  State<InputListBoolean> createState() => _InputListBooleanState();
+  State<SubListInputListBoolean> createState() =>
+      _SubListInputListBooleanState();
 }
 
-class _InputListBooleanState extends State<InputListBoolean> {
+class _SubListInputListBooleanState extends State<SubListInputListBoolean> {
   @override
   void initState() {
     super.initState();
@@ -45,23 +42,6 @@ class _InputListBooleanState extends State<InputListBoolean> {
     if (size.width >= 720) {
       return Row(
         children: [
-          SizedBox(
-            width: 170,
-            child: RichText(
-              text: TextSpan(
-                  text: widget.title,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black),
-                  children: <TextSpan>[
-                    if (widget.isRequired)
-                      const TextSpan(
-                        text: ' *',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.red),
-                      )
-                  ]),
-            ),
-          ),
           Expanded(
             child: _itemInput(size),
           )
@@ -71,22 +51,6 @@ class _InputListBooleanState extends State<InputListBoolean> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            child: RichText(
-              text: TextSpan(
-                  text: widget.title,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black),
-                  children: <TextSpan>[
-                    if (widget.isRequired)
-                      const TextSpan(
-                        text: ' *',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.red),
-                      )
-                  ]),
-            ),
-          ),
           _itemInput(size),
         ],
       );
