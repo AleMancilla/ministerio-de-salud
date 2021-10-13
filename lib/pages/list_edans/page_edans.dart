@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/group_list_danios_establecimientos_de_salud.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/group_list_danios_personal_de_salud.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/group_list_instalacion_albergues.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_date_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_expanded.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_hour_option.dart';
@@ -69,7 +70,7 @@ class _PageEdansState extends State<PageEdans> {
   TextEditingController controllerServicioDeTransporte =
       TextEditingController();
 
-  ///[ DAÑOS A LA SALUD]
+  /// [DAÑOS_A_LA_SALUD]
   TextEditingController controllerHeridos = TextEditingController();
   TextEditingController controllerFallecidos = TextEditingController();
   TextEditingController controllerDesaparecidos = TextEditingController();
@@ -79,6 +80,12 @@ class _PageEdansState extends State<PageEdans> {
 
   List<Widget> listDaniosPersonalDeSaludWidget = [];
   List<_DaniosAlPersonalDeSalud> listDaniosPersonalDeSalud = [];
+
+  /// [SECCION_INSTALACION_DE_ALBERGUES]
+  ///InstalacionDeAlbergues
+
+  List<Widget> listInstalacionDeAlberguesWidget = [];
+  List<_InstalacionAlbergues> listInstalacionDeAlbergues = [];
 
   ///[SECCION DATOS GENERALES]
   TextEditingController controllerLugarEDAN = TextEditingController();
@@ -121,7 +128,7 @@ class _PageEdansState extends State<PageEdans> {
                 _datosGenerales(size),
                 _daniosGenerales(size),
                 _daniosALaSalud(size),
-                _daniosALaSalud(size),
+                _accionesRealizadas(size),
                 _datosLlenadoDelEdan(size),
                 _buttonSelect('Guardar'),
                 const SizedBox(
@@ -132,175 +139,6 @@ class _PageEdansState extends State<PageEdans> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _datosLlenadoDelEdan(Size size) {
-    return Column(
-      children: [
-        Container(
-          width: size.width - 50,
-          height: 5,
-          decoration: BoxDecoration(
-              color: Colors.blueGrey.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(100)),
-        ),
-        ExpansionTile(
-          title: const TitleExpansion(texto: '7.- DATOS DEL LLENADO DEL EDAN'),
-          children: <Widget>[
-            InputExpanded(
-              title: 'Lugar',
-              controller: controllerLugarEDAN,
-            ),
-            InputDateOption(
-              title: 'Fecha',
-              controller: controllerFechaEDAN,
-            ),
-            InputHourOption(
-              title: 'Hora',
-              controller: controllerHoraEDAN,
-            ),
-            InputExpanded(
-              title: 'Responsable',
-              controller: controllerResponsableEDAN,
-            ),
-            InputExpanded(
-              title: 'Cargo',
-              controller: controllerCargoEDAN,
-            ),
-            InputExpanded(
-              title: 'Telf. fijo',
-              controller: controllerTelfFijoEDAN,
-              isNumber: true,
-            ),
-            InputExpanded(
-              title: 'Telf. movil',
-              controller: controllerTelfMovilEDAN,
-              isNumber: true,
-            ),
-            InputExpanded(
-              title: 'Correo electronico',
-              controller: controllerCorreoEDAN,
-            ),
-          ],
-        ),
-        const Divider()
-      ],
-    );
-  }
-
-  Widget _daniosGenerales(Size size) {
-    return Column(
-      children: [
-        Container(
-          width: size.width - 50,
-          height: 5,
-          decoration: BoxDecoration(
-              color: Colors.blueGrey.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(100)),
-        ),
-        ExpansionTile(
-          title: const TitleExpansion(texto: '2.- DAÑOS GENERALES'),
-          children: <Widget>[
-            InputExpanded(
-              title: 'Viviendas afectadas',
-              controller: controllerViviendasAfectadas,
-              isRequired: true,
-            ),
-            InputExpanded(
-              title: 'Flias. damnificadas',
-              controller: controllerFamiliasDamnificadas,
-              isRequired: true,
-            ),
-            InputListBoolean(
-              title: 'Servicio de agua potable',
-              controller: controllerServivioDeAgua,
-              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
-            ),
-            InputListBoolean(
-              title: 'Servicio de recoleccion de basura',
-              controller: controllerServicioDeRecoleccion,
-              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
-            ),
-            InputListBoolean(
-              title: 'Servicio de alcantarillado',
-              controller: controllerServicioDeAlcantarilla,
-              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
-            ),
-            InputListBoolean(
-              title: 'Servicio de energia electrica',
-              controller: controllerServicioDeEnergia,
-              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
-            ),
-            InputListBoolean(
-              title: 'Servicio de telecomunicaciones',
-              controller: controllerServicioDeTelecomunicaciones,
-              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
-            ),
-            InputListBoolean(
-              title: 'Servicio de transporte',
-              controller: controllerServicioDeTransporte,
-              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
-            ),
-
-            // ExpansionTile(
-            //   title: const TitleExpansion(texto: '1.- DEMO 1'),
-            //   children: [_groupDaniosEstablecimiendosDeSalud()],
-            // ),
-            // ExpansionTile(
-            //   title: const TitleExpansion(texto: '1.- DEMO 2'),
-            //   children: [_groupDaniosAlPersonalDeSalud()],
-            // )
-          ],
-        ),
-        const Divider()
-      ],
-    );
-  }
-
-  Widget _daniosALaSalud(Size size) {
-    return Column(
-      children: [
-        Container(
-          width: size.width - 50,
-          height: 5,
-          decoration: BoxDecoration(
-              color: Colors.blueGrey.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(100)),
-        ),
-        ExpansionTile(
-          title: const TitleExpansion(texto: '3.- DAÑOS A LA SALUD'),
-          children: <Widget>[
-            InputExpanded(
-              title: 'Heridos',
-              controller: controllerHeridos,
-              isRequired: true,
-            ),
-            InputExpanded(
-              title: 'Fallecidos',
-              controller: controllerFallecidos,
-              isRequired: true,
-            ),
-            InputExpanded(
-              title: 'Desaparecidos',
-              controller: controllerDesaparecidos,
-              isRequired: true,
-            ),
-            ExpansionTile(
-              title: const TitleExpansion(
-                  texto: 'Daños a establecimientos de salud'),
-              children: [_groupDaniosEstablecimiendosDeSalud()],
-            ),
-            ExpansionTile(
-              title: const TitleExpansion(
-                  texto:
-                      'Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),
-              children: [_groupDaniosAlPersonalDeSalud()],
-            )
-          ],
-        ),
-        const Divider()
-      ],
     );
   }
 
@@ -429,6 +267,207 @@ class _PageEdansState extends State<PageEdans> {
             //   title: const TitleExpansion(texto: '1.- DEMO 2'),
             //   children: [_groupDaniosAlPersonalDeSalud()],
             // )
+          ],
+        ),
+        const Divider()
+      ],
+    );
+  }
+
+  Widget _daniosGenerales(Size size) {
+    return Column(
+      children: [
+        Container(
+          width: size.width - 50,
+          height: 5,
+          decoration: BoxDecoration(
+              color: Colors.blueGrey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(100)),
+        ),
+        ExpansionTile(
+          title: const TitleExpansion(texto: '2.- DAÑOS GENERALES'),
+          children: <Widget>[
+            InputExpanded(
+              title: 'Viviendas afectadas',
+              controller: controllerViviendasAfectadas,
+              isRequired: true,
+            ),
+            InputExpanded(
+              title: 'Flias. damnificadas',
+              controller: controllerFamiliasDamnificadas,
+              isRequired: true,
+            ),
+            InputListBoolean(
+              title: 'Servicio de agua potable',
+              controller: controllerServivioDeAgua,
+              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
+            ),
+            InputListBoolean(
+              title: 'Servicio de recoleccion de basura',
+              controller: controllerServicioDeRecoleccion,
+              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
+            ),
+            InputListBoolean(
+              title: 'Servicio de alcantarillado',
+              controller: controllerServicioDeAlcantarilla,
+              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
+            ),
+            InputListBoolean(
+              title: 'Servicio de energia electrica',
+              controller: controllerServicioDeEnergia,
+              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
+            ),
+            InputListBoolean(
+              title: 'Servicio de telecomunicaciones',
+              controller: controllerServicioDeTelecomunicaciones,
+              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
+            ),
+            InputListBoolean(
+              title: 'Servicio de transporte',
+              controller: controllerServicioDeTransporte,
+              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
+            ),
+
+            // ExpansionTile(
+            //   title: const TitleExpansion(texto: '1.- DEMO 1'),
+            //   children: [_groupDaniosEstablecimiendosDeSalud()],
+            // ),
+            // ExpansionTile(
+            //   title: const TitleExpansion(texto: '1.- DEMO 2'),
+            //   children: [_groupDaniosAlPersonalDeSalud()],
+            // )
+          ],
+        ),
+        const Divider()
+      ],
+    );
+  }
+
+  Widget _daniosALaSalud(Size size) {
+    return Column(
+      children: [
+        Container(
+          width: size.width - 50,
+          height: 5,
+          decoration: BoxDecoration(
+              color: Colors.blueGrey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(100)),
+        ),
+        ExpansionTile(
+          title: const TitleExpansion(
+              texto:
+                  '4.- ACCIONES REALIZADAS, 5.- ACCIONES PRIORITARIAS, 6.- REQUERIMIENTOS'),
+          children: <Widget>[
+            ExpansionTile(
+              title: const TitleExpansion(texto: 'Instalación de albergues'),
+              children: [_groupInstalacionDeAlbergues()],
+            ),
+            ExpansionTile(
+              title: const TitleExpansion(
+                  texto:
+                      'Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),
+              children: [_groupDaniosAlPersonalDeSalud()],
+            )
+          ],
+        ),
+        const Divider()
+      ],
+    );
+  }
+
+  Widget _accionesRealizadas(Size size) {
+    return Column(
+      children: [
+        Container(
+          width: size.width - 50,
+          height: 5,
+          decoration: BoxDecoration(
+              color: Colors.blueGrey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(100)),
+        ),
+        ExpansionTile(
+          title: const TitleExpansion(texto: '3.- DAÑOS A LA SALUD'),
+          children: <Widget>[
+            InputExpanded(
+              title: 'Heridos',
+              controller: controllerHeridos,
+              isRequired: true,
+            ),
+            InputExpanded(
+              title: 'Fallecidos',
+              controller: controllerFallecidos,
+              isRequired: true,
+            ),
+            InputExpanded(
+              title: 'Desaparecidos',
+              controller: controllerDesaparecidos,
+              isRequired: true,
+            ),
+            ExpansionTile(
+              title: const TitleExpansion(
+                  texto: 'Daños a establecimientos de salud'),
+              children: [_groupDaniosEstablecimiendosDeSalud()],
+            ),
+            ExpansionTile(
+              title: const TitleExpansion(
+                  texto:
+                      'Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),
+              children: [_groupDaniosAlPersonalDeSalud()],
+            )
+          ],
+        ),
+        const Divider()
+      ],
+    );
+  }
+
+  Widget _datosLlenadoDelEdan(Size size) {
+    return Column(
+      children: [
+        Container(
+          width: size.width - 50,
+          height: 5,
+          decoration: BoxDecoration(
+              color: Colors.blueGrey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(100)),
+        ),
+        ExpansionTile(
+          title: const TitleExpansion(texto: '7.- DATOS DEL LLENADO DEL EDAN'),
+          children: <Widget>[
+            InputExpanded(
+              title: 'Lugar',
+              controller: controllerLugarEDAN,
+            ),
+            InputDateOption(
+              title: 'Fecha',
+              controller: controllerFechaEDAN,
+            ),
+            InputHourOption(
+              title: 'Hora',
+              controller: controllerHoraEDAN,
+            ),
+            InputExpanded(
+              title: 'Responsable',
+              controller: controllerResponsableEDAN,
+            ),
+            InputExpanded(
+              title: 'Cargo',
+              controller: controllerCargoEDAN,
+            ),
+            InputExpanded(
+              title: 'Telf. fijo',
+              controller: controllerTelfFijoEDAN,
+              isNumber: true,
+            ),
+            InputExpanded(
+              title: 'Telf. movil',
+              controller: controllerTelfMovilEDAN,
+              isNumber: true,
+            ),
+            InputExpanded(
+              title: 'Correo electronico',
+              controller: controllerCorreoEDAN,
+            ),
           ],
         ),
         const Divider()
@@ -720,6 +759,105 @@ class _PageEdansState extends State<PageEdans> {
       setState(() {});
     });
   }
+
+  /////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////
+
+  Container _groupInstalacionDeAlbergues() {
+    return Container(
+      margin: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.lightBlue),
+      ),
+      child: GroupInstalacionDeAlbergues(listWidgets: [
+        ...listInstalacionDeAlberguesWidget,
+        Material(
+          color: Colors.grey.shade100,
+          child: InkWell(
+            onTap: () async {
+              print(controllerFecha.text);
+              listInstalacionDeAlbergues.add(_InstalacionAlbergues());
+              await _actualizarListaInstalacionAlbergues();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.blueGrey.shade200),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              padding: const EdgeInsets.all(10),
+              child: const Icon(Icons.add),
+            ),
+          ),
+        ),
+      ], titles: const [
+        'Cant. albergues',
+        'Lugar de albergues',
+      ]),
+    );
+  }
+
+  Future<void> _actualizarListaInstalacionAlbergues() async {
+    listDaniosPersonalDeSaludWidget = [];
+    int i = 0;
+    Future.delayed(Duration.zero, () {
+      listInstalacionDeAlberguesWidget = listInstalacionDeAlbergues.map((demo) {
+        i++;
+        return Container(
+          color: i % 2 == 0 ? Colors.blue[50] : Colors.white,
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: SublistInputExpanded(
+                      controller: demo.controllerCantidad,
+                      isNumber: true,
+                      hint: '0',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: SublistInputExpanded(
+                      controller: demo.controllerLugarDeAlbergue,
+                      hint: 'Lugar de albergues',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        listInstalacionDeAlbergues.remove(demo);
+                        _actualizarListaInstalacionAlbergues();
+                        setState(() {});
+                      },
+                      icon: const Icon(Icons.remove_circle_outlined),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      }).toList();
+      setState(() {});
+    });
+  }
 }
 
 class _DaniosEstablecimientosDeSalud {
@@ -738,4 +876,11 @@ class _DaniosAlPersonalDeSalud {
   TextEditingController controllerDesaparecidos = TextEditingController();
 
   _DaniosAlPersonalDeSalud();
+}
+
+class _InstalacionAlbergues {
+  TextEditingController controllerCantidad = TextEditingController();
+  TextEditingController controllerLugarDeAlbergue = TextEditingController();
+
+  _InstalacionAlbergues();
 }
