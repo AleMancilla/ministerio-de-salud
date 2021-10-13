@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
-import 'package:ministerio_de_salud/pages/widgets/unit/group_list_demo.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/group_list_danios_establecimientos_de_salud.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/group_list_danios_personal_de_salud.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_date_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_expanded.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_expanded_widget.dart';
@@ -10,6 +11,7 @@ import 'package:ministerio_de_salud/pages/widgets/unit/input_hour_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_boolean.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_check.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_option.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_expanded.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_list_boolean.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_list_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/title_expansion.dart';
@@ -41,6 +43,9 @@ class _PageEdansState extends State<PageEdans> {
 
   List<Widget> listDaniosEstablecimientosDeSaludWidget = [];
   List<_DaniosEstablecimientosDeSalud> listDaniosEstablecimientosDeSalud = [];
+
+  List<Widget> listDaniosPersonalDeSaludWidget = [];
+  List<_DaniosAlPersonalDeSalud> listDaniosPersonalDeSalud = [];
 
   @override
   void initState() {
@@ -74,7 +79,6 @@ class _PageEdansState extends State<PageEdans> {
                 _datosGenerales(size),
                 _datosGenerales(size),
                 _buttonSelect('Guardar'),
-                _buttonSelect2('ver'),
               ],
             ),
           ),
@@ -155,8 +159,12 @@ class _PageEdansState extends State<PageEdans> {
                 controller: controllerTiempoLlegada),
             // _groupSubtitlesTable(),
             ExpansionTile(
-              title: const TitleExpansion(texto: '1.- DATOS GENERALES'),
-              children: [_groupSubtitlesTable()],
+              title: const TitleExpansion(texto: '1.- DEMO 1'),
+              children: [_groupDaniosEstablecimiendosDeSalud()],
+            ),
+            ExpansionTile(
+              title: const TitleExpansion(texto: '1.- DEMO 2'),
+              children: [_groupDaniosAlPersonalDeSalud()],
             )
           ],
         ),
@@ -165,7 +173,28 @@ class _PageEdansState extends State<PageEdans> {
     );
   }
 
-  Container _groupSubtitlesTable() {
+  Widget _buttonSelect(String text) {
+    return Material(
+      color: Colors.cyan[700],
+      child: InkWell(
+        child: Container(
+          child: Text(
+            text,
+            style: const TextStyle(color: Colors.white),
+          ),
+          padding: const EdgeInsets.all(10),
+          // color: Colors.cyan[700],
+        ),
+        onTap: () async {
+          listDaniosEstablecimientosDeSalud
+              .add(_DaniosEstablecimientosDeSalud());
+          await _actualizarListaEstableciemientosDeSalud();
+        },
+      ),
+    );
+  }
+
+  Container _groupDaniosEstablecimiendosDeSalud() {
     return Container(
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -180,7 +209,7 @@ class _PageEdansState extends State<PageEdans> {
               print(controllerFecha.text);
               listDaniosEstablecimientosDeSalud
                   .add(_DaniosEstablecimientosDeSalud());
-              await _actualizarLista();
+              await _actualizarListaEstableciemientosDeSalud();
             },
             child: Container(
               decoration: BoxDecoration(
@@ -200,49 +229,7 @@ class _PageEdansState extends State<PageEdans> {
     );
   }
 
-  Widget _buttonSelect(String text) {
-    return Material(
-      color: Colors.cyan[700],
-      child: InkWell(
-        child: Container(
-          child: Text(
-            text,
-            style: const TextStyle(color: Colors.white),
-          ),
-          padding: const EdgeInsets.all(10),
-          // color: Colors.cyan[700],
-        ),
-        onTap: () async {
-          listDaniosEstablecimientosDeSalud
-              .add(_DaniosEstablecimientosDeSalud());
-          await _actualizarLista();
-        },
-      ),
-    );
-  }
-
-  Widget _buttonSelect2(String text) {
-    return Material(
-      color: Colors.cyan[700],
-      child: InkWell(
-        child: Container(
-          child: Text(
-            text,
-            style: const TextStyle(color: Colors.white),
-          ),
-          padding: const EdgeInsets.all(10),
-          // color: Colors.cyan[700],
-        ),
-        onTap: () async {
-          listDaniosEstablecimientosDeSalud.forEach((element) {
-            print(element.controllerSalud.text);
-          });
-        },
-      ),
-    );
-  }
-
-  Future<void> _actualizarLista() async {
+  Future<void> _actualizarListaEstableciemientosDeSalud() async {
     listDaniosEstablecimientosDeSaludWidget = [];
     int i = 0;
     Future.delayed(Duration.zero, () {
@@ -304,7 +291,158 @@ class _PageEdansState extends State<PageEdans> {
                     child: IconButton(
                       onPressed: () {
                         listDaniosEstablecimientosDeSalud.remove(demo);
-                        _actualizarLista();
+                        _actualizarListaEstableciemientosDeSalud();
+                        setState(() {});
+                      },
+                      icon: const Icon(Icons.remove_circle_outlined),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      }).toList();
+      setState(() {});
+    });
+  }
+
+  /////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////
+
+  Container _groupDaniosAlPersonalDeSalud() {
+    return Container(
+      margin: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.lightBlue),
+      ),
+      child: GroupDaniosPersonalDeSalud(listWidgets: [
+        ...listDaniosPersonalDeSaludWidget,
+        Material(
+          color: Colors.grey.shade100,
+          child: InkWell(
+            onTap: () async {
+              print(controllerFecha.text);
+              listDaniosPersonalDeSalud.add(_DaniosAlPersonalDeSalud());
+              await _actualizarListaAlPersonalDeSalud();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.blueGrey.shade200),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              padding: const EdgeInsets.all(10),
+              child: const Icon(Icons.add),
+            ),
+          ),
+        ),
+      ], titles: const [
+        'Pers. de Salud',
+        'Fallec.',
+        'Heri.',
+        'Disp.',
+        'Desap.',
+      ]),
+    );
+  }
+
+  Future<void> _actualizarListaAlPersonalDeSalud() async {
+    listDaniosPersonalDeSaludWidget = [];
+    int i = 0;
+    Future.delayed(Duration.zero, () {
+      listDaniosPersonalDeSaludWidget = listDaniosPersonalDeSalud.map((demo) {
+        i++;
+        return Container(
+          color: i % 2 == 0 ? Colors.blue[50] : Colors.white,
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: Center(
+                      child: SubListInputListOption(
+                        controller: demo.controllerPersonalSalud,
+                        options: const [
+                          'Enfermeras',
+                          'Medicos',
+                          'Medicos tradicionales',
+                          'Otros professionales en salud',
+                          'tecnicos'
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: SublistInputExpanded(
+                      controller: demo.controllerFaleecidos,
+                      isNumber: true,
+                      hint: '0',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: SublistInputExpanded(
+                      controller: demo.controllerHeridos,
+                      isNumber: true,
+                      hint: '0',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: SublistInputExpanded(
+                      controller: demo.controllerDisp,
+                      isNumber: true,
+                      hint: '0',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: SublistInputExpanded(
+                      controller: demo.controllerDesaparecidos,
+                      isNumber: true,
+                      hint: '0',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        listDaniosPersonalDeSalud.remove(demo);
+                        _actualizarListaAlPersonalDeSalud();
                         setState(() {});
                       },
                       icon: const Icon(Icons.remove_circle_outlined),
@@ -327,4 +465,14 @@ class _DaniosEstablecimientosDeSalud {
   TextEditingController controllerAgua = TextEditingController();
 
   _DaniosEstablecimientosDeSalud();
+}
+
+class _DaniosAlPersonalDeSalud {
+  TextEditingController controllerPersonalSalud = TextEditingController();
+  TextEditingController controllerFaleecidos = TextEditingController();
+  TextEditingController controllerHeridos = TextEditingController();
+  TextEditingController controllerDisp = TextEditingController();
+  TextEditingController controllerDesaparecidos = TextEditingController();
+
+  _DaniosAlPersonalDeSalud();
 }
