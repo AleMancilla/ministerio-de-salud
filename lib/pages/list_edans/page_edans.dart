@@ -6,7 +6,6 @@ import 'package:ministerio_de_salud/pages/widgets/unit/group_list_danios_estable
 import 'package:ministerio_de_salud/pages/widgets/unit/group_list_danios_personal_de_salud.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_date_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_expanded.dart';
-import 'package:ministerio_de_salud/pages/widgets/unit/input_expanded_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_hour_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_boolean.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_check.dart';
@@ -24,9 +23,12 @@ class PageEdans extends StatefulWidget {
 }
 
 class _PageEdansState extends State<PageEdans> {
+  ///[SECCION DATOS GENERALES]
   TextEditingController controllerEvento = TextEditingController();
   TextEditingController controllerFecha = TextEditingController();
   TextEditingController controllerHora = TextEditingController();
+
+  TextEditingController controllerSigueEnDesarrollo = TextEditingController();
   TextEditingController controllerNombreDeContacto = TextEditingController();
   TextEditingController controllerCargoDeContacto = TextEditingController();
   TextEditingController controllerDireccionDeContacto = TextEditingController();
@@ -35,17 +37,59 @@ class _PageEdansState extends State<PageEdans> {
   TextEditingController controllerDepartamento = TextEditingController();
   TextEditingController controllerMunicipio = TextEditingController();
   TextEditingController controllerComunidad = TextEditingController();
+
+  TextEditingController controllerTieneCoordenadas = TextEditingController();
+  TextEditingController controllerViaAerea = TextEditingController();
+  TextEditingController controllerViaTerrestre = TextEditingController();
+  TextEditingController controllerViaFluvial = TextEditingController();
+  TextEditingController controllerViaFerroviaria = TextEditingController();
+
   TextEditingController controllerParaLlegar = TextEditingController();
   TextEditingController controllerTiempoLlegada = TextEditingController();
-  TextEditingController controllerdemoboolean = TextEditingController();
-  TextEditingController controllerdemoboolean2 = TextEditingController();
+
+  TextEditingController controllerCondicionClimatica = TextEditingController();
+  TextEditingController controllerMediosDeComunicacion =
+      TextEditingController();
+
   int number = 0;
+
+  /// [SECCION DANIOS GENERALES]
+  TextEditingController controllerViviendasAfectadas = TextEditingController();
+  TextEditingController controllerFamiliasDamnificadas =
+      TextEditingController();
+
+  TextEditingController controllerServivioDeAgua = TextEditingController();
+  TextEditingController controllerServicioDeRecoleccion =
+      TextEditingController();
+  TextEditingController controllerServicioDeAlcantarilla =
+      TextEditingController();
+  TextEditingController controllerServicioDeEnergia = TextEditingController();
+  TextEditingController controllerServicioDeTelecomunicaciones =
+      TextEditingController();
+  TextEditingController controllerServicioDeTransporte =
+      TextEditingController();
+
+  ///[ DAÑOS A LA SALUD]
+  TextEditingController controllerHeridos = TextEditingController();
+  TextEditingController controllerFallecidos = TextEditingController();
+  TextEditingController controllerDesaparecidos = TextEditingController();
 
   List<Widget> listDaniosEstablecimientosDeSaludWidget = [];
   List<_DaniosEstablecimientosDeSalud> listDaniosEstablecimientosDeSalud = [];
 
   List<Widget> listDaniosPersonalDeSaludWidget = [];
   List<_DaniosAlPersonalDeSalud> listDaniosPersonalDeSalud = [];
+
+  ///[SECCION DATOS GENERALES]
+  TextEditingController controllerLugarEDAN = TextEditingController();
+  TextEditingController controllerFechaEDAN = TextEditingController();
+  TextEditingController controllerHoraEDAN = TextEditingController();
+  TextEditingController controllerResponsableEDAN = TextEditingController();
+  TextEditingController controllerCargoEDAN = TextEditingController();
+  TextEditingController controllerTelfFijoEDAN = TextEditingController();
+  TextEditingController controllerTelfMovilEDAN = TextEditingController();
+  TextEditingController controllerCorreoEDAN = TextEditingController();
+  TextEditingController controllerFechaAuxEDAN = TextEditingController();
 
   @override
   void initState() {
@@ -75,15 +119,188 @@ class _PageEdansState extends State<PageEdans> {
                   child: Text('Lista EDANs NO enviados'),
                 ),
                 _datosGenerales(size),
-                _datosGenerales(size),
-                _datosGenerales(size),
-                _datosGenerales(size),
+                _daniosGenerales(size),
+                _daniosALaSalud(size),
+                _daniosALaSalud(size),
+                _datosLlenadoDelEdan(size),
                 _buttonSelect('Guardar'),
+                const SizedBox(
+                  height: 250,
+                ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _datosLlenadoDelEdan(Size size) {
+    return Column(
+      children: [
+        Container(
+          width: size.width - 50,
+          height: 5,
+          decoration: BoxDecoration(
+              color: Colors.blueGrey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(100)),
+        ),
+        ExpansionTile(
+          title: const TitleExpansion(texto: '7.- DATOS DEL LLENADO DEL EDAN'),
+          children: <Widget>[
+            InputExpanded(
+              title: 'Lugar',
+              controller: controllerLugarEDAN,
+            ),
+            InputDateOption(
+              title: 'Fecha',
+              controller: controllerFechaEDAN,
+            ),
+            InputHourOption(
+              title: 'Hora',
+              controller: controllerHoraEDAN,
+            ),
+            InputExpanded(
+              title: 'Responsable',
+              controller: controllerResponsableEDAN,
+            ),
+            InputExpanded(
+              title: 'Cargo',
+              controller: controllerCargoEDAN,
+            ),
+            InputExpanded(
+              title: 'Telf. fijo',
+              controller: controllerTelfFijoEDAN,
+              isNumber: true,
+            ),
+            InputExpanded(
+              title: 'Telf. movil',
+              controller: controllerTelfMovilEDAN,
+              isNumber: true,
+            ),
+            InputExpanded(
+              title: 'Correo electronico',
+              controller: controllerCorreoEDAN,
+            ),
+          ],
+        ),
+        const Divider()
+      ],
+    );
+  }
+
+  Widget _daniosGenerales(Size size) {
+    return Column(
+      children: [
+        Container(
+          width: size.width - 50,
+          height: 5,
+          decoration: BoxDecoration(
+              color: Colors.blueGrey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(100)),
+        ),
+        ExpansionTile(
+          title: const TitleExpansion(texto: '2.- DAÑOS GENERALES'),
+          children: <Widget>[
+            InputExpanded(
+              title: 'Viviendas afectadas',
+              controller: controllerViviendasAfectadas,
+              isRequired: true,
+            ),
+            InputExpanded(
+              title: 'Flias. damnificadas',
+              controller: controllerFamiliasDamnificadas,
+              isRequired: true,
+            ),
+            InputListBoolean(
+              title: 'Servicio de agua potable',
+              controller: controllerServivioDeAgua,
+              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
+            ),
+            InputListBoolean(
+              title: 'Servicio de recoleccion de basura',
+              controller: controllerServicioDeRecoleccion,
+              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
+            ),
+            InputListBoolean(
+              title: 'Servicio de alcantarillado',
+              controller: controllerServicioDeAlcantarilla,
+              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
+            ),
+            InputListBoolean(
+              title: 'Servicio de energia electrica',
+              controller: controllerServicioDeEnergia,
+              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
+            ),
+            InputListBoolean(
+              title: 'Servicio de telecomunicaciones',
+              controller: controllerServicioDeTelecomunicaciones,
+              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
+            ),
+            InputListBoolean(
+              title: 'Servicio de transporte',
+              controller: controllerServicioDeTransporte,
+              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
+            ),
+
+            // ExpansionTile(
+            //   title: const TitleExpansion(texto: '1.- DEMO 1'),
+            //   children: [_groupDaniosEstablecimiendosDeSalud()],
+            // ),
+            // ExpansionTile(
+            //   title: const TitleExpansion(texto: '1.- DEMO 2'),
+            //   children: [_groupDaniosAlPersonalDeSalud()],
+            // )
+          ],
+        ),
+        const Divider()
+      ],
+    );
+  }
+
+  Widget _daniosALaSalud(Size size) {
+    return Column(
+      children: [
+        Container(
+          width: size.width - 50,
+          height: 5,
+          decoration: BoxDecoration(
+              color: Colors.blueGrey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(100)),
+        ),
+        ExpansionTile(
+          title: const TitleExpansion(texto: '3.- DAÑOS A LA SALUD'),
+          children: <Widget>[
+            InputExpanded(
+              title: 'Heridos',
+              controller: controllerHeridos,
+              isRequired: true,
+            ),
+            InputExpanded(
+              title: 'Fallecidos',
+              controller: controllerFallecidos,
+              isRequired: true,
+            ),
+            InputExpanded(
+              title: 'Desaparecidos',
+              controller: controllerDesaparecidos,
+              isRequired: true,
+            ),
+            ExpansionTile(
+              title: const TitleExpansion(
+                  texto: 'Daños a establecimientos de salud'),
+              children: [_groupDaniosEstablecimiendosDeSalud()],
+            ),
+            ExpansionTile(
+              title: const TitleExpansion(
+                  texto:
+                      'Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),
+              children: [_groupDaniosAlPersonalDeSalud()],
+            )
+          ],
+        ),
+        const Divider()
+      ],
     );
   }
 
@@ -117,16 +334,10 @@ class _PageEdansState extends State<PageEdans> {
               isRequired: true,
             ),
             InputListBoolean(
-              title: 'Evento boolean',
-              controller: controllerdemoboolean,
+              title: 'Sigue en desarrollo la ocurrencia?',
+              controller: controllerSigueEnDesarrollo,
               isRequired: true,
-              options: const ['A', 'B', 'C'],
-            ),
-            InputListSelectedCheck(
-              title: 'Evento check',
-              controller: controllerdemoboolean2,
-              isRequired: true,
-              options: const ['A', 'B', 'C'],
+              options: const ['Si', 'No'],
             ),
             InputExpanded(
               title: 'Nombre de contacto',
@@ -149,6 +360,38 @@ class _PageEdansState extends State<PageEdans> {
                 controller: controllerTelefonoMovil),
             InputExpanded(
                 title: 'Comunidad o zona', controller: controllerComunidad),
+
+            InputListBoolean(
+              title: 'Tiene coordenadas geograficas de GPS?',
+              controller: controllerTieneCoordenadas,
+              isRequired: true,
+              options: const ['Si', 'No'],
+            ),
+            InputListBoolean(
+              title: 'Via aerea disponible',
+              controller: controllerViaAerea,
+              isRequired: true,
+              options: const ['Sin Daño', 'Afectado', 'Destruido'],
+            ),
+            InputListBoolean(
+              title: 'Via terrestre disponible',
+              controller: controllerViaTerrestre,
+              isRequired: true,
+              options: const ['Sin Daño', 'Afectado', 'Destruido'],
+            ),
+            InputListBoolean(
+              title: 'Via fluvial disponible',
+              controller: controllerViaFluvial,
+              isRequired: true,
+              options: const ['Sin Daño', 'Afectado', 'Destruido'],
+            ),
+            InputListBoolean(
+              title: 'Via ferroviaria disponible',
+              controller: controllerViaFerroviaria,
+              isRequired: true,
+              options: const ['Sin Daño', 'Afectado', 'Destruido'],
+            ),
+
             InputExpanded(
               title: 'Para llegar al lugar se parte de (lugar):',
               controller: controllerParaLlegar,
@@ -157,15 +400,35 @@ class _PageEdansState extends State<PageEdans> {
             InputExpanded(
                 title: 'Tiempo de llegada al lugar (en horas)',
                 controller: controllerTiempoLlegada),
-            // _groupSubtitlesTable(),
-            ExpansionTile(
-              title: const TitleExpansion(texto: '1.- DEMO 1'),
-              children: [_groupDaniosEstablecimiendosDeSalud()],
+
+            InputListSelectedCheck(
+              title: 'Condicion climatica actual',
+              controller: controllerCondicionClimatica,
+              isRequired: true,
+              options: const ['Lluvioso', 'Nublado', 'Con viento'],
             ),
-            ExpansionTile(
-              title: const TitleExpansion(texto: '1.- DEMO 2'),
-              children: [_groupDaniosAlPersonalDeSalud()],
-            )
+
+            InputListSelectedCheck(
+              title: 'Medios de comunicacion disponibles',
+              controller: controllerMediosDeComunicacion,
+              isRequired: true,
+              options: const [
+                'Radio frecuencia 20/40 m',
+                'Telefono fijo',
+                'Telefono movil',
+                'Television',
+                'Internet',
+                'Radio emisora'
+              ],
+            ),
+            // ExpansionTile(
+            //   title: const TitleExpansion(texto: '1.- DEMO 1'),
+            //   children: [_groupDaniosEstablecimiendosDeSalud()],
+            // ),
+            // ExpansionTile(
+            //   title: const TitleExpansion(texto: '1.- DEMO 2'),
+            //   children: [_groupDaniosAlPersonalDeSalud()],
+            // )
           ],
         ),
         const Divider()

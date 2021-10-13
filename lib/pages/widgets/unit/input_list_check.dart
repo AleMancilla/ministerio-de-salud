@@ -28,7 +28,7 @@ class _InputListSelectedCheckState extends State<InputListSelectedCheck> {
     if (widget.controller.text.isEmpty) {
       widget.controller.text = widget.options[0];
     }
-    listOptions = widget.controller.text.replaceAll(' ', '').split(',');
+    listOptions = widget.controller.text.split(',');
 
     for (var i = 0; i < widget.options.length; i++) {
       if (listOptions.contains(widget.options[i])) {
