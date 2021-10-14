@@ -46,6 +46,9 @@ dependencies:
   # format
   intl: ^0.17.0
 
+  # data
+  shared_preferences: ^2.0.8
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

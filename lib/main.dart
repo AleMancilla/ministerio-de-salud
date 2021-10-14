@@ -2,10 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_not_send.dart';
+import 'package:ministerio_de_salud/utils/user_preferens.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-void main() {
+void main() async {
+  final prefs = UserPreferences();
+  await prefs.initPreferences();
   if (Platform.isWindows || Platform.isLinux) {
     // Initialize FFI
     sqfliteFfiInit();
