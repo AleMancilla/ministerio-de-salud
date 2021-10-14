@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_edans.dart';
+import 'package:ministerio_de_salud/pages/list_edans/planilla_de_atencion.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/utils/navigator_route.dart';
 
@@ -34,15 +35,29 @@ class _PageNotSendState extends State<PageNotSend> {
           children: [
             const SizedBox(width: double.infinity),
             const Text('Lista EDANs NO enviados'),
-            CupertinoButton(
-              onPressed: () {
-                navigatorPush(context, const PageEdans());
-              },
-              color: Colors.grey[200],
-              child: const Text(
-                'Registrar Nuevo',
-                style: TextStyle(color: Colors.black),
-              ),
+            Column(
+              children: [
+                CupertinoButton(
+                  onPressed: () {
+                    navigatorPush(context, const PageEdans());
+                  },
+                  color: Colors.grey[200],
+                  child: const Text(
+                    'Registrar Nuevo',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+                CupertinoButton(
+                  onPressed: () {
+                    navigatorPush(context, const PagePlanillaAtencion());
+                  },
+                  color: Colors.grey[200],
+                  child: const Text(
+                    'Planilla Atencion',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
             )
           ],
         ),
