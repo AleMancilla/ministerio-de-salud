@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ministerio_de_salud/pages/login/login_page.dart';
+import 'package:ministerio_de_salud/utils/navigator_route.dart';
 import 'package:ministerio_de_salud/utils/theme_utils.dart';
+import 'package:ministerio_de_salud/utils/user_preferens.dart';
 
 class AppBarWidget extends StatefulWidget {
   final Size size;
@@ -10,6 +14,8 @@ class AppBarWidget extends StatefulWidget {
 }
 
 class _AppBarWidgetState extends State<AppBarWidget> {
+  UserPreferences prefs = UserPreferences();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,29 +43,58 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                     ),
                   ),
                   () {
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                     // print('object');
                   },
                 ),
-                const Expanded(child: Text('data')),
-                iconButtonSelect(
-                  const SizedBox(
-                    height: 50,
-                    child: Icon(
-                      Icons.person_rounded,
-                      color: Colors.white,
-                    ),
-                  ),
-                  () {
-                    // print('object');
-                  },
-                ),
+                Expanded(child: Container()),
+                _iconLeft(),
               ],
             ),
           )
         ],
       ),
     );
+  }
+
+  Widget _iconLeft() {
+    if (prefs.userIsRegister) {
+      return iconButtonSelect(
+        Container(
+          height: 50,
+          alignment: Alignment.center,
+          child: const Text(
+            'Salir',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
+        () {
+          prefs.userIsRegister = false;
+          prefs.userCarnet = '';
+          prefs.userNivel = '';
+          navigatorPushReplacement(context, const LoginPage());
+          // print('object');
+        },
+      );
+    } else {
+      return iconButtonSelect(
+        Container(
+          height: 50,
+          alignment: Alignment.center,
+          child: const Text(
+            'Iniciar Sesión',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
+        () {
+          prefs.userIsRegister = false;
+          prefs.userCarnet = '';
+          prefs.userNivel = '';
+          navigatorPushReplacement(context, const LoginPage());
+          // print('object');
+        },
+      );
+    }
   }
 
   Widget iconButtonSelect(Widget icon, Function ontap) {

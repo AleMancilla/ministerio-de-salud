@@ -1,12 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:ministerio_de_salud/pages/list_edans/page_not_send.dart';
+import 'package:ministerio_de_salud/pages/list_edans/page_edans.dart';
+import 'package:ministerio_de_salud/pages/list_edans/planilla_de_atencion.dart';
+import 'package:ministerio_de_salud/pages/login/login_page.dart';
 import 'package:ministerio_de_salud/utils/user_preferens.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   final prefs = UserPreferences();
   await prefs.initPreferences();
   if (Platform.isWindows || Platform.isLinux) {
@@ -15,21 +18,37 @@ void main() async {
     // Change the default factory
     databaseFactory = databaseFactoryFfi;
   }
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
+  UserPreferences prefs = UserPreferences();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blueGrey,
       ),
-      home: const PageNotSend(),
+      home: _pageHome(context),
     );
+  }
+
+  Widget _pageHome(BuildContext context) {
+    if (!prefs.userIsRegister) {
+      return const LoginPage();
+    } else {
+      if (prefs.userNivel == '1') {
+        return const PageEdans();
+      } else if (prefs.userNivel == '2') {
+        return const PagePlanillaAtencion();
+      } else {
+        return const LoginPage();
+      }
+    }
   }
 }

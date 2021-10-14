@@ -143,13 +143,15 @@ class _InputListSelectedCheckState extends State<InputListSelectedCheck> {
 
   Widget listItemsRow() {
     int i = -1;
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+    return Wrap(
+        // mainAxisAlignment: MainAxisAlignment.start,
+        direction: Axis.horizontal,
         children: widget.options.map((data) {
           i++;
           return Padding(
             padding: const EdgeInsets.only(right: 10),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [_selected(data, i), Text(data)],
             ),
           );

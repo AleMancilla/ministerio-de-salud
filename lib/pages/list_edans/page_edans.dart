@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
+import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/button_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/group_list_danios_establecimientos_de_salud.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/group_list_danios_personal_de_salud.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/group_list_instalacion_albergues.dart';
@@ -123,14 +125,28 @@ class _PageEdansState extends State<PageEdans> {
               children: [
                 const Padding(
                   padding: EdgeInsets.all(20.0),
-                  child: Text('Lista EDANs NO enviados'),
+                  child: BodyAppBar(text: 'Lista EDANs NO enviados'),
                 ),
                 _datosGenerales(size),
                 _daniosGenerales(size),
                 _daniosALaSalud(size),
-                _accionesRealizadas(size),
+                _accionesARealizar(size),
                 _datosLlenadoDelEdan(size),
-                _buttonSelect('Guardar'),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    children: [
+                      ButtonWidget(text: 'Guardar', ontap: () {}),
+                      const SizedBox(width: 10),
+                      ButtonWidget(
+                        text: 'Cancelar',
+                        ontap: () {},
+                        color: Colors.grey.shade200,
+                        textcolor: Colors.black,
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(
                   height: 250,
                 ),
@@ -159,7 +175,24 @@ class _PageEdansState extends State<PageEdans> {
               title: 'Evento',
               controller: controllerEvento,
               isRequired: true,
-              options: const ['A', 'B', 'C'],
+              options: const [
+                'Accidentes por prod. y sust. peligrosas',
+                'Biológico',
+                'Convulsión social',
+                'Deslizamiento',
+                'Desporde de rio(inund. rapida)',
+                'Granizada',
+                'Helada',
+                'Incendio',
+                'Inundación lenta',
+                'Mazamorra',
+                'Nevada',
+                'Otros de excepcion',
+                'Plagas',
+                'Riada',
+                'Sequia',
+                'Terremoto',
+              ],
             ),
             InputDateOption(
               title: 'Fecha',
@@ -169,12 +202,10 @@ class _PageEdansState extends State<PageEdans> {
             InputHourOption(
               title: 'Hora probable de inicio',
               controller: controllerHora,
-              isRequired: true,
             ),
             InputListBoolean(
               title: 'Sigue en desarrollo la ocurrencia?',
               controller: controllerSigueEnDesarrollo,
-              isRequired: true,
               options: const ['Si', 'No'],
             ),
             InputExpanded(
@@ -194,46 +225,55 @@ class _PageEdansState extends State<PageEdans> {
                 title: 'Telefono fijo de contacto',
                 controller: controllerTelefonoFijo),
             InputExpanded(
-                title: 'Telefono movil de contacto',
-                controller: controllerTelefonoMovil),
+              title: 'Telefono movil de contacto',
+              controller: controllerTelefonoMovil,
+              isRequired: true,
+            ),
             InputExpanded(
-                title: 'Comunidad o zona', controller: controllerComunidad),
+              title: 'Departamento',
+              controller: controllerDepartamento,
+              isRequired: true,
+            ),
+            InputExpanded(
+              title: 'Municipio',
+              controller: controllerMunicipio,
+              isRequired: true,
+            ),
+            InputExpanded(
+              title: 'Comunidad o zona',
+              controller: controllerComunidad,
+              isRequired: true,
+            ),
 
             InputListBoolean(
               title: 'Tiene coordenadas geograficas de GPS?',
               controller: controllerTieneCoordenadas,
-              isRequired: true,
               options: const ['Si', 'No'],
             ),
             InputListBoolean(
               title: 'Via aerea disponible',
               controller: controllerViaAerea,
-              isRequired: true,
               options: const ['Sin Daño', 'Afectado', 'Destruido'],
             ),
             InputListBoolean(
               title: 'Via terrestre disponible',
               controller: controllerViaTerrestre,
-              isRequired: true,
               options: const ['Sin Daño', 'Afectado', 'Destruido'],
             ),
             InputListBoolean(
               title: 'Via fluvial disponible',
               controller: controllerViaFluvial,
-              isRequired: true,
               options: const ['Sin Daño', 'Afectado', 'Destruido'],
             ),
             InputListBoolean(
               title: 'Via ferroviaria disponible',
               controller: controllerViaFerroviaria,
-              isRequired: true,
               options: const ['Sin Daño', 'Afectado', 'Destruido'],
             ),
 
             InputExpanded(
               title: 'Para llegar al lugar se parte de (lugar):',
               controller: controllerParaLlegar,
-              isRequired: true,
             ),
             InputExpanded(
                 title: 'Tiempo de llegada al lugar (en horas)',
@@ -343,7 +383,7 @@ class _PageEdansState extends State<PageEdans> {
     );
   }
 
-  Widget _daniosALaSalud(Size size) {
+  Widget _accionesARealizar(Size size) {
     return Column(
       children: [
         Container(
@@ -360,14 +400,14 @@ class _PageEdansState extends State<PageEdans> {
           children: <Widget>[
             ExpansionTile(
               title: const TitleExpansion(texto: 'Instalación de albergues'),
-              children: [_groupInstalacionDeAlbergues()],
+              children: [_groupInstalacionDeAlbergues(size)],
             ),
-            ExpansionTile(
-              title: const TitleExpansion(
-                  texto:
-                      'Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),
-              children: [_groupDaniosAlPersonalDeSalud()],
-            )
+            // ExpansionTile(
+            //   title: const TitleExpansion(
+            //       texto:
+            //           'Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),
+            //   children: [_groupDaniosAlPersonalDeSalud(size)],
+            // )
           ],
         ),
         const Divider()
@@ -375,7 +415,7 @@ class _PageEdansState extends State<PageEdans> {
     );
   }
 
-  Widget _accionesRealizadas(Size size) {
+  Widget _daniosALaSalud(Size size) {
     return Column(
       children: [
         Container(
@@ -406,13 +446,13 @@ class _PageEdansState extends State<PageEdans> {
             ExpansionTile(
               title: const TitleExpansion(
                   texto: 'Daños a establecimientos de salud'),
-              children: [_groupDaniosEstablecimiendosDeSalud()],
+              children: [_groupDaniosEstablecimiendosDeSalud(size)],
             ),
             ExpansionTile(
               title: const TitleExpansion(
                   texto:
                       'Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),
-              children: [_groupDaniosAlPersonalDeSalud()],
+              children: [_groupDaniosAlPersonalDeSalud(size)],
             )
           ],
         ),
@@ -475,59 +515,67 @@ class _PageEdansState extends State<PageEdans> {
     );
   }
 
-  Widget _buttonSelect(String text) {
-    return Material(
-      color: Colors.cyan[700],
-      child: InkWell(
-        child: Container(
-          child: Text(
-            text,
-            style: const TextStyle(color: Colors.white),
-          ),
-          padding: const EdgeInsets.all(10),
-          // color: Colors.cyan[700],
-        ),
-        onTap: () async {
-          listDaniosEstablecimientosDeSalud
-              .add(_DaniosEstablecimientosDeSalud());
-          await _actualizarListaEstableciemientosDeSalud();
-        },
-      ),
-    );
-  }
+  // Widget _buttonSelect(String text) {
+  //   return Material(
+  //     color: Colors.cyan[700],
+  //     child: InkWell(
+  //       child: Container(
+  //         child: Text(
+  //           text,
+  //           style: const TextStyle(color: Colors.white),
+  //         ),
+  //         padding: const EdgeInsets.all(10),
+  //         // color: Colors.cyan[700],
+  //       ),
+  //       onTap: () async {
+  //         listDaniosEstablecimientosDeSalud
+  //             .add(_DaniosEstablecimientosDeSalud());
+  //         await _actualizarListaEstableciemientosDeSalud();
+  //       },
+  //     ),
+  //   );
+  // }
 
-  Container _groupDaniosEstablecimiendosDeSalud() {
-    return Container(
-      margin: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.lightBlue),
-      ),
-      child: GroupDaniosEstablecimientosDeSalud(listWidgets: [
-        ...listDaniosEstablecimientosDeSaludWidget,
-        Material(
-          color: Colors.grey.shade100,
-          child: InkWell(
-            onTap: () async {
-              print(controllerFecha.text);
-              listDaniosEstablecimientosDeSalud
-                  .add(_DaniosEstablecimientosDeSalud());
-              await _actualizarListaEstableciemientosDeSalud();
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.blueGrey.shade200),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              padding: const EdgeInsets.all(10),
-              child: const Icon(Icons.add),
-            ),
+  Widget _groupDaniosEstablecimiendosDeSalud(Size size) {
+    return Scrollbar(
+      isAlwaysShown: true,
+      showTrackOnHover: true,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          width: size.width > 600 ? size.width - 20 : 600,
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.lightBlue),
           ),
+          child: GroupDaniosEstablecimientosDeSalud(listWidgets: [
+            ...listDaniosEstablecimientosDeSaludWidget,
+            Material(
+              color: Colors.grey.shade100,
+              child: InkWell(
+                onTap: () async {
+                  print(controllerFecha.text);
+                  listDaniosEstablecimientosDeSalud
+                      .add(_DaniosEstablecimientosDeSalud());
+                  await _actualizarListaEstableciemientosDeSalud();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blueGrey.shade200),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  child: const Icon(Icons.add),
+                ),
+              ),
+            ),
+          ], titles: const [
+            'Estab. de Salud',
+            'Funciona',
+            'Tiene agua'
+          ]),
         ),
-      ], titles: const [
-        'Estab. de Salud',
-        'Funciona',
-        'Tiene agua'
-      ]),
+      ),
     );
   }
 
@@ -613,39 +661,48 @@ class _PageEdansState extends State<PageEdans> {
   /////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////
 
-  Container _groupDaniosAlPersonalDeSalud() {
-    return Container(
-      margin: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.lightBlue),
-      ),
-      child: GroupDaniosPersonalDeSalud(listWidgets: [
-        ...listDaniosPersonalDeSaludWidget,
-        Material(
-          color: Colors.grey.shade100,
-          child: InkWell(
-            onTap: () async {
-              print(controllerFecha.text);
-              listDaniosPersonalDeSalud.add(_DaniosAlPersonalDeSalud());
-              await _actualizarListaAlPersonalDeSalud();
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.blueGrey.shade200),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              padding: const EdgeInsets.all(10),
-              child: const Icon(Icons.add),
-            ),
+  Widget _groupDaniosAlPersonalDeSalud(Size size) {
+    return Scrollbar(
+      isAlwaysShown: true,
+      showTrackOnHover: true,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          width: size.width > 600 ? size.width - 20 : 600,
+          // constraints: BoxConstraints(minWidth: 600),
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.lightBlue),
           ),
+          child: GroupDaniosPersonalDeSalud(listWidgets: [
+            ...listDaniosPersonalDeSaludWidget,
+            Material(
+              color: Colors.grey.shade100,
+              child: InkWell(
+                onTap: () async {
+                  print(controllerFecha.text);
+                  listDaniosPersonalDeSalud.add(_DaniosAlPersonalDeSalud());
+                  await _actualizarListaAlPersonalDeSalud();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blueGrey.shade200),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  child: const Icon(Icons.add),
+                ),
+              ),
+            ),
+          ], titles: const [
+            'Pers. de Salud',
+            'Fallec.',
+            'Heri.',
+            'Disp.',
+            'Desap.',
+          ]),
         ),
-      ], titles: const [
-        'Pers. de Salud',
-        'Fallec.',
-        'Heri.',
-        'Disp.',
-        'Desap.',
-      ]),
+      ),
     );
   }
 
@@ -764,41 +821,49 @@ class _PageEdansState extends State<PageEdans> {
   /////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////
 
-  Container _groupInstalacionDeAlbergues() {
-    return Container(
-      margin: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.lightBlue),
-      ),
-      child: GroupInstalacionDeAlbergues(listWidgets: [
-        ...listInstalacionDeAlberguesWidget,
-        Material(
-          color: Colors.grey.shade100,
-          child: InkWell(
-            onTap: () async {
-              print(controllerFecha.text);
-              listInstalacionDeAlbergues.add(_InstalacionAlbergues());
-              await _actualizarListaInstalacionAlbergues();
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.blueGrey.shade200),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              padding: const EdgeInsets.all(10),
-              child: const Icon(Icons.add),
-            ),
+  Widget _groupInstalacionDeAlbergues(Size size) {
+    return Scrollbar(
+      isAlwaysShown: true,
+      showTrackOnHover: true,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          width: size.width > 600 ? size.width - 20 : 600,
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.lightBlue),
           ),
+          child: GroupInstalacionDeAlbergues(listWidgets: [
+            ...listInstalacionDeAlberguesWidget,
+            Material(
+              color: Colors.grey.shade100,
+              child: InkWell(
+                onTap: () async {
+                  print(controllerFecha.text);
+                  listInstalacionDeAlbergues.add(_InstalacionAlbergues());
+                  await _actualizarListaInstalacionAlbergues();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blueGrey.shade200),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  child: const Icon(Icons.add),
+                ),
+              ),
+            ),
+          ], titles: const [
+            'Cant. albergues',
+            'Lugar de albergues',
+          ]),
         ),
-      ], titles: const [
-        'Cant. albergues',
-        'Lugar de albergues',
-      ]),
+      ),
     );
   }
 
   Future<void> _actualizarListaInstalacionAlbergues() async {
-    listDaniosPersonalDeSaludWidget = [];
+    listInstalacionDeAlberguesWidget = [];
     int i = 0;
     Future.delayed(Duration.zero, () {
       listInstalacionDeAlberguesWidget = listInstalacionDeAlbergues.map((demo) {

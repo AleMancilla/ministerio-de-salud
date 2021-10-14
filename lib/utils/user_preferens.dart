@@ -15,20 +15,30 @@ class UserPreferences {
     _prefs = await SharedPreferences.getInstance();
   }
 
+  set userIsRegister(bool status) {
+    _prefs.setBool('prefs_userIsRegister', status);
+  }
+
+  bool get userIsRegister => _prefs.getBool('prefs_userIsRegister') ?? false;
+
+  set userCarnet(String status) {
+    _prefs.setString('prefs_userCarnet', status);
+  }
+
+  String get userCarnet => _prefs.getString('prefs_userCarnet') ?? 'Sin Datos';
+
+  set userNivel(String status) {
+    _prefs.setString('prefs_userNivel', status);
+  }
+
+  String get userNivel => _prefs.getString('prefs_userNivel') ?? 'Sin Datos';
+
   // void setAcceptLocation() {
   //   _prefs.setBool('accept_location', true);
   // }
 
   // bool get acceptLocation {
   //   return _prefs.getBool('accept_location') ?? false;
-  // }
-
-  // set setAcceptLocationPermision(bool status) {
-  //   _prefs.setBool('accept_locationPermision', status);
-  // }
-
-  // bool get acceptLocationPermision {
-  //   return _prefs.getBool('accept_locationPermision') ?? false;
   // }
 
   // bool get registerComplete {

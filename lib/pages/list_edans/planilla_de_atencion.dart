@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
+import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_date_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_expanded.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_hour_option.dart';
@@ -54,7 +55,7 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
               children: [
                 const Padding(
                   padding: EdgeInsets.all(20.0),
-                  child: Text('PLANILLA DE ATENCION'),
+                  child: BodyAppBar(text: 'PLANILLA DE ATENCION'),
                 ),
                 _datosGenerales(size),
                 const SizedBox(
