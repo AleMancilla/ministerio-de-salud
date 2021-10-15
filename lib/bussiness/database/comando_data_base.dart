@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_string_escapes
+
 String queryDataBase = '''
 DROP TABLE IF EXISTS `lista_sintomas`;
 CREATE TABLE `lista_sintomas` (

@@ -30,7 +30,7 @@ class _SubListInputListBooleanState extends State<SubListInputListBoolean> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
+    return SizedBox(
       // margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       // margin: const EdgeInsets.only(bottom: 10, top: 10),
       width: double.infinity,
@@ -58,12 +58,9 @@ class _SubListInputListBooleanState extends State<SubListInputListBoolean> {
     return Wrap(
         direction: Axis.horizontal,
         children: widget.options
-            .map((data) => Container(
-                  // padding: const EdgeInsets.only(right: 10),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [Center(child: _selected(data)), Text(data)],
-                  ),
+            .map((data) => Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [Center(child: _selected(data)), Text(data)],
                 ))
             .toList());
   }

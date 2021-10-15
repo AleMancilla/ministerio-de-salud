@@ -20,7 +20,6 @@ class _SubListInputListOptionState extends State<SubListInputListOption> {
   @override
   void initState() {
     super.initState();
-    print(widget.controller.text);
 
     if (widget.controller.text == '- Seleccione una opción -' ||
         widget.controller.text == '' ||

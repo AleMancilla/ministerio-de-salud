@@ -126,12 +126,10 @@ class _InputDateOptionState extends State<InputDateOption> {
         DatePicker.showDatePicker(context,
             showTitleActions: true,
             minTime: DateTime(2020),
-            maxTime: DateTime(DateTime.now().year + 1), onChanged: (date) {
-          print('change $date');
-        }, onConfirm: (date) {
+            maxTime: DateTime(DateTime.now().year + 1),
+            onChanged: (date) {}, onConfirm: (date) {
           widget.controller.text = formatDateTimeToString(date, 'dd/MM/yyyy');
           getFecha();
-          print('confirm $date');
         }, currentTime: DateTime(anio, mes, dia), locale: LocaleType.es);
       },
       // onChanged: (n) {

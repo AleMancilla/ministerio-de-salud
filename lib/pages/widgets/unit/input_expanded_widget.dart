@@ -80,27 +80,4 @@ class _InputExpandedWidgetState extends State<InputExpandedWidget> {
       );
     }
   }
-
-  SizedBox _itemInput() {
-    return SizedBox(
-      height: 35,
-      child: TextField(
-        // minLines: (widget.descrip) ? 3 : 1,
-        // maxLines: (widget.descrip) ? 10 : 1,
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 15),
-          border: const OutlineInputBorder(),
-          hintText: widget.title,
-          // helperText: widget.helptext,
-        ),
-        onChanged: (value) {
-          setState(() {});
-        },
-        // onChanged: (n) {
-        //   print("completo########");
-        //   if(!ordenData.flagEdit){ordenData.flagEdit = true;}
-        // },
-      ),
-    );
-  }
 }

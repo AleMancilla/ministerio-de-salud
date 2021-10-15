@@ -122,13 +122,11 @@ class _InputHourOptionState extends State<InputHourOption> {
       onTap: () {
         DatePicker.showTimePicker(context,
             showTitleActions: true,
-            showSecondsColumn: false, onChanged: (date) {
-          print('change $date');
-        }, onConfirm: (date) {
+            showSecondsColumn: false,
+            onChanged: (date) {}, onConfirm: (date) {
           widget.controller.text = formatDateTimeHourToString(
               Duration(hours: date.hour, minutes: date.minute));
           getHour();
-          print('confirm $date');
         },
             currentTime: DateTime(DateTime.now().year, DateTime.now().month,
                 DateTime.now().day, hora, minuto),

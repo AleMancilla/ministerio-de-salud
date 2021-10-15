@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:ministerio_de_salud/bussiness/database/comando_data_base.dart';
 import 'package:sqflite/sqflite.dart';
 

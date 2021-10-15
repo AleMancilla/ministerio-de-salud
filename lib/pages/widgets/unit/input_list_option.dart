@@ -24,7 +24,6 @@ class _InputListOptionState extends State<InputListOption> {
   @override
   void initState() {
     super.initState();
-    print(widget.controller.text);
 
     if (widget.controller.text == '- Seleccione una opción -' ||
         widget.controller.text == '' ||
@@ -147,8 +146,7 @@ class _InputListOptionState extends State<InputListOption> {
         },
       );
     } catch (e) {
-      print(widget.options);
-      return CircularProgressIndicator();
+      return const CircularProgressIndicator();
     }
   }
 }

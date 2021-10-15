@@ -122,7 +122,6 @@ class _InputListSelectedCheckState extends State<InputListSelectedCheck> {
         return listItemsColumn();
       }
     } catch (e) {
-      print(e);
       return const CircularProgressIndicator();
     }
   }
@@ -173,7 +172,6 @@ class _InputListSelectedCheckState extends State<InputListSelectedCheck> {
               .replaceAll(',${widget.options[i]}', '')
               .replaceAll(widget.options[i], '');
         }
-        print(widget.controller.text);
         _limpiarComasAlaIzquierda();
       },
     );
@@ -184,9 +182,8 @@ class _InputListSelectedCheckState extends State<InputListSelectedCheck> {
       if (widget.controller.text.substring(0, 1) == ',') {
         widget.controller.text = widget.controller.text.substring(1);
       }
-    } catch (e) {
-      print(e);
-    }
+      // ignore: empty_catches
+    } catch (e) {}
     // for (var i = 0; i < widget.controller.text.length; i++) {
     //   print(widget.controller.text.substring(i, i + 1));
     // }

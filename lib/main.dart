@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:ministerio_de_salud/pages/list_edans/page_edans.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_not_send.dart';
 import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_de_atencion.dart';
 import 'package:ministerio_de_salud/pages/login/login_page.dart';
@@ -25,7 +24,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
-  UserPreferences prefs = UserPreferences();
+  final UserPreferences prefs = UserPreferences();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

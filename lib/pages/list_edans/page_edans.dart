@@ -554,7 +554,6 @@ class _PageEdansState extends State<PageEdans> {
               color: Colors.grey.shade100,
               child: InkWell(
                 onTap: () async {
-                  print(controllerFecha.text);
                   listDaniosEstablecimientosDeSalud
                       .add(_DaniosEstablecimientosDeSalud());
                   await _actualizarListaEstableciemientosDeSalud();
@@ -680,7 +679,6 @@ class _PageEdansState extends State<PageEdans> {
               color: Colors.grey.shade100,
               child: InkWell(
                 onTap: () async {
-                  print(controllerFecha.text);
                   listDaniosPersonalDeSalud.add(_DaniosAlPersonalDeSalud());
                   await _actualizarListaAlPersonalDeSalud();
                 },
@@ -839,7 +837,6 @@ class _PageEdansState extends State<PageEdans> {
               color: Colors.grey.shade100,
               child: InkWell(
                 onTap: () async {
-                  print(controllerFecha.text);
                   listInstalacionDeAlbergues.add(_InstalacionAlbergues());
                   await _actualizarListaInstalacionAlbergues();
                 },

@@ -93,7 +93,6 @@ class _InputListBooleanState extends State<InputListBoolean> {
     }
   }
 
-  String _selectedGender = '';
   Widget _itemInput(Size size) {
     try {
       if (size.width > 765) {
@@ -102,7 +101,7 @@ class _InputListBooleanState extends State<InputListBoolean> {
         return listItemsColumn();
       }
     } catch (e) {
-      return CircularProgressIndicator();
+      return const CircularProgressIndicator();
     }
   }
 
@@ -138,7 +137,6 @@ class _InputListBooleanState extends State<InputListBoolean> {
       onChanged: (String? value) {
         setState(() {
           widget.controller.text = value!;
-          print(widget.controller.text);
         });
       },
     );

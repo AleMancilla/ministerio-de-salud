@@ -1,6 +1,5 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
-import 'package:ministerio_de_salud/pages/list_edans/page_edans.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_not_send.dart';
 import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_de_atencion.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
@@ -80,7 +79,6 @@ class _LoginPageState extends State<LoginPage> {
         ButtonWidget(
           text: 'Iniciar Sesión',
           ontap: () {
-            print('${controllerCarnet.text} == ${controllerNivel.text}');
             if (controllerCarnet.text.length < 5 ||
                 controllerNivel.text == '- Seleccione una opción -') {
               CoolAlert.show(
