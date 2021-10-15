@@ -1,3 +1,4 @@
+import 'package:ministerio_de_salud/bussiness/database/comando_data_base.dart';
 import 'package:sqflite/sqflite.dart';
 
 class TaskDataBase {
@@ -5,11 +6,10 @@ class TaskDataBase {
 
   initDB() async {
     _db = await openDatabase(
-      'my_db2.db',
+      'my_database.db',
       version: 1,
       onCreate: (db, version) {
-        db.execute(
-            'CREATE TABLE task (id INTEGER PRIMARY KEY, name TEXT NOT NULL);');
+        db.execute(queryDataBase);
       },
     );
   }
