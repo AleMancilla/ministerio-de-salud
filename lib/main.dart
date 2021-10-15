@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_edans.dart';
-import 'package:ministerio_de_salud/pages/list_edans/planilla_de_atencion.dart';
+import 'package:ministerio_de_salud/pages/list_edans/page_not_send.dart';
+import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_de_atencion.dart';
 import 'package:ministerio_de_salud/pages/login/login_page.dart';
 import 'package:ministerio_de_salud/utils/user_preferens.dart';
 import 'package:sqflite/sqflite.dart';
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
       return const LoginPage();
     } else {
       if (prefs.userNivel == '1') {
-        return const PageEdans();
+        return const PageNotSend();
       } else if (prefs.userNivel == '2') {
         return const PagePlanillaAtencion();
       } else {

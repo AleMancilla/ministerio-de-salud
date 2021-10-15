@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_edans.dart';
-import 'package:ministerio_de_salud/pages/list_edans/planilla_de_atencion.dart';
+import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_de_atencion.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
+import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
 import 'package:ministerio_de_salud/utils/navigator_route.dart';
 
 class PageNotSend extends StatefulWidget {
@@ -17,11 +18,18 @@ class _PageNotSendState extends State<PageNotSend> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Column(
-        children: [
-          AppBarWidget(size: size),
-          _boddy(),
-        ],
+      appBar: PreferredSize(
+        child: AppBarWidget(size: size),
+        preferredSize: const Size(double.infinity, 50),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            const BodyAppBar(text: 'Lista EDANs NO enviados'),
+            _boddy(),
+          ],
+        ),
       ),
     );
   }
@@ -34,7 +42,6 @@ class _PageNotSendState extends State<PageNotSend> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(width: double.infinity),
-            const Text('Lista EDANs NO enviados'),
             Column(
               children: [
                 CupertinoButton(

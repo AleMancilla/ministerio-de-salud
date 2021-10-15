@@ -14,26 +14,26 @@ class TaskDataBase {
     );
   }
 
-  insert(Task task) async {
-    _db.insert('task', task.toMap());
-  }
+  // insert(Task task) async {
+  //   _db.insert('task', task.toMap());
+  // }
 
-  Future<List<Task>> getAllTask() async {
-    List<Map<String, dynamic>> result = await _db.query('task');
-    return result.map((map) => Task.fromMap(map)).toList();
-  }
+  // Future<List<Task>> getAllTask() async {
+  //   List<Map<String, dynamic>> result = await _db.query('task');
+  //   return result.map((map) => Task.fromMap(map)).toList();
+  // }
 }
 
-class Task {
-  late String name;
+// class Task {
+//   late String name;
 
-  Task(this.name);
+//   Task(this.name);
 
-  Map<String, dynamic> toMap() {
-    return {'name': name};
-  }
+//   Map<String, dynamic> toMap() {
+//     return {'name': name};
+//   }
 
-  Task.fromMap(Map<String, dynamic> map) {
-    name = map['name'];
-  }
-}
+//   Task.fromMap(Map<String, dynamic> map) {
+//     name = map['name'];
+//   }
+// }
