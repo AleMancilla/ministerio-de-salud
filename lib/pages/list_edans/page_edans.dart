@@ -111,6 +111,15 @@ class _PageEdansState extends State<PageEdans> {
 
   ///[DATABASE]
   DataBaseEdans db = DataBaseEdans();
+
+  ///
+
+  // double _scrollPositiongroupInstalacionDeAlbergues = 0;
+  late ScrollController scrollControllergroupInstalacionDeAlbergues;
+  // double _scrollPositiongroupDaniosEstablecimiendosDeSalud = 0;
+  late ScrollController scrollControllergroupDaniosEstablecimiendosDeSalud;
+  // double _scrollPositiongroupDaniosAlPersonalDeSalud = 0;
+  late ScrollController scrollControllergroupDaniosAlPersonalDeSalud;
   @override
   void initState() {
     initDB();
@@ -121,8 +130,32 @@ class _PageEdansState extends State<PageEdans> {
     controllerFechaEDAN.text =
         '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
     controllerHoraEDAN.text = '${DateTime.now().hour}:${DateTime.now().minute}';
+    scrollControllergroupInstalacionDeAlbergues = ScrollController();
+    scrollControllergroupDaniosEstablecimiendosDeSalud = ScrollController();
+    scrollControllergroupDaniosAlPersonalDeSalud = ScrollController();
     super.initState();
   }
+
+  // _scrollListenergroupInstalacionDeAlbergues() {
+  //   setState(() {
+  //     _scrollPositiongroupInstalacionDeAlbergues =
+  //         scrollControllergroupInstalacionDeAlbergues.position.pixels;
+  //   });
+  // }
+
+  // _scrollListenergroupDaniosEstablecimiendosDeSalud() {
+  //   setState(() {
+  //     _scrollPositiongroupDaniosEstablecimiendosDeSalud =
+  //         scrollControllergroupDaniosEstablecimiendosDeSalud.position.pixels;
+  //   });
+  // }
+
+  // _scrollListenergroupDaniosAlPersonalDeSalud() {
+  //   setState(() {
+  //     _scrollPositiongroupDaniosAlPersonalDeSalud =
+  //         scrollControllergroupDaniosAlPersonalDeSalud.position.pixels;
+  //   });
+  // }
 
   void initDB() async {
     db.initDB();
@@ -789,11 +822,11 @@ class _PageEdansState extends State<PageEdans> {
   //     ),
   //   );
   // }
-
   Widget _groupDaniosEstablecimiendosDeSalud(Size size) {
     return Scrollbar(
       isAlwaysShown: true,
       showTrackOnHover: true,
+      controller: scrollControllergroupDaniosEstablecimiendosDeSalud,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(
@@ -913,11 +946,11 @@ class _PageEdansState extends State<PageEdans> {
   /////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////
-
   Widget _groupDaniosAlPersonalDeSalud(Size size) {
     return Scrollbar(
       isAlwaysShown: true,
       showTrackOnHover: true,
+      controller: scrollControllergroupDaniosAlPersonalDeSalud,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(
@@ -1072,11 +1105,11 @@ class _PageEdansState extends State<PageEdans> {
   /////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////
-
   Widget _groupInstalacionDeAlbergues(Size size) {
     return Scrollbar(
       isAlwaysShown: true,
       showTrackOnHover: true,
+      controller: scrollControllergroupInstalacionDeAlbergues,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(

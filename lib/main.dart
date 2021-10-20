@@ -8,6 +8,7 @@ import 'package:ministerio_de_salud/pages/login/login_page.dart';
 import 'package:ministerio_de_salud/utils/user_preferens.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:window_size/window_size.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +19,10 @@ void main() async {
     sqfliteFfiInit();
     // Change the default factory
     databaseFactory = databaseFactoryFfi;
+
+    setWindowTitle('Ministerio de salud');
+    setWindowMinSize(const Size(700, 500));
+    setWindowMaxSize(Size.infinite);
   }
   DataBaseEdans db = DataBaseEdans();
 
