@@ -25,11 +25,8 @@ class _PageNotSendState extends State<PageNotSend> {
   }
 
   _cargandoDatos() async {
-    print('INICIO DATABASE');
     await db.initDB();
-    print('INICIO DATABASE');
     listModelEdans = await db.getAllEdans();
-    print('INICIO DATABASE');
 
     listEdansNoEnviados = listModelEdans.map(
       (ModelEdan edan) {
@@ -45,8 +42,14 @@ class _PageNotSendState extends State<PageNotSend> {
       },
     ).toList();
 
-    await _listaEdansNoEnviados();
+    // await _listaEdansNoEnviados();
     setState(() {});
+  }
+
+  @override
+  void didChangeDependencies() {
+    print('===================================');
+    super.didChangeDependencies();
   }
 
   @override
@@ -100,16 +103,6 @@ class _PageNotSendState extends State<PageNotSend> {
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
-                  // CupertinoButton(
-                  //   onPressed: () {
-                  //     navigatorPush(context, const PagePlanillaAtencion());
-                  //   },
-                  //   color: Colors.grey[200],
-                  //   child: const Text(
-                  //     'Planilla Atencion',
-                  //     style: TextStyle(color: Colors.black),
-                  //   ),
-                  // ),
                   Container(
                     color: Colors.grey[50],
                     child: FutureBuilder(
@@ -143,137 +136,105 @@ class _PageNotSendState extends State<PageNotSend> {
 
   List<Widget> listEdansNoEnviadosWidget = [];
   List<_EdansNoEnviados> listEdansNoEnviados = [];
-  // Widget _groupDaniosEdansNotSend(Size size) {
-  //   return Scrollbar(
-  //     isAlwaysShown: true,
-  //     showTrackOnHover: true,
-  //     // controller: scrollControllerEdansNoEnviados,
-  //     child: SingleChildScrollView(
-  //       scrollDirection: Axis.horizontal,
-  //       child: Container(
-  //         width: size.width > 600 ? size.width - 20 : 600,
-  //         // margin: const EdgeInsets.all(10),
-  //         decoration: BoxDecoration(
-  //           border: Border.all(color: Colors.lightBlue),
+
+  // Future<void> _listaEdansNoEnviados() async {
+  //   print('se recargo ============');
+  //   listEdansNoEnviadosWidget = [];
+  //   int i = 0;
+  //   listEdansNoEnviadosWidget =
+  //       listEdansNoEnviados.map((_EdansNoEnviados demo) {
+  //     i++;
+  //     return Container(
+  //       color: i % 2 == 0 ? Colors.blue[50] : Colors.white,
+  //       child: IntrinsicHeight(
+  //         child: Row(
+  //           crossAxisAlignment: CrossAxisAlignment.stretch,
+  //           children: [
+  //             Expanded(
+  //               flex: 1,
+  //               child: Container(
+  //                 padding: const EdgeInsets.all(10),
+  //                 alignment: Alignment.center,
+  //                 decoration: BoxDecoration(
+  //                   border: Border.all(color: Colors.lightBlue.shade100),
+  //                 ),
+  //                 child: Checkbox(
+  //                   value: demo.controllerEnviar,
+  //                   onChanged: (value) {
+  //                     setState(() {
+  //                       demo.controllerEnviar = value!;
+  //                     });
+  //                   },
+  //                 ),
+  //               ),
+  //             ),
+  //             Expanded(
+  //               flex: 1,
+  //               child: Container(
+  //                 alignment: Alignment.centerLeft,
+  //                 decoration: BoxDecoration(
+  //                   border: Border.all(color: Colors.lightBlue.shade100),
+  //                 ),
+  //                 child: Text(demo.controllerNro.text),
+  //               ),
+  //             ),
+  //             Expanded(
+  //               flex: 3,
+  //               child: Container(
+  //                 alignment: Alignment.centerLeft,
+  //                 decoration: BoxDecoration(
+  //                   border: Border.all(color: Colors.lightBlue.shade100),
+  //                 ),
+  //                 child: Text(demo.controllerEvento.text),
+  //               ),
+  //             ),
+  //             Expanded(
+  //               flex: 5,
+  //               child: Container(
+  //                 alignment: Alignment.centerLeft,
+  //                 decoration: BoxDecoration(
+  //                   border: Border.all(color: Colors.lightBlue.shade100),
+  //                 ),
+  //                 child: Text(demo.controllerNombreEventoBiologico.text),
+  //               ),
+  //             ),
+  //             Expanded(
+  //               flex: 3,
+  //               child: Container(
+  //                 alignment: Alignment.centerLeft,
+  //                 decoration: BoxDecoration(
+  //                   border: Border.all(color: Colors.lightBlue.shade100),
+  //                 ),
+  //                 child: Text(demo.controllerFecha.text),
+  //               ),
+  //             ),
+  //             Expanded(
+  //               flex: 1,
+  //               child: Container(
+  //                 alignment: Alignment.centerLeft,
+  //                 decoration: BoxDecoration(
+  //                   border: Border.all(color: Colors.lightBlue.shade100),
+  //                 ),
+  //                 child: IconButton(
+  //                   padding: const EdgeInsets.all(0),
+  //                   icon: const Icon(Icons.edit),
+  //                   onPressed: () {},
+  //                 ),
+  //               ),
+  //             )
+  //           ],
   //         ),
-  //         child: GroupEdansNoEnviados(listWidgets: [
-  //           FutureBuilder(
-  //             future: _listaEdansNoEnviados(),
-  //             builder: (context, AsyncSnapshot<List<Widget>> snapshot2) {
-  //               if (snapshot2.hasData) {
-  //                 return Container(
-  //                   child: Column(
-  //                     children: snapshot2.data!,
-  //                   ),
-  //                 );
-  //               } else {
-  //                 return Text('NO DATA');
-  //               }
-  //             },
-  //           ),
-  //         ], titles: const [
-  //           'Enviar',
-  //           'No.',
-  //           'Evento',
-  //           'Nombre Evento Biologico',
-  //           'fecha'
-  //         ]),
   //       ),
-  //     ),
-  //   );
+  //     );
+  //   }).toList();
   // }
 
-  Future<void> _listaEdansNoEnviados() async {
-    listEdansNoEnviadosWidget = [];
-    int i = 0;
-    listEdansNoEnviadosWidget =
-        listEdansNoEnviados.map((_EdansNoEnviados demo) {
-      i++;
-      return Container(
-        color: i % 2 == 0 ? Colors.blue[50] : Colors.white,
-        child: IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.lightBlue.shade100),
-                  ),
-                  child: Checkbox(
-                    value: demo.controllerEnviar,
-                    onChanged: (value) {
-                      setState(() {
-                        demo.controllerEnviar = value!;
-                      });
-                    },
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.lightBlue.shade100),
-                  ),
-                  child: Text(demo.controllerNro.text),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.lightBlue.shade100),
-                  ),
-                  child: Text(demo.controllerEvento.text),
-                ),
-              ),
-              Expanded(
-                flex: 6,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.lightBlue.shade100),
-                  ),
-                  child: Text(demo.controllerNombreEventoBiologico.text),
-                ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.lightBlue.shade100),
-                  ),
-                  child: Text(demo.controllerFecha.text),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.lightBlue.shade100),
-                  ),
-                  child: IconButton(
-                    padding: const EdgeInsets.all(0),
-                    icon: const Icon(Icons.edit),
-                    onPressed: () {},
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      );
-    }).toList();
-  }
-
   Widget _groupDaniosEdansNotSend(Size size) {
+    int i = 0;
     return Scrollbar(
-      // isAlwaysShown: true,
-      // showTrackOnHover: true,
-      // controller: scrollControllerEdansNoEnviados,
+      isAlwaysShown: true,
+      showTrackOnHover: true,
+      controller: scrollControllerEdansNoEnviados,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(
@@ -282,7 +243,93 @@ class _PageNotSendState extends State<PageNotSend> {
             border: Border.all(color: Colors.lightBlue),
           ),
           child: GroupEdansNoEnviados(listWidgets: [
-            ...listEdansNoEnviadosWidget,
+            ...listEdansNoEnviados.map((_EdansNoEnviados demo) {
+              i++;
+              return Container(
+                color: i % 2 == 0 ? Colors.blue[50] : Colors.white,
+                child: IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.lightBlue.shade100),
+                          ),
+                          child: CheckBoxDemo(
+                            controller: demo.controllerEnviar,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.lightBlue.shade100),
+                          ),
+                          child: Text(demo.controllerNro.text),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.lightBlue.shade100),
+                          ),
+                          child: Text(demo.controllerEvento.text),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 5,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.lightBlue.shade100),
+                          ),
+                          child:
+                              Text(demo.controllerNombreEventoBiologico.text),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.lightBlue.shade100),
+                          ),
+                          child: Text(demo.controllerFecha.text),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.lightBlue.shade100),
+                          ),
+                          child: IconButton(
+                            padding: const EdgeInsets.all(0),
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {},
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
           ], titles: const [
             'Enviar',
             'No.',
@@ -315,5 +362,27 @@ class _EdansNoEnviados {
     controllerEvento.text = evento;
     controllerNombreEventoBiologico.text = nombreEvento;
     controllerFecha.text = fecha;
+  }
+}
+
+class CheckBoxDemo extends StatefulWidget {
+  CheckBoxDemo({Key? key, required this.controller}) : super(key: key);
+  bool controller;
+
+  @override
+  _CheckBoxDemoState createState() => _CheckBoxDemoState();
+}
+
+class _CheckBoxDemoState extends State<CheckBoxDemo> {
+  @override
+  Widget build(BuildContext context) {
+    return Checkbox(
+      value: widget.controller,
+      onChanged: (value) {
+        setState(() {
+          widget.controller = value!;
+        });
+      },
+    );
   }
 }

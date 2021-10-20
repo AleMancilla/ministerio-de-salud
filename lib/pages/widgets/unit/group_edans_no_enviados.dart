@@ -49,7 +49,7 @@ class GroupEdansNoEnviados extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue),
@@ -64,7 +64,7 @@ class GroupEdansNoEnviados extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 6,
+                  flex: 5,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue),

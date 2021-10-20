@@ -390,8 +390,8 @@ class _PageEdansState extends State<PageEdans> {
                             fechap: '',
                             enviado: '',
                           );
-                          // db.insertEDAN(modelo);
-                          db.insertEVENTO();
+                          db.insertEDAN(modelo);
+                          // db.insertEVENTO();
                         },
                       ),
                       const SizedBox(width: 10),
@@ -399,7 +399,7 @@ class _PageEdansState extends State<PageEdans> {
                         text: 'Cancelar',
                         ontap: () {
                           Navigator.pop(context);
-                          db.insertEVENTO();
+                          // db.insertEVENTO();
                         },
                         color: Colors.grey.shade200,
                         textcolor: Colors.black,
