@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field
 
 import 'package:ministerio_de_salud/bussiness/database/comando_data_base.dart';
+import 'package:ministerio_de_salud/bussiness/database/comando_insert.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_evento.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_lista_sintomas.dart';
@@ -11,10 +12,21 @@ class DataBaseEdans {
 
   initDB() async {
     _db = await openDatabase(
-      'my_database17.db',
-      version: 4,
-      onCreate: (db, version) {
-        db.execute(queryDataBase);
+      'my_database6.db',
+      version: 1,
+      onCreate: (Database db, int newVersion) async {
+        Batch batch = db.batch();
+        // db.execute(queryDataBase);
+        listqueryDataBase.forEach((element) {
+          batch.execute(element);
+        });
+
+        listinsert.forEach((element) {
+          batch.execute(element);
+        });
+
+        List<dynamic> res = await batch.commit();
+        print(' ===> $res');
       },
     );
   }
@@ -26,13 +38,19 @@ class DataBaseEdans {
 
   insertEVENTO() async {
     int response = await _db.rawInsert(
-        'INSERT INTO evento(nomevento,snis,num_snis) VALUES ("Sequia", "Otros", "22")');
+        '''INSERT INTO evento VALUES (2, 'Granizada', 'Helada/Granizada/Nevada', 18);
+INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
     print('###### $response');
   }
   //INSERT INTO `evento` VALUES ('1', 'Sequia', 'Otros', '22')
 
   Future<List<ModelEdan>> getAllEdans() async {
+    print('lectura sql');
     List<Map<String, dynamic>> result = await _db.query('edan');
+    result.forEach((element) {
+      print("------- ${element['cod_edan']}");
+    });
+    print(result.length);
     return result.map((map) => ModelEdan.fromMap(map)).toList();
   }
 
@@ -40,6 +58,16 @@ class DataBaseEdans {
     print('#############');
     List<Map<String, dynamic>> result = await _db.query('evento');
     return result.map((map) => ModelEvento.fromMap(map)).toList();
+  }
+
+  Future<void> getAllTables() async {
+    print('#############xxxx edan');
+    List<Map> result = await _db.rawQuery('SELECT * from edan;');
+    print('''
+    =========================================
+    $result
+    =========================================
+    ''');
   }
 
   Future<List<ModelListaSintomas>> getAllModelListaSintomas() async {

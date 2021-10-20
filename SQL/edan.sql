@@ -92,3 +92,7 @@ INSERT INTO `edan` VALUES ('27', 'Nevada', null, '2021-09-27', '12:49:21', 'no',
 
 
 INSERT INTO `edan` VALUES (DEFAULT, 'Nevada', null, '2021-09-27', '12:49:21', 'no', 'aaaaaa', 'vfdvf', null, null, '43545', 'CHUQUISACA', 'SAN LUCAS', 'san lucas', 'n', null, null, 'sindano', 'sindano', 'sindano', 'sindano', null, null, null, null, '0', '0', 'sindano', 'sindano', 'sindano', 'sindano', 'sindano', 'sindano', '0', '0', '0', null, null, '2021-09-27', '12:49:21', null, null, null, null, null, 'tecnico1', '2021-09-27', 'NO');
+
+
+
+----------------------------------------

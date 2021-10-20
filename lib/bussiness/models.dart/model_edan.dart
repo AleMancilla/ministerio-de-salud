@@ -153,7 +153,7 @@ class ModelEdan {
 
   Map<String, dynamic> toMap() {
     return {
-      'codEdan': codEdan,
+      'coddan': codEdan,
       'evento': evento,
       'claseEvento': claseEvento,
       'fecha': fecha,
@@ -205,31 +205,31 @@ class ModelEdan {
   }
 
   ModelEdan.fromMap(Map<String, dynamic> map) {
-    codEdan = map['codEdan'];
+    codEdan = map['cod_edan'];
     evento = map['evento'];
-    claseEvento = map['claseEvento'];
+    claseEvento = map['clase_evento'];
     fecha = map['fecha'];
     hora = map['hora'];
     continua = map['continua'];
     nombre = map['nombre'];
     cargo = map['cargo'];
     dreccion = map['dreccion'];
-    telFc = map['telFc'];
-    telCc = map['telCc'];
+    telFc = map['tel_fc'];
+    telCc = map['tel_cc'];
     depto = map['depto'];
     municipio = map['municipio'];
     comunidad = map['comunidad'];
-    tieneCoord = map['tieneCoord'];
-    coordenadaX = map['coordenadaX'];
-    coordenadaY = map['coordenadaY'];
+    tieneCoord = map['tiene_coord'];
+    coordenadaX = map['coordenada_x'];
+    coordenadaY = map['coordenada_y'];
     aereo = map['aereo'];
     terrestre = map['terrestre'];
     fluvial = map['fluvial'];
     ferroviario = map['ferroviario'];
     partida = map['partida'];
-    horaLlegada = map['horaLlegada'];
+    horaLlegada = map['hora_llegada'];
     clima = map['clima'];
-    medioComunicacion = map['medioComunicacion'];
+    medioComunicacion = map['medio_comunicacion'];
     viviendas = map['viviendas'];
     familias = map['familias'];
     agua = map['agua'];
@@ -241,14 +241,14 @@ class ModelEdan {
     heridos = map['heridos'];
     muertos = map['muertos'];
     desaparecidos = map['desaparecidos'];
-    accionesPrioritarias = map['accionesPrioritarias'];
-    lugarLle = map['lugarLle'];
-    fechaLle = map['fechaLle'];
-    horaLle = map['horaLle'];
-    responsableLle = map['responsableLle'];
-    cargoLle = map['cargoLle'];
-    telfFijoLle = map['telfFijoLle'];
-    telfCelLle = map['telfCelLle'];
+    accionesPrioritarias = map['acciones_prioritarias'];
+    lugarLle = map['lugar_lle'];
+    fechaLle = map['fecha_lle'];
+    horaLle = map['hora_lle'];
+    responsableLle = map['responsable_lle'];
+    cargoLle = map['cargo_lle'];
+    telfFijoLle = map['telf_fijo_lle'];
+    telfCelLle = map['telf_cel_lle'];
     email = map['email'];
     usuario = map['usuario'];
     fechap = map['fechap'];
