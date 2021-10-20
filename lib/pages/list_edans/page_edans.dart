@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:ministerio_de_salud/bussiness/database/database.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/button_widget.dart';
@@ -42,6 +45,8 @@ class _PageEdansState extends State<PageEdans> {
   TextEditingController controllerComunidad = TextEditingController();
 
   TextEditingController controllerTieneCoordenadas = TextEditingController();
+  TextEditingController controllerCoordenadaX = TextEditingController();
+  TextEditingController controllerCoordenadaY = TextEditingController();
   TextEditingController controllerViaAerea = TextEditingController();
   TextEditingController controllerViaTerrestre = TextEditingController();
   TextEditingController controllerViaFluvial = TextEditingController();
@@ -61,7 +66,7 @@ class _PageEdansState extends State<PageEdans> {
   TextEditingController controllerFamiliasDamnificadas =
       TextEditingController();
 
-  TextEditingController controllerServivioDeAgua = TextEditingController();
+  TextEditingController controllerServicioDeAgua = TextEditingController();
   TextEditingController controllerServicioDeRecoleccion =
       TextEditingController();
   TextEditingController controllerServicioDeAlcantarilla =
@@ -89,6 +94,10 @@ class _PageEdansState extends State<PageEdans> {
   List<Widget> listInstalacionDeAlberguesWidget = [];
   List<_InstalacionAlbergues> listInstalacionDeAlbergues = [];
 
+  ///[ACCIONES_REALIZADAS]
+  TextEditingController controllerAccionesPrioritarias =
+      TextEditingController();
+
   ///[SECCION DATOS GENERALES]
   TextEditingController controllerLugarEDAN = TextEditingController();
   TextEditingController controllerFechaEDAN = TextEditingController();
@@ -100,12 +109,23 @@ class _PageEdansState extends State<PageEdans> {
   TextEditingController controllerCorreoEDAN = TextEditingController();
   TextEditingController controllerFechaAuxEDAN = TextEditingController();
 
+  ///[DATABASE]
+  DataBaseEdans db = DataBaseEdans();
   @override
   void initState() {
+    initDB();
     controllerFecha.text =
         '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
     controllerHora.text = '${DateTime.now().hour}:${DateTime.now().minute}';
+
+    controllerFechaEDAN.text =
+        '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
+    controllerHoraEDAN.text = '${DateTime.now().hour}:${DateTime.now().minute}';
     super.initState();
+  }
+
+  void initDB() async {
+    db.initDB();
   }
 
   @override
@@ -136,11 +156,218 @@ class _PageEdansState extends State<PageEdans> {
                   padding: const EdgeInsets.all(20.0),
                   child: Row(
                     children: [
-                      ButtonWidget(text: 'Guardar', ontap: () {}),
+                      ButtonWidget(
+                        text: 'Guardar',
+                        ontap: () {
+                          // log('''
+                          // controllerEvento => ${controllerEvento.text}
+                          // controllerFecha => ${controllerFecha.text}
+                          // controllerHora => ${controllerHora.text}
+                          // controllerSigueEnDesarrollo => ${controllerSigueEnDesarrollo.text}
+                          // controllerNombreDeContacto => ${controllerNombreDeContacto.text}
+                          // controllerCargoDeContacto => ${controllerCargoDeContacto.text}
+                          // controllerDireccionDeContacto => ${controllerDireccionDeContacto.text}
+                          // controllerTelefonoFijo => ${controllerTelefonoFijo.text}
+                          // controllerTelefonoMovil => ${controllerTelefonoMovil.text}
+                          // controllerDepartamento => ${controllerDepartamento.text}
+                          // controllerMunicipio => ${controllerMunicipio.text}
+                          // controllerComunidad => ${controllerComunidad.text}
+                          // controllerTieneCoordenadas => ${controllerTieneCoordenadas.text}
+                          // controllerViaAerea => ${controllerViaAerea.text}
+                          // controllerViaTerrestre => ${controllerViaTerrestre.text}
+                          // controllerViaFluvial => ${controllerViaFluvial.text}
+                          // controllerViaFerroviaria => ${controllerViaFerroviaria.text}
+                          // controllerParaLlegar => ${controllerParaLlegar.text}
+                          // controllerTiempoLlegada => ${controllerTiempoLlegada.text}
+                          // controllerCondicionClimatica => ${controllerCondicionClimatica.text}
+                          // controllerMediosDeComunicacion => ${controllerMediosDeComunicacion.text}
+                          // controllerViviendasAfectadas => ${controllerViviendasAfectadas.text}
+                          // controllerFamiliasDamnificadas => ${controllerFamiliasDamnificadas.text}
+                          // controllerServivioDeAgua => ${controllerServivioDeAgua.text}
+                          // controllerServicioDeRecoleccion => ${controllerServicioDeRecoleccion.text}
+                          // controllerServicioDeAlcantarilla => ${controllerServicioDeAlcantarilla.text}
+                          // controllerServicioDeEnergia => ${controllerServicioDeEnergia.text}
+                          // controllerServicioDeTelecomunicaciones => ${controllerServicioDeTelecomunicaciones.text}
+                          // controllerServicioDeTransporte => ${controllerServicioDeTransporte.text}
+                          // controllerHeridos => ${controllerHeridos.text}
+                          // controllerFallecidos => ${controllerFallecidos.text}
+                          // controllerDesaparecidos => ${controllerDesaparecidos.text}
+                          // controllerLugarEDAN => ${controllerLugarEDAN.text}
+                          // controllerFechaEDAN => ${controllerFechaEDAN.text}
+                          // controllerHoraEDAN => ${controllerHoraEDAN.text}
+                          // controllerResponsableEDAN => ${controllerResponsableEDAN.text}
+                          // controllerCargoEDAN => ${controllerCargoEDAN.text}
+                          // controllerTelfFijoEDAN => ${controllerTelfFijoEDAN.text}
+                          // controllerTelfMovilEDAN => ${controllerTelfMovilEDAN.text}
+                          // controllerCorreoEDAN => ${controllerCorreoEDAN.text}
+                          // controllerFechaAuxEDAN => ${controllerFechaAuxEDAN.text}
+                          // ''');
+
+                          if (controllerEvento.text ==
+                              '- Seleccione una opción -') {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion: 'Debes llenar: "Evento"');
+                            return;
+                          }
+                          if (controllerFecha.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion: 'Debes llenar: "Fecha"');
+                            return;
+                          }
+                          if (controllerNombreDeContacto.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion:
+                                    'Debes llenar: "Nombre de contacto"');
+                            return;
+                          }
+                          if (controllerCargoDeContacto.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion:
+                                    'Debes llenar: "Cargo de contacto"');
+                            return;
+                          }
+                          if (controllerTelefonoMovil.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion:
+                                    'Debes llenar: "Telefono movil de contacto"');
+                            return;
+                          }
+                          if (controllerDepartamento.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion: 'Debes llenar: "Departamento"');
+                            return;
+                          }
+                          if (controllerMunicipio.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion: 'Debes llenar: "Municipio"');
+                            return;
+                          }
+                          if (controllerComunidad.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion:
+                                    'Debes llenar: "Comunidad o zona"');
+                            return;
+                          }
+                          if (controllerCondicionClimatica.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion:
+                                    'Debes llenar: "Condicion climatica actual"');
+                            return;
+                          }
+                          if (controllerMediosDeComunicacion.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion:
+                                    'Debes llenar: "Medios de comunicacion disponibles"');
+                            return;
+                          }
+                          if (controllerViviendasAfectadas.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion:
+                                    'Debes llenar: "Viviendas afectadas"');
+                            return;
+                          }
+                          if (controllerFamiliasDamnificadas.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion:
+                                    'Debes llenar: "Familias damnificadas"');
+                            return;
+                          }
+                          if (controllerHeridos.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion: 'Debes llenar: "Heridos"');
+                            return;
+                          }
+                          if (controllerFallecidos.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion: 'Debes llenar: "Fallecidos"');
+                            return;
+                          }
+                          if (controllerDesaparecidos.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion: 'Debes llenar: "Desaparecidos"');
+                            return;
+                          }
+                          ModelEdan modelo = ModelEdan(
+                            evento: controllerEvento.text,
+                            fecha: controllerFecha.text,
+                            hora: controllerHora.text,
+                            continua: controllerSigueEnDesarrollo.text,
+                            nombre: controllerNombreDeContacto.text,
+                            cargo: controllerCargoDeContacto.text,
+                            dreccion: controllerDireccionDeContacto.text,
+                            telFc: controllerTelefonoFijo.text,
+                            telCc: controllerTelefonoMovil.text,
+                            depto: controllerDepartamento.text,
+                            municipio: controllerMunicipio.text,
+                            comunidad: controllerComunidad.text,
+                            tieneCoord: controllerTieneCoordenadas.text,
+                            coordenadaX: controllerCoordenadaX.text,
+                            coordenadaY: controllerCoordenadaY.text,
+                            aereo: controllerViaAerea.text,
+                            terrestre: controllerViaTerrestre.text,
+                            fluvial: controllerViaFluvial.text,
+                            ferroviario: controllerViaFerroviaria.text,
+                            partida: controllerParaLlegar.text,
+                            horaLlegada: controllerTiempoLlegada.text,
+                            clima: controllerCondicionClimatica.text,
+                            medioComunicacion:
+                                controllerMediosDeComunicacion.text,
+                            viviendas:
+                                int.parse(controllerViviendasAfectadas.text),
+                            familias:
+                                int.parse(controllerFamiliasDamnificadas.text),
+                            agua: controllerServicioDeAgua.text,
+                            basura: controllerServicioDeRecoleccion.text,
+                            alcantarillado:
+                                controllerServicioDeAlcantarilla.text,
+                            electricidad: controllerServicioDeEnergia.text,
+                            telecom:
+                                controllerServicioDeTelecomunicaciones.text,
+                            transporte: controllerServicioDeTransporte.text,
+                            heridos: int.parse(controllerHeridos.text),
+                            muertos: int.parse(controllerFallecidos.text),
+                            desaparecidos:
+                                int.parse(controllerDesaparecidos.text),
+                            accionesPrioritarias:
+                                controllerAccionesPrioritarias.text,
+                            lugarLle: controllerLugarEDAN.text,
+                            fechaLle: controllerFechaEDAN.text,
+                            horaLle: controllerHoraEDAN.text,
+                            responsableLle: controllerResponsableEDAN.text,
+                            cargoLle: controllerCargoEDAN.text,
+                            telfFijoLle: controllerTelfFijoEDAN.text,
+                            telfCelLle: controllerTelfMovilEDAN.text,
+                            email: controllerCorreoEDAN.text,
+                            usuario: '',
+                            fechap: '',
+                            enviado: '',
+                          );
+                          // db.insertEDAN(modelo);
+                          db.insertEVENTO();
+                        },
+                      ),
                       const SizedBox(width: 10),
                       ButtonWidget(
                         text: 'Cancelar',
-                        ontap: () {},
+                        ontap: () {
+                          Navigator.pop(context);
+                          db.insertEVENTO();
+                        },
                         color: Colors.grey.shade200,
                         textcolor: Colors.black,
                       ),
@@ -156,6 +383,22 @@ class _PageEdansState extends State<PageEdans> {
         ),
       ),
     );
+  }
+
+  void _showDialogMessage(
+      {required String titulo, required String descripcion}) {
+    EasyDialog(
+      title: Text(
+        titulo,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+        textScaleFactor: 1.2,
+      ),
+      description: Text(
+        descripcion,
+        textScaleFactor: 1.1,
+        textAlign: TextAlign.center,
+      ),
+    ).show(context);
   }
 
   Widget _datosGenerales(Size size) {
@@ -331,15 +574,17 @@ class _PageEdansState extends State<PageEdans> {
               title: 'Viviendas afectadas',
               controller: controllerViviendasAfectadas,
               isRequired: true,
+              initValue: '0',
             ),
             InputExpanded(
               title: 'Flias. damnificadas',
               controller: controllerFamiliasDamnificadas,
               isRequired: true,
+              initValue: '0',
             ),
             InputListBoolean(
               title: 'Servicio de agua potable',
-              controller: controllerServivioDeAgua,
+              controller: controllerServicioDeAgua,
               options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
             ),
             InputListBoolean(
@@ -402,6 +647,12 @@ class _PageEdansState extends State<PageEdans> {
               title: const TitleExpansion(texto: 'Instalación de albergues'),
               children: [_groupInstalacionDeAlbergues(size)],
             ),
+            InputExpanded(
+              title:
+                  '5.- Acciones prioritarias para el control de la situación y atencion en salud',
+              controller: controllerAccionesPrioritarias,
+              isRequired: true,
+            ),
             // ExpansionTile(
             //   title: const TitleExpansion(
             //       texto:
@@ -432,15 +683,18 @@ class _PageEdansState extends State<PageEdans> {
               title: 'Heridos',
               controller: controllerHeridos,
               isRequired: true,
+              initValue: '0',
             ),
             InputExpanded(
               title: 'Fallecidos',
               controller: controllerFallecidos,
               isRequired: true,
+              initValue: '0',
             ),
             InputExpanded(
               title: 'Desaparecidos',
               controller: controllerDesaparecidos,
+              initValue: '0',
               isRequired: true,
             ),
             ExpansionTile(

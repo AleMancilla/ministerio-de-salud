@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:ministerio_de_salud/bussiness/database/database.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_not_send.dart';
 import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_de_atencion.dart';
 import 'package:ministerio_de_salud/pages/login/login_page.dart';
@@ -18,6 +19,9 @@ void main() async {
     // Change the default factory
     databaseFactory = databaseFactoryFfi;
   }
+  DataBaseEdans db = DataBaseEdans();
+
+  db.initDB();
   runApp(MyApp());
 }
 

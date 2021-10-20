@@ -6,6 +6,7 @@ class InputExpanded extends StatefulWidget {
   final bool isRequired;
   final bool isNumber;
   final TextEditingController controller;
+  final String? initValue;
 
   const InputExpanded({
     Key? key,
@@ -14,6 +15,7 @@ class InputExpanded extends StatefulWidget {
     this.isRequired = false,
     this.isNumber = false,
     required this.controller,
+    this.initValue,
   }) : super(key: key);
 
   @override
@@ -21,6 +23,14 @@ class InputExpanded extends StatefulWidget {
 }
 
 class _InputExpandedState extends State<InputExpanded> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initValue != null) {
+      widget.controller.text = widget.initValue!;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ministerio_de_salud/bussiness/database/database.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_evento.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_lista_sintomas.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_edans.dart';
 import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_de_atencion.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
@@ -14,6 +18,7 @@ class PageNotSend extends StatefulWidget {
 }
 
 class _PageNotSendState extends State<PageNotSend> {
+  DataBaseEdans db = DataBaseEdans();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -54,20 +59,63 @@ class _PageNotSendState extends State<PageNotSend> {
                     style: TextStyle(color: Colors.black),
                   ),
                 ),
-                CupertinoButton(
-                  onPressed: () {
-                    navigatorPush(context, const PagePlanillaAtencion());
-                  },
-                  color: Colors.grey[200],
-                  child: const Text(
-                    'Planilla Atencion',
-                    style: TextStyle(color: Colors.black),
+                // CupertinoButton(
+                //   onPressed: () {
+                //     navigatorPush(context, const PagePlanillaAtencion());
+                //   },
+                //   color: Colors.grey[200],
+                //   child: const Text(
+                //     'Planilla Atencion',
+                //     style: TextStyle(color: Colors.black),
+                //   ),
+                // ),
+                Container(
+                  color: Colors.grey[50],
+                  child: FutureBuilder(
+                    future: db.initDB(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return _showList(context);
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
                   ),
                 ),
               ],
             )
           ],
         ),
+      ),
+    );
+  }
+
+  _showList(BuildContext context) {
+    return SizedBox(
+      width: 500,
+      height: 350,
+      child: FutureBuilder(
+        future: db.getAllEdans(),
+        builder:
+            (BuildContext context, AsyncSnapshot<List<ModelEdan>> snapshot) {
+          if (snapshot.hasData) {
+            return ListView(
+              children: [
+                for (ModelEdan task in snapshot.data!)
+                  ListTile(
+                    title: Text(task.nombre!),
+                    // subtitle: Text(task.codevento!.toString()),
+                  )
+              ],
+            );
+          } else {
+            return Center(
+              child: Text('agregar'),
+            );
+          }
+        },
       ),
     );
   }
