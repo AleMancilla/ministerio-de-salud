@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 import 'package:ministerio_de_salud/bussiness/providers/edan_provider.dart';
@@ -86,37 +86,68 @@ class _PageNotSendState extends State<PageNotSend> {
   //   }
   // }
   Widget connectionInternet = Container();
+  late StreamSubscription subscription;
   void _internetConnectListener() async {
-    final bool isConnected = await InternetConnectionChecker().hasConnection;
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
+      if (result == ConnectivityResult.none) {
+        connectionInternet = Container(
+          width: double.infinity,
+          child: const Text(
+            'No tienes coneccion a internet',
+            style: TextStyle(color: Colors.white),
+          ),
+          color: Colors.red,
+          padding: const EdgeInsets.all(20),
+        );
+        setState(() {});
+      } else {
+        connectionInternet = Container();
+        setState(() {});
+      }
+      // Got a new connectivity status!
+      print(result);
+    });
 
-    // actively listen for status updates
-    final StreamSubscription<InternetConnectionStatus> listener =
-        InternetConnectionChecker().onStatusChange.listen(
-      (InternetConnectionStatus status) {
-        switch (status) {
-          case InternetConnectionStatus.connected:
-            // ignore: avoid_print
-            print('Data connection is available.');
-            connectionInternet = Container();
-            setState(() {});
-            break;
-          case InternetConnectionStatus.disconnected:
-            // ignore: avoid_print
-            print('You are disconnected from the internet.');
-            connectionInternet = Container(
-              width: double.infinity,
-              child: Text(
-                'No tienes coneccion a internet',
-                style: TextStyle(color: Colors.white),
-              ),
-              color: Colors.red,
-              padding: EdgeInsets.all(20),
-            );
-            setState(() {});
-            break;
-        }
-      },
-    );
+    // final bool isConnected = await InternetConnectionChecker().hasConnection;
+
+    // // actively listen for status updates
+    // final StreamSubscription<InternetConnectionStatus> listener =
+    //     InternetConnectionChecker().onStatusChange.listen(
+    //   (InternetConnectionStatus status) {
+    //     switch (status) {
+    //       case InternetConnectionStatus.connected:
+    //         // ignore: avoid_print
+    //         print('Data connection is available.');
+    //         connectionInternet = Container();
+    //         setState(() {});
+    //         break;
+    //       case InternetConnectionStatus.disconnected:
+    //         // ignore: avoid_print
+    //         print('You are disconnected from the internet.');
+    //         connectionInternet = Container(
+    //           width: double.infinity,
+    //           child: Text(
+    //             'No tienes coneccion a internet',
+    //             style: TextStyle(color: Colors.white),
+    //           ),
+    //           color: Colors.red,
+    //           padding: EdgeInsets.all(20),
+    //         );
+    //         setState(() {});
+    //         break;
+    //     }
+    //   },
+    // );
+  }
+
+  // Be sure to cancel subscription after you are done
+  @override
+  dispose() {
+    super.dispose();
+
+    subscription.cancel();
   }
 
   Widget _boddy(Size size) {
