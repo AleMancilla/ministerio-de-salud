@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 import 'package:ministerio_de_salud/bussiness/providers/edan_provider.dart';
@@ -30,6 +33,9 @@ class _PageNotSendState extends State<PageNotSend> {
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration.zero, () {
+      _internetConnectListener();
+    });
     _cargandoDatos();
     edanProvider = Provider.of<EdanProvider>(context, listen: false);
   }
@@ -50,20 +56,66 @@ class _PageNotSendState extends State<PageNotSend> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: PreferredSize(
-        child: AppBarWidget(size: size),
-        preferredSize: const Size(double.infinity, 50),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            const BodyAppBar(text: 'Lista EDANs NO enviados'),
-            _boddy(size),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(
+          child: AppBarWidget(size: size),
+          preferredSize: const Size(double.infinity, 50),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              connectionInternet,
+              const BodyAppBar(text: 'Lista EDANs NO enviados'),
+              _boddy(size),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  // void _internetConnect() async {
+  //   bool result = await InternetConnectionChecker().hasConnection;
+  //   if (result == true) {
+  //     print('YAY! Free cute dog pics!');
+  //   } else {
+  //     print('No internet :( Reason:');
+  //     print(InternetConnectionChecker());
+  //   }
+  // }
+  Widget connectionInternet = Container();
+  void _internetConnectListener() async {
+    final bool isConnected = await InternetConnectionChecker().hasConnection;
+
+    // actively listen for status updates
+    final StreamSubscription<InternetConnectionStatus> listener =
+        InternetConnectionChecker().onStatusChange.listen(
+      (InternetConnectionStatus status) {
+        switch (status) {
+          case InternetConnectionStatus.connected:
+            // ignore: avoid_print
+            print('Data connection is available.');
+            connectionInternet = Container();
+            setState(() {});
+            break;
+          case InternetConnectionStatus.disconnected:
+            // ignore: avoid_print
+            print('You are disconnected from the internet.');
+            connectionInternet = Container(
+              width: double.infinity,
+              child: Text(
+                'No tienes coneccion a internet',
+                style: TextStyle(color: Colors.white),
+              ),
+              color: Colors.red,
+              padding: EdgeInsets.all(20),
+            );
+            setState(() {});
+            break;
+        }
+      },
     );
   }
 
@@ -134,7 +186,7 @@ class _PageNotSendState extends State<PageNotSend> {
           ),
           child: GroupEdansNoEnviados(listWidgets: [
             ...edanProvider.listEdansProvider.map((ModelEdan demo) {
-              print(demo.enviado);
+              // print(demo.enviado);
               // if (demo.enviado == 'no') {
               if (demo.enviado == 'NO') {
                 i++;
@@ -217,7 +269,7 @@ class _PageNotSendState extends State<PageNotSend> {
                               padding: const EdgeInsets.all(0),
                               icon: const Icon(Icons.edit),
                               onPressed: () {
-                                print(demo.nombre);
+                                // print(demo.nombre);
                                 navigatorPush(
                                     context,
                                     PageEdans(
