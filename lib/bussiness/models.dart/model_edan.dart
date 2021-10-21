@@ -47,6 +47,7 @@ class ModelEdan {
   String? usuario;
   String? fechap;
   String? enviado;
+  bool? controllerEnviar = false;
 
   ModelEdan({
     this.codEdan,
@@ -97,6 +98,7 @@ class ModelEdan {
     this.usuario,
     this.fechap,
     this.enviado,
+    this.controllerEnviar = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -252,6 +254,63 @@ usuario,
 fechap,
 enviado
 ) VALUES ( '$evento', '$claseEvento', '$fecha', '$hora', '$continua', '$nombre', '$cargo', '$dreccion', '$telFc', '$telCc', '$depto', '$municipio', '$comunidad', '$tieneCoord', '$coordenadaX', '$coordenadaY', '$aereo', '$terrestre', '$fluvial', '$ferroviario', '$partida', '$horaLlegada', '$clima', '$medioComunicacion', '$viviendas', '$familias', '$agua', '$basura', '$alcantarillado', '$electricidad', '$telecom', '$transporte', '$heridos', '$muertos', '$desaparecidos', '$accionesPrioritarias', '$lugarLle', '$fechaLle', '$horaLle', '$responsableLle', '$cargoLle', '$telfFijoLle', '$telfCelLle', '$email', '$usuario', '$fechap', 'NO')""";
+    // return "INSERT INTO `edan` VALUES (DEFAULT', '$evento', '$claseEvento', '$fecha', '$hora', '$continua', '$nombre', '$cargo', '$dreccion', '$telFc', '$telCc', '$depto', '$municipio', '$comunidad', '$tieneCoord', '$coordenadaX', '$coordenadaY', '$aereo', '$terrestre', '$fluvial', '$ferroviario', '$partida', '$horaLlegada', '$clima', '$medioComunicacion', $viviendas, $familias, '$agua', '$basura', '$alcantarillado', '$electricidad', '$telecom', '$transporte', $heridos, $muertos, $desaparecidos, '$accionesPrioritarias', '$lugarLle', '$fechaLle', '$horaLle', '$responsableLle', '$cargoLle', '$telfFijoLle', '$telfCelLle', '$email', '$usuario', '$fechap', 'NO')";
+  }
+
+  String updateSql() {
+    return """
+UPDATE edan SET  
+cod_edan = '$codEdan',
+evento = '$evento',
+clase_evento = '$claseEvento',
+fecha = '$fecha',
+hora = '$hora',
+continua = '$continua',
+nombre = '$nombre',
+cargo = '$cargo',
+dreccion = '$dreccion',
+tel_fc = '$telFc',
+tel_cc = '$telCc',
+depto = '$depto',
+municipio = '$municipio',
+comunidad = '$comunidad',
+tiene_coord = '$tieneCoord',
+coordenada_x = '$coordenadaX',
+coordenada_y = '$coordenadaY',
+aereo = '$aereo',
+terrestre = '$terrestre',
+fluvial = '$fluvial',
+ferroviario = '$ferroviario',
+partida = '$partida',
+hora_llegada = '$horaLlegada',
+clima = '$clima',
+medio_comunicacion = '$medioComunicacion',
+viviendas = '$viviendas',
+familias = '$familias',
+agua = '$agua',
+basura = '$basura',
+alcantarillado = '$alcantarillado',
+electricidad = '$electricidad',
+telecom = '$telecom',
+transporte = '$transporte',
+heridos = '$heridos',
+muertos = '$muertos',
+desaparecidos = '$desaparecidos',
+acciones_prioritarias = '$accionesPrioritarias',
+lugar_lle = '$lugarLle',
+fecha_lle = '$fechaLle',
+hora_lle = '$horaLle',
+responsable_lle = '$responsableLle',
+cargo_lle = '$cargoLle',
+telf_fijo_lle = '$telfFijoLle',
+telf_cel_lle = '$telfCelLle',
+email = '$email',
+usuario = '$usuario',
+fechap = '$fechap',
+enviado = 'NO'
+WHERE
+    cod_edan = '$codEdan' 
+""";
     // return "INSERT INTO `edan` VALUES (DEFAULT', '$evento', '$claseEvento', '$fecha', '$hora', '$continua', '$nombre', '$cargo', '$dreccion', '$telFc', '$telCc', '$depto', '$municipio', '$comunidad', '$tieneCoord', '$coordenadaX', '$coordenadaY', '$aereo', '$terrestre', '$fluvial', '$ferroviario', '$partida', '$horaLlegada', '$clima', '$medioComunicacion', $viviendas, $familias, '$agua', '$basura', '$alcantarillado', '$electricidad', '$telecom', '$transporte', $heridos, $muertos, $desaparecidos, '$accionesPrioritarias', '$lugarLle', '$fechaLle', '$horaLle', '$responsableLle', '$cargoLle', '$telfFijoLle', '$telfCelLle', '$email', '$usuario', '$fechap', 'NO')";
   }
 }

@@ -22,7 +22,8 @@ import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_list_option
 import 'package:ministerio_de_salud/pages/widgets/unit/title_expansion.dart';
 
 class PageEdans extends StatefulWidget {
-  const PageEdans({Key? key}) : super(key: key);
+  const PageEdans({Key? key, this.edanModel}) : super(key: key);
+  final ModelEdan? edanModel;
 
   @override
   State<PageEdans> createState() => _PageEdansState();
@@ -120,42 +121,99 @@ class _PageEdansState extends State<PageEdans> {
   late ScrollController scrollControllergroupDaniosEstablecimiendosDeSalud;
   // double _scrollPositiongroupDaniosAlPersonalDeSalud = 0;
   late ScrollController scrollControllergroupDaniosAlPersonalDeSalud;
+
+  //////////////////////////////////////////////////////
+  ///[CONTROLLERUNICOS]
+  TextEditingController controllercodEdan = TextEditingController();
+  TextEditingController controllerclaseEvento = TextEditingController();
+  TextEditingController controllerfechap = TextEditingController();
+  TextEditingController controllerenviado = TextEditingController();
+
   @override
   void initState() {
     initDB();
-    controllerFecha.text =
-        '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
-    controllerHora.text = '${DateTime.now().hour}:${DateTime.now().minute}';
+    if (widget.edanModel != null) {
+      controllercodEdan.text = widget.edanModel!.codEdan!.toString();
+      controllerEvento.text = widget.edanModel!.evento ?? '';
+      controllerclaseEvento.text = widget.edanModel!.claseEvento ?? '';
+      controllerFecha.text = widget.edanModel!.fecha ?? '';
+      controllerHora.text = widget.edanModel!.hora ?? '';
+      controllerSigueEnDesarrollo.text = widget.edanModel!.continua ?? '';
+      controllerNombreDeContacto.text = widget.edanModel!.nombre ?? '';
+      controllerCargoDeContacto.text = widget.edanModel!.cargo ?? '';
+      controllerDireccionDeContacto.text = widget.edanModel!.dreccion ?? '';
+      controllerTelefonoFijo.text = widget.edanModel!.telFc ?? '';
+      controllerTelefonoMovil.text = widget.edanModel!.telCc ?? '';
+      controllerDepartamento.text = widget.edanModel!.depto ?? '';
+      controllerMunicipio.text = widget.edanModel!.municipio ?? '';
+      controllerComunidad.text = widget.edanModel!.comunidad ?? '';
+      controllerTieneCoordenadas.text = widget.edanModel!.tieneCoord ?? '';
+      controllerCoordenadaX.text = widget.edanModel!.coordenadaX ?? '';
+      controllerCoordenadaY.text = widget.edanModel!.coordenadaY ?? '';
+      controllerViaAerea.text = widget.edanModel!.aereo ?? '';
+      controllerViaTerrestre.text = widget.edanModel!.terrestre ?? '';
+      controllerViaFluvial.text = widget.edanModel!.fluvial ?? '';
+      controllerViaFerroviaria.text = widget.edanModel!.ferroviario ?? '';
+      controllerParaLlegar.text = widget.edanModel!.partida ?? '';
+      controllerTiempoLlegada.text = widget.edanModel!.horaLlegada ?? '';
+      controllerCondicionClimatica.text = widget.edanModel!.clima ?? '';
+      controllerMediosDeComunicacion.text =
+          widget.edanModel!.medioComunicacion ?? '';
+      controllerViviendasAfectadas.text = widget.edanModel!.viviendas == null
+          ? widget.edanModel!.viviendas.toString()
+          : '0';
+      controllerFamiliasDamnificadas.text = widget.edanModel!.familias == null
+          ? widget.edanModel!.familias.toString()
+          : '0';
+      controllerServicioDeAgua.text = widget.edanModel!.agua ?? '';
+      controllerServicioDeRecoleccion.text = widget.edanModel!.basura ?? '';
+      controllerServicioDeAlcantarilla.text =
+          widget.edanModel!.alcantarillado ?? '';
+      controllerServicioDeEnergia.text = widget.edanModel!.electricidad ?? '';
+      controllerServicioDeTelecomunicaciones.text =
+          widget.edanModel!.telecom ?? '';
+      controllerServicioDeTransporte.text = widget.edanModel!.transporte ?? '';
+      controllerHeridos.text = widget.edanModel!.heridos == null
+          ? widget.edanModel!.heridos.toString()
+          : '0';
+      controllerFallecidos.text = widget.edanModel!.muertos == null
+          ? widget.edanModel!.muertos.toString()
+          : '0';
+      controllerDesaparecidos.text = widget.edanModel!.desaparecidos == null
+          ? widget.edanModel!.desaparecidos.toString()
+          : '0';
+      controllerAccionesPrioritarias.text =
+          widget.edanModel!.accionesPrioritarias == null
+              ? widget.edanModel!.accionesPrioritarias.toString()
+              : '0';
+      controllerLugarEDAN.text = widget.edanModel!.lugarLle == null
+          ? widget.edanModel!.accionesPrioritarias.toString()
+          : '0';
+      controllerFechaEDAN.text = widget.edanModel!.fechaLle ?? '';
+      controllerHoraEDAN.text = widget.edanModel!.horaLle ?? '';
+      controllerResponsableEDAN.text = widget.edanModel!.responsableLle ?? '';
+      controllerCargoEDAN.text = widget.edanModel!.cargoLle ?? '';
+      controllerTelfFijoEDAN.text = widget.edanModel!.telfFijoLle ?? '';
+      controllerTelfMovilEDAN.text = widget.edanModel!.telfCelLle ?? '';
+      controllerCorreoEDAN.text = widget.edanModel!.email ?? '';
+      controllerFechaAuxEDAN.text = widget.edanModel!.usuario ?? '';
+      controllerfechap.text = widget.edanModel!.fechap ?? '';
+      controllerenviado.text = widget.edanModel!.enviado ?? '';
+    } else {
+      controllerFecha.text =
+          '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
+      controllerHora.text = '${DateTime.now().hour}:${DateTime.now().minute}';
 
-    controllerFechaEDAN.text =
-        '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
-    controllerHoraEDAN.text = '${DateTime.now().hour}:${DateTime.now().minute}';
+      controllerFechaEDAN.text =
+          '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
+      controllerHoraEDAN.text =
+          '${DateTime.now().hour}:${DateTime.now().minute}';
+    }
     scrollControllergroupInstalacionDeAlbergues = ScrollController();
     scrollControllergroupDaniosEstablecimiendosDeSalud = ScrollController();
     scrollControllergroupDaniosAlPersonalDeSalud = ScrollController();
     super.initState();
   }
-
-  // _scrollListenergroupInstalacionDeAlbergues() {
-  //   setState(() {
-  //     _scrollPositiongroupInstalacionDeAlbergues =
-  //         scrollControllergroupInstalacionDeAlbergues.position.pixels;
-  //   });
-  // }
-
-  // _scrollListenergroupDaniosEstablecimiendosDeSalud() {
-  //   setState(() {
-  //     _scrollPositiongroupDaniosEstablecimiendosDeSalud =
-  //         scrollControllergroupDaniosEstablecimiendosDeSalud.position.pixels;
-  //   });
-  // }
-
-  // _scrollListenergroupDaniosAlPersonalDeSalud() {
-  //   setState(() {
-  //     _scrollPositiongroupDaniosAlPersonalDeSalud =
-  //         scrollControllergroupDaniosAlPersonalDeSalud.position.pixels;
-  //   });
-  // }
 
   void initDB() async {
     db.initDB();
@@ -336,6 +394,10 @@ class _PageEdansState extends State<PageEdans> {
                             return;
                           }
                           ModelEdan modelo = ModelEdan(
+                            // ignore: unnecessary_null_comparison
+                            codEdan: controllercodEdan.text != ''
+                                ? int.parse(controllercodEdan.text)
+                                : 0,
                             evento: controllerEvento.text,
                             fecha: controllerFecha.text,
                             hora: controllerHora.text,
@@ -390,7 +452,14 @@ class _PageEdansState extends State<PageEdans> {
                             fechap: '',
                             enviado: '',
                           );
-                          db.insertEDAN(modelo);
+
+                          if (widget.edanModel != null) {
+                            print('update');
+                            db.updateEDAN(modelo);
+                          } else {
+                            print('insert');
+                            db.insertEDAN(modelo);
+                          }
                           // db.insertEVENTO();
                         },
                       ),
@@ -802,26 +871,6 @@ class _PageEdansState extends State<PageEdans> {
     );
   }
 
-  // Widget _buttonSelect(String text) {
-  //   return Material(
-  //     color: Colors.cyan[700],
-  //     child: InkWell(
-  //       child: Container(
-  //         child: Text(
-  //           text,
-  //           style: const TextStyle(color: Colors.white),
-  //         ),
-  //         padding: const EdgeInsets.all(10),
-  //         // color: Colors.cyan[700],
-  //       ),
-  //       onTap: () async {
-  //         listDaniosEstablecimientosDeSalud
-  //             .add(_DaniosEstablecimientosDeSalud());
-  //         await _actualizarListaEstableciemientosDeSalud();
-  //       },
-  //     ),
-  //   );
-  // }
   Widget _groupDaniosEstablecimiendosDeSalud(Size size) {
     return Scrollbar(
       isAlwaysShown: true,

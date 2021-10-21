@@ -36,6 +36,11 @@ class DataBaseEdans {
     print('###### $response');
   }
 
+  updateEDAN(ModelEdan edan) async {
+    int response = await _db.rawInsert(edan.updateSql());
+    print('###### $response');
+  }
+
   insertEVENTO() async {
     int response = await _db.rawInsert(
         '''INSERT INTO evento VALUES (2, 'Granizada', 'Helada/Granizada/Nevada', 18);
@@ -47,9 +52,7 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
   Future<List<ModelEdan>> getAllEdans() async {
     print('lectura sql');
     List<Map<String, dynamic>> result = await _db.query('edan');
-    result.forEach((element) {
-      print("------- ${element['cod_edan']}");
-    });
+    result.forEach((element) {});
     print(result.length);
     return result.map((map) => ModelEdan.fromMap(map)).toList();
   }

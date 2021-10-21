@@ -18,6 +18,11 @@ class PageNotSend extends StatefulWidget {
 class _PageNotSendState extends State<PageNotSend> {
   DataBaseEdans db = DataBaseEdans();
   List<ModelEdan> listModelEdans = [];
+
+  ScrollController scrollControllerEdansNoEnviados = ScrollController();
+
+  List<Widget> listEdansNoEnviadosWidget = [];
+  List<_EdansNoEnviados> listEdansNoEnviados = [];
   @override
   void initState() {
     super.initState();
@@ -27,29 +32,23 @@ class _PageNotSendState extends State<PageNotSend> {
   _cargandoDatos() async {
     await db.initDB();
     listModelEdans = await db.getAllEdans();
+    Future.delayed(Duration.zero, () {
+      // listEdansNoEnviados = listModelEdans.map(
+      //   (ModelEdan edan) {
+      //     _EdansNoEnviados edanX = _EdansNoEnviados.fromData(
+      //       nro: edan.codEdan.toString(),
+      //       evento: edan.evento!,
+      //       nombreEvento: '',
+      //       fecha: edan.fecha!,
+      //       modelEdan: edan,
+      //     );
+      //     print(' === ${edan.nombre} === ${edan.fecha}');
+      //     return edanX;
+      //   },
+      // ).toList();
 
-    listEdansNoEnviados = listModelEdans.map(
-      (ModelEdan edan) {
-        print(
-            '### ${edan.codEdan} # ${edan.evento} # ${edan.nombre} # ${edan.fecha} ###');
-        return _EdansNoEnviados.fromData(
-          nro: edan.codEdan.toString(),
-          evento: edan.evento!,
-          nombreEvento: '',
-          // nombreEvento: edan.nombre!,
-          fecha: edan.fecha!,
-        );
-      },
-    ).toList();
-
-    // await _listaEdansNoEnviados();
-    setState(() {});
-  }
-
-  @override
-  void didChangeDependencies() {
-    print('===================================');
-    super.didChangeDependencies();
+      setState(() {});
+    });
   }
 
   @override
@@ -74,160 +73,44 @@ class _PageNotSendState extends State<PageNotSend> {
 
   Widget _boddy(Size size) {
     return Expanded(
-      child: Container(
-        // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(width: double.infinity),
-              Column(
-                children: [
-                  CupertinoButton(
-                    onPressed: () {
-                      navigatorPush(context, const PageEdans());
-                    },
-                    color: Colors.grey[200],
-                    child: const Text(
-                      'Registrar Nuevo',
-                      style: TextStyle(color: Colors.black),
-                    ),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(width: double.infinity),
+            Column(
+              children: [
+                CupertinoButton(
+                  onPressed: () {
+                    navigatorPush(context, const PageEdans());
+                  },
+                  color: Colors.grey[200],
+                  child: const Text(
+                    'Registrar Nuevo',
+                    style: TextStyle(color: Colors.black),
                   ),
-                  CupertinoButton(
-                    onPressed: () {
-                      db.getAllTables();
-                    },
-                    color: Colors.grey[200],
-                    child: const Text(
-                      'leer datos',
-                      style: TextStyle(color: Colors.black),
-                    ),
+                ),
+                CupertinoButton(
+                  onPressed: () {
+                    db.getAllTables();
+                  },
+                  color: Colors.grey[200],
+                  child: const Text(
+                    'leer datos',
+                    style: TextStyle(color: Colors.black),
                   ),
-                  Container(
-                    color: Colors.grey[50],
-                    child: FutureBuilder(
-                      future: db.initDB(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          return _showList(context);
-                        } else {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
+                ),
+                Container(
+                  color: Colors.grey[50],
+                  child: _groupDaniosEdansNotSend(size),
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );
   }
-
-  _showList(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return _groupDaniosEdansNotSend(size);
-  }
-
-  ScrollController scrollControllerEdansNoEnviados = ScrollController();
-
-  List<Widget> listEdansNoEnviadosWidget = [];
-  List<_EdansNoEnviados> listEdansNoEnviados = [];
-
-  // Future<void> _listaEdansNoEnviados() async {
-  //   print('se recargo ============');
-  //   listEdansNoEnviadosWidget = [];
-  //   int i = 0;
-  //   listEdansNoEnviadosWidget =
-  //       listEdansNoEnviados.map((_EdansNoEnviados demo) {
-  //     i++;
-  //     return Container(
-  //       color: i % 2 == 0 ? Colors.blue[50] : Colors.white,
-  //       child: IntrinsicHeight(
-  //         child: Row(
-  //           crossAxisAlignment: CrossAxisAlignment.stretch,
-  //           children: [
-  //             Expanded(
-  //               flex: 1,
-  //               child: Container(
-  //                 padding: const EdgeInsets.all(10),
-  //                 alignment: Alignment.center,
-  //                 decoration: BoxDecoration(
-  //                   border: Border.all(color: Colors.lightBlue.shade100),
-  //                 ),
-  //                 child: Checkbox(
-  //                   value: demo.controllerEnviar,
-  //                   onChanged: (value) {
-  //                     setState(() {
-  //                       demo.controllerEnviar = value!;
-  //                     });
-  //                   },
-  //                 ),
-  //               ),
-  //             ),
-  //             Expanded(
-  //               flex: 1,
-  //               child: Container(
-  //                 alignment: Alignment.centerLeft,
-  //                 decoration: BoxDecoration(
-  //                   border: Border.all(color: Colors.lightBlue.shade100),
-  //                 ),
-  //                 child: Text(demo.controllerNro.text),
-  //               ),
-  //             ),
-  //             Expanded(
-  //               flex: 3,
-  //               child: Container(
-  //                 alignment: Alignment.centerLeft,
-  //                 decoration: BoxDecoration(
-  //                   border: Border.all(color: Colors.lightBlue.shade100),
-  //                 ),
-  //                 child: Text(demo.controllerEvento.text),
-  //               ),
-  //             ),
-  //             Expanded(
-  //               flex: 5,
-  //               child: Container(
-  //                 alignment: Alignment.centerLeft,
-  //                 decoration: BoxDecoration(
-  //                   border: Border.all(color: Colors.lightBlue.shade100),
-  //                 ),
-  //                 child: Text(demo.controllerNombreEventoBiologico.text),
-  //               ),
-  //             ),
-  //             Expanded(
-  //               flex: 3,
-  //               child: Container(
-  //                 alignment: Alignment.centerLeft,
-  //                 decoration: BoxDecoration(
-  //                   border: Border.all(color: Colors.lightBlue.shade100),
-  //                 ),
-  //                 child: Text(demo.controllerFecha.text),
-  //               ),
-  //             ),
-  //             Expanded(
-  //               flex: 1,
-  //               child: Container(
-  //                 alignment: Alignment.centerLeft,
-  //                 decoration: BoxDecoration(
-  //                   border: Border.all(color: Colors.lightBlue.shade100),
-  //                 ),
-  //                 child: IconButton(
-  //                   padding: const EdgeInsets.all(0),
-  //                   icon: const Icon(Icons.edit),
-  //                   onPressed: () {},
-  //                 ),
-  //               ),
-  //             )
-  //           ],
-  //         ),
-  //       ),
-  //     );
-  //   }).toList();
-  // }
 
   Widget _groupDaniosEdansNotSend(Size size) {
     int i = 0;
@@ -243,7 +126,7 @@ class _PageNotSendState extends State<PageNotSend> {
             border: Border.all(color: Colors.lightBlue),
           ),
           child: GroupEdansNoEnviados(listWidgets: [
-            ...listEdansNoEnviados.map((_EdansNoEnviados demo) {
+            ...listModelEdans.map((ModelEdan demo) {
               i++;
               return Container(
                 color: i % 2 == 0 ? Colors.blue[50] : Colors.white,
@@ -261,7 +144,10 @@ class _PageNotSendState extends State<PageNotSend> {
                                 Border.all(color: Colors.lightBlue.shade100),
                           ),
                           child: CheckBoxDemo(
-                            controller: demo.controllerEnviar,
+                            controller: demo.controllerEnviar!,
+                            onchange: () {
+                              demo.controllerEnviar = !demo.controllerEnviar!;
+                            },
                           ),
                         ),
                       ),
@@ -273,7 +159,7 @@ class _PageNotSendState extends State<PageNotSend> {
                             border:
                                 Border.all(color: Colors.lightBlue.shade100),
                           ),
-                          child: Text(demo.controllerNro.text),
+                          child: Text(demo.codEdan!.toString()),
                         ),
                       ),
                       Expanded(
@@ -284,7 +170,7 @@ class _PageNotSendState extends State<PageNotSend> {
                             border:
                                 Border.all(color: Colors.lightBlue.shade100),
                           ),
-                          child: Text(demo.controllerEvento.text),
+                          child: Text(demo.evento!),
                         ),
                       ),
                       Expanded(
@@ -295,8 +181,7 @@ class _PageNotSendState extends State<PageNotSend> {
                             border:
                                 Border.all(color: Colors.lightBlue.shade100),
                           ),
-                          child:
-                              Text(demo.controllerNombreEventoBiologico.text),
+                          child: Text(''),
                         ),
                       ),
                       Expanded(
@@ -307,7 +192,7 @@ class _PageNotSendState extends State<PageNotSend> {
                             border:
                                 Border.all(color: Colors.lightBlue.shade100),
                           ),
-                          child: Text(demo.controllerFecha.text),
+                          child: Text(demo.fecha!),
                         ),
                       ),
                       Expanded(
@@ -321,7 +206,14 @@ class _PageNotSendState extends State<PageNotSend> {
                           child: IconButton(
                             padding: const EdgeInsets.all(0),
                             icon: const Icon(Icons.edit),
-                            onPressed: () {},
+                            onPressed: () {
+                              print(demo.nombre);
+                              navigatorPush(
+                                  context,
+                                  PageEdans(
+                                    edanModel: demo,
+                                  ));
+                            },
                           ),
                         ),
                       )
@@ -350,6 +242,7 @@ class _EdansNoEnviados {
   TextEditingController controllerNombreEventoBiologico =
       TextEditingController();
   TextEditingController controllerFecha = TextEditingController();
+  ModelEdan? modelEdan;
 
   // _EdansNoEnviados();
   _EdansNoEnviados.fromData({
@@ -357,17 +250,29 @@ class _EdansNoEnviados {
     required String evento,
     required String nombreEvento,
     required String fecha,
+    required ModelEdan modelEdan,
   }) {
     controllerNro.text = nro;
     controllerEvento.text = evento;
     controllerNombreEventoBiologico.text = nombreEvento;
     controllerFecha.text = fecha;
+    modelEdan = modelEdan;
   }
+
+  void fromData(
+      {required String nro,
+      required String evento,
+      required String nombreEvento,
+      required String fecha,
+      required ModelEdan modelEdan}) {}
 }
 
+// ignore: must_be_immutable
 class CheckBoxDemo extends StatefulWidget {
-  CheckBoxDemo({Key? key, required this.controller}) : super(key: key);
+  CheckBoxDemo({Key? key, required this.controller, required this.onchange})
+      : super(key: key);
   bool controller;
+  Function onchange;
 
   @override
   _CheckBoxDemoState createState() => _CheckBoxDemoState();
@@ -379,6 +284,7 @@ class _CheckBoxDemoState extends State<CheckBoxDemo> {
     return Checkbox(
       value: widget.controller,
       onChanged: (value) {
+        widget.onchange();
         setState(() {
           widget.controller = value!;
         });
