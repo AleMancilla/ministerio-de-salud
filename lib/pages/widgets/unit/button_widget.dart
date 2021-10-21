@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ButtonWidget extends StatelessWidget {
   final String text;
-  final Color color;
+  final Color? color;
   final Color textcolor;
   final Function ontap;
 

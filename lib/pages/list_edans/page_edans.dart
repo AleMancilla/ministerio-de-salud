@@ -4,6 +4,7 @@ import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
+import 'package:ministerio_de_salud/bussiness/providers/edan_provider.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/button_widget.dart';
@@ -20,6 +21,7 @@ import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_expanded.da
 import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_list_boolean.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_list_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/title_expansion.dart';
+import 'package:provider/provider.dart';
 
 class PageEdans extends StatefulWidget {
   const PageEdans({Key? key, this.edanModel}) : super(key: key);
@@ -113,6 +115,8 @@ class _PageEdansState extends State<PageEdans> {
   ///[DATABASE]
   DataBaseEdans db = DataBaseEdans();
 
+  late EdanProvider edanProvider;
+
   ///
 
   // double _scrollPositiongroupInstalacionDeAlbergues = 0;
@@ -131,6 +135,7 @@ class _PageEdansState extends State<PageEdans> {
 
   @override
   void initState() {
+    edanProvider = Provider.of<EdanProvider>(context, listen: false);
     initDB();
     if (widget.edanModel != null) {
       controllercodEdan.text = widget.edanModel!.codEdan!.toString();
@@ -454,12 +459,13 @@ class _PageEdansState extends State<PageEdans> {
                           );
 
                           if (widget.edanModel != null) {
-                            print('update');
                             db.updateEDAN(modelo);
                           } else {
-                            print('insert');
                             db.insertEDAN(modelo);
                           }
+
+                          edanProvider.readDataBase();
+                          Navigator.pop(context);
                           // db.insertEVENTO();
                         },
                       ),

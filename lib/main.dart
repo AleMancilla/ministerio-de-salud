@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
+import 'package:ministerio_de_salud/bussiness/providers/edan_provider.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_not_send.dart';
 import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_de_atencion.dart';
 import 'package:ministerio_de_salud/pages/login/login_page.dart';
 import 'package:ministerio_de_salud/utils/user_preferens.dart';
+import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:window_size/window_size.dart';
@@ -37,13 +39,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => EdanProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blueGrey,
+        ),
+        home: _pageHome(context),
       ),
-      home: _pageHome(context),
     );
   }
 
