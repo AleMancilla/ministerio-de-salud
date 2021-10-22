@@ -520,6 +520,7 @@ class _PageEdansState extends State<PageEdans> {
               borderRadius: BorderRadius.circular(100)),
         ),
         ExpansionTile(
+          initiallyExpanded: true,
           title: const TitleExpansion(texto: '1.- DATOS GENERALES'),
           children: <Widget>[
             InputListOption(

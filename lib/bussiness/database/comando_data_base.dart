@@ -76,5 +76,35 @@ Departamento TEXT DEFAULT NULL,
 Municipio TEXT DEFAULT NULL,
 Comunidad TEXT DEFAULT NULL,
 Establecimiento TEXT DEFAULT NULL
-)"""
+)""",
+  """
+CREATE TABLE IF NOT EXISTS planilla_atencion (
+usuario TEXT DEFAULT NULL,
+cod_planilla INTEGER PRIMARY KEY AUTOINCREMENT,
+cod_edan INTEGER DEFAULT NULL,
+depto TEXT DEFAULT NULL,
+municipio TEXT DEFAULT NULL,
+comunidad TEXT DEFAULT NULL,
+nomestablecimiento TEXT  DEFAULT NULL,
+gerencia_red TEXT DEFAULT NULL,
+poblacion INTEGER DEFAULT NULL,
+fecha date DEFAULT NULL,
+hora time DEFAULT NULL,
+evento TEXT DEFAULT NULL,
+nombre_responsable TEXT DEFAULT NULL,
+cargo_responsable TEXT DEFAULT NULL,
+telf_responsable TEXT DEFAULT NULL,
+enviado TEXT DEFAULT NULL
+);
+""",
+  """
+CREATE TABLE IF NOT EXISTS planilla_detalle (
+cod_detalle INTEGER PRIMARY KEY AUTOINCREMENT,
+cod_planilla INTEGER DEFAULT NULL,
+edad INTEGER DEFAULT NULL,
+sexo TEXT DEFAULT NULL,
+diagnostico TEXT DEFAULT NULL,
+cantidad INTEGER DEFAULT NULL
+);
+"""
 ];

@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
 import 'package:ministerio_de_salud/bussiness/providers/edan_provider.dart';
+import 'package:ministerio_de_salud/bussiness/providers/planillas_no_enviadas_provider.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_not_send.dart';
-import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_de_atencion.dart';
 import 'package:ministerio_de_salud/pages/login/login_page.dart';
+import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_no_enviada.dart';
 import 'package:ministerio_de_salud/utils/user_preferens.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => EdanProvider()),
+        ChangeNotifierProvider(create: (_) => PlanillasNoEnviadasProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -61,7 +63,7 @@ class MyApp extends StatelessWidget {
       if (prefs.userNivel == '1') {
         return const PageNotSend();
       } else if (prefs.userNivel == '2') {
-        return const PagePlanillaAtencion();
+        return const PlanillaNoEnviada();
       } else {
         return const LoginPage();
       }

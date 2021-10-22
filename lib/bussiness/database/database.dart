@@ -5,6 +5,7 @@ import 'package:ministerio_de_salud/bussiness/database/comando_insert.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_evento.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_lista_sintomas.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencion.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DataBaseEdans {
@@ -12,7 +13,7 @@ class DataBaseEdans {
 
   initDB() async {
     _db = await openDatabase(
-      'my_database6.db',
+      'my_database7.db',
       version: 1,
       onCreate: (Database db, int newVersion) async {
         Batch batch = db.batch();
@@ -63,20 +64,15 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
     return result.map((map) => ModelEvento.fromMap(map)).toList();
   }
 
-  Future<void> getAllTables() async {
-    print('#############xxxx edan');
-    List<Map> result = await _db.rawQuery('SELECT * from edan;');
-    print('''
-    =========================================
-    $result
-    =========================================
-    ''');
-  }
-
   Future<List<ModelListaSintomas>> getAllModelListaSintomas() async {
     print('#############');
     List<Map<String, dynamic>> result = await _db.query('lista_sintomas');
     return result.map((map) => ModelListaSintomas.fromMap(map)).toList();
+  } //ModelPlanillaDeAtencion
+
+  Future<List<ModelPlanillaDeAtencion>> getAllPlanillaDeAtencion() async {
+    List<Map<String, dynamic>> result = await _db.query('planilla_atencion');
+    return result.map((map) => ModelPlanillaDeAtencion.fromMap(map)).toList();
   }
 }
 

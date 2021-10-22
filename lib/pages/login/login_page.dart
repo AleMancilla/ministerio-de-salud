@@ -2,6 +2,7 @@ import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_not_send.dart';
 import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_de_atencion.dart';
+import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_no_enviada.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/button_widget.dart';
@@ -100,8 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                 if (prefs.userNivel == '1') {
                   navigatorPushReplacement(context, const PageNotSend());
                 } else if (prefs.userNivel == '2') {
-                  navigatorPushReplacement(
-                      context, const PagePlanillaAtencion());
+                  navigatorPushReplacement(context, const PlanillaNoEnviada());
                 } else {
                   CoolAlert.show(
                     context: context,

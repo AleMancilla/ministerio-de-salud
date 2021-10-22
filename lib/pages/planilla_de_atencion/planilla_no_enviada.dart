@@ -4,32 +4,32 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
-import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
-import 'package:ministerio_de_salud/bussiness/providers/edan_provider.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencion.dart';
+import 'package:ministerio_de_salud/bussiness/providers/planillas_no_enviadas_provider.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_edans.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/button_widget.dart';
-import 'package:ministerio_de_salud/pages/widgets/unit/group_edans_no_enviados.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/group_planillas_no_enviados.dart';
 import 'package:ministerio_de_salud/utils/navigator_route.dart';
 import 'package:provider/provider.dart';
 
-class PageNotSend extends StatefulWidget {
-  const PageNotSend({Key? key}) : super(key: key);
+class PlanillaNoEnviada extends StatefulWidget {
+  const PlanillaNoEnviada({Key? key}) : super(key: key);
 
   @override
-  State<PageNotSend> createState() => _PageNotSendState();
+  State<PlanillaNoEnviada> createState() => _PageNotSendState();
 }
 
-class _PageNotSendState extends State<PageNotSend> {
+class _PageNotSendState extends State<PlanillaNoEnviada> {
   DataBaseEdans db = DataBaseEdans();
-  List<ModelEdan> listModelEdans = [];
+  List<ModelPlanillaDeAtencion> listModelPlanillaDeAtencion = [];
 
-  ScrollController scrollControllerEdansNoEnviados = ScrollController();
+  ScrollController scrollControllerPlanillaNoEnviados = ScrollController();
 
-  List<Widget> listEdansNoEnviadosWidget = [];
+  List<Widget> listPlanillasNoEnviadosWidget = [];
 
-  late EdanProvider edanProvider;
+  late PlanillasNoEnviadasProvider planillasProvider;
   @override
   void initState() {
     super.initState();
@@ -37,18 +37,20 @@ class _PageNotSendState extends State<PageNotSend> {
       _internetConnectListener();
     });
     _cargandoDatos();
-    edanProvider = Provider.of<EdanProvider>(context, listen: false);
+    planillasProvider =
+        Provider.of<PlanillasNoEnviadasProvider>(context, listen: false);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    edanProvider = Provider.of<EdanProvider>(context, listen: true);
+    planillasProvider =
+        Provider.of<PlanillasNoEnviadasProvider>(context, listen: true);
   }
 
   _cargandoDatos() async {
     Future.delayed(Duration.zero, () {
-      edanProvider.readDataBase();
+      planillasProvider.readDataBase();
       setState(() {});
     });
   }
@@ -67,7 +69,7 @@ class _PageNotSendState extends State<PageNotSend> {
           child: Column(
             children: [
               connectionInternet,
-              const BodyAppBar(text: 'Lista EDANs NO enviados'),
+              const BodyAppBar(text: 'PLANILLA DE ATENCION'),
               _boddy(size),
             ],
           ),
@@ -182,9 +184,9 @@ class _PageNotSendState extends State<PageNotSend> {
                       ButtonWidget(
                         ontap: () {
                           // navigatorPush(context, const PageEdans());
-                          edanProvider.listEdansProvider
-                              .forEach((ModelEdan edan) {
-                            print(edan.controllerEnviar);
+                          planillasProvider.listPlanillasProvider
+                              .forEach((ModelPlanillaDeAtencion planillas) {
+                            print(planillas.controllerEnviar);
                           });
                         },
                         color: Colors.grey[200],
@@ -207,7 +209,7 @@ class _PageNotSendState extends State<PageNotSend> {
     return Scrollbar(
       isAlwaysShown: true,
       showTrackOnHover: true,
-      controller: scrollControllerEdansNoEnviados,
+      controller: scrollControllerPlanillaNoEnviados,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(
@@ -215,20 +217,22 @@ class _PageNotSendState extends State<PageNotSend> {
           decoration: BoxDecoration(
             border: Border.all(color: Colors.lightBlue),
           ),
-          child: GroupEdansNoEnviados(listWidgets: [
-            ...edanProvider.listEdansProvider.map((ModelEdan demo) {
-              // print(demo.enviado);
+          child: GroupPlanillasNoEnviados(listWidgets: [
+            ...planillasProvider.listPlanillasProvider
+                .map((ModelPlanillaDeAtencion demo) {
+              print(
+                  ' == ${demo.enviado} == ${demo.evento} == ${demo.depto} == ${demo.municipio} == ${demo.comunidad} == ${demo.nomestablecimiento} == ${demo.fecha}');
               // if (demo.enviado == 'no') {
-              if (demo.enviado == 'NO') {
+              if (demo.enviado == 'SI') {
                 i++;
                 return Container(
-                  color: _colorItem(i, demo.controllerEnviar),
+                  color: _colorItem(i, demo.controllerEnviar!),
                   child: IntrinsicHeight(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Expanded(
-                          flex: 1,
+                          flex: 2,
                           child: Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
@@ -245,7 +249,7 @@ class _PageNotSendState extends State<PageNotSend> {
                           ),
                         ),
                         Expanded(
-                          flex: 1,
+                          flex: 2,
                           child: Container(
                             alignment: Alignment.centerLeft,
                             padding: const EdgeInsets.all(5),
@@ -253,11 +257,11 @@ class _PageNotSendState extends State<PageNotSend> {
                               border:
                                   Border.all(color: Colors.lightBlue.shade100),
                             ),
-                            child: Text(demo.codEdan!.toString()),
+                            child: Text(demo.codPlanilla!.toString()),
                           ),
                         ),
                         Expanded(
-                          flex: 3,
+                          flex: 2,
                           child: Container(
                             padding: const EdgeInsets.all(5),
                             alignment: Alignment.centerLeft,
@@ -269,7 +273,7 @@ class _PageNotSendState extends State<PageNotSend> {
                           ),
                         ),
                         Expanded(
-                          flex: 5,
+                          flex: 3,
                           child: Container(
                             padding: const EdgeInsets.all(5),
                             alignment: Alignment.centerLeft,
@@ -277,11 +281,47 @@ class _PageNotSendState extends State<PageNotSend> {
                               border:
                                   Border.all(color: Colors.lightBlue.shade100),
                             ),
-                            child: Text(''),
+                            child: Text(demo.depto!),
                           ),
                         ),
                         Expanded(
                           flex: 3,
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.lightBlue.shade100),
+                            ),
+                            child: Text(demo.municipio!),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.lightBlue.shade100),
+                            ),
+                            child: Text(demo.comunidad!),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.lightBlue.shade100),
+                            ),
+                            child: Text(demo.nomestablecimiento!),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
                           child: Container(
                             padding: const EdgeInsets.all(5),
                             alignment: Alignment.centerLeft,
@@ -305,15 +345,41 @@ class _PageNotSendState extends State<PageNotSend> {
                               icon: const Icon(Icons.edit),
                               onPressed: () {
                                 // print(demo.nombre);
-                                navigatorPush(
-                                    context,
-                                    PageEdans(
-                                      edanModel: demo,
-                                    ));
+                                // navigatorPush(
+                                //     context,
+                                //     PageEdans(
+                                //       edanModel: demo,
+                                //     ));
                               },
                             ),
                           ),
-                        )
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.lightBlue.shade100),
+                            ),
+                            child: ButtonWidget(
+                                text: 'Detalles de la planilla', ontap: () {}),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.lightBlue.shade100),
+                            ),
+                            child:
+                                ButtonWidget(text: 'Ver Informe', ontap: () {}),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -324,10 +390,16 @@ class _PageNotSendState extends State<PageNotSend> {
             }).toList(),
           ], titles: const [
             'Enviar',
-            'No.',
+            'Planilla',
             'Evento',
-            'Nombre Evento Biologico',
-            'fecha'
+            'Departamento',
+            'Municipio',
+            'Comunidad',
+            'Establecimiento',
+            'Fecha',
+            ' ',
+            'Detalle de planilla',
+            'Ver Informe'
           ]),
         ),
       ),
