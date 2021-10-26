@@ -42,6 +42,16 @@ class DataBaseEdans {
     print('###### $response');
   }
 
+  insertPLANILLA(ModelPlanillaDeAtencion planilla) async {
+    int response = await _db.rawInsert(planilla.insertSql());
+    print('###### $response');
+  }
+
+  updatePLANILLA(ModelPlanillaDeAtencion planilla) async {
+    int response = await _db.rawInsert(planilla.updateSql());
+    print('###### $response');
+  }
+
   insertEVENTO() async {
     int response = await _db.rawInsert(
         '''INSERT INTO evento VALUES (2, 'Granizada', 'Helada/Granizada/Nevada', 18);
@@ -53,8 +63,6 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
   Future<List<ModelEdan>> getAllEdans() async {
     print('lectura sql');
     List<Map<String, dynamic>> result = await _db.query('edan');
-    result.forEach((element) {});
-    print(result.length);
     return result.map((map) => ModelEdan.fromMap(map)).toList();
   }
 
@@ -73,6 +81,11 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
   Future<List<ModelPlanillaDeAtencion>> getAllPlanillaDeAtencion() async {
     List<Map<String, dynamic>> result = await _db.query('planilla_atencion');
     return result.map((map) => ModelPlanillaDeAtencion.fromMap(map)).toList();
+  }
+
+  Future<String> getLastIDEDAN() async {
+    var result = await _db.rawQuery('SELECT Max(cod_edan) as newID from edan');
+    return result[0]['newID'].toString();
   }
 }
 

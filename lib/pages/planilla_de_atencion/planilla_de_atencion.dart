@@ -1,10 +1,17 @@
+import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:ministerio_de_salud/bussiness/database/database.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencion.dart';
+import 'package:ministerio_de_salud/bussiness/providers/planillas_no_enviadas_provider.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/button_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_date_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_expanded.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_hour_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_option.dart';
+import 'package:ministerio_de_salud/utils/user_preferens.dart';
+import 'package:provider/provider.dart';
 
 class PagePlanillaAtencion extends StatefulWidget {
   const PagePlanillaAtencion({Key? key}) : super(key: key);
@@ -29,12 +36,17 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
   TextEditingController controllerTelfResponsable = TextEditingController();
 
   int number = 0;
+  DataBaseEdans db = DataBaseEdans();
+  UserPreferences prefs = UserPreferences();
+  late PlanillasNoEnviadasProvider planillasNoEnviadasProvider;
 
   @override
   void initState() {
     controllerFecha.text =
         '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
     controllerHora.text = '${DateTime.now().hour}:${DateTime.now().minute}';
+    planillasNoEnviadasProvider =
+        Provider.of<PlanillasNoEnviadasProvider>(context, listen: false);
     super.initState();
   }
 
@@ -58,6 +70,124 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                   child: BodyAppBar(text: 'PLANILLA DE ATENCION'),
                 ),
                 _datosGenerales(size),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    children: [
+                      ButtonWidget(
+                        text: 'Guardar',
+                        ontap: () {
+                          if (controllerEvento.text ==
+                              '- Seleccione una opción -') {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion: 'Debes llenar: "Evento"');
+                            return;
+                          }
+                          if (controllerDepartamento.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion: 'Debes llenar: "Departamento"');
+                            return;
+                          }
+                          if (controllerMunicipio.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion: 'Debes llenar: "Municipio"');
+                            return;
+                          }
+                          if (controllerComunidad.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion: 'Debes llenar: "Comunidad"');
+                            return;
+                          }
+                          if (controllerEstablecimiento.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion: 'Debes llenar: "Establecimiento"');
+                            return;
+                          }
+                          if (controllerFecha.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion: 'Debes llenar: "Fecha"');
+                            return;
+                          }
+                          if (controllerHora.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion: 'Debes llenar: "Hora"');
+                            return;
+                          }
+
+                          if (controllerNombreResponsable.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion:
+                                    'Debes llenar: "Nombre de responsable"');
+                            return;
+                          }
+                          if (controllerCargoResponsable.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion:
+                                    'Debes llenar: "Cargo de responsable"');
+                            return;
+                          }
+                          if (controllerTelfResponsable.text.isEmpty) {
+                            _showDialogMessage(
+                                titulo: 'Campo obligatorio no llenado',
+                                descripcion:
+                                    'Debes llenar: "Telf. de contacto responsable"');
+                            return;
+                          }
+
+                          ModelPlanillaDeAtencion modelo =
+                              ModelPlanillaDeAtencion(
+                            usuario: prefs.userCarnet,
+                            codPlanilla: 0,
+                            codEdan: 0,
+                            depto: controllerDepartamento.text,
+                            municipio: controllerMunicipio.text,
+                            comunidad: controllerComunidad.text,
+                            nomestablecimiento: controllerEstablecimiento.text,
+                            gerenciaRed: controllerGerenciaDeRed.text,
+                            poblacion: controllerPoblacion.text != ''
+                                ? int.parse(controllerPoblacion.text)
+                                : 0,
+                            fecha: controllerFecha.text,
+                            hora: controllerHora.text,
+                            evento: controllerEvento.text,
+                            nombreResponsable: controllerNombreResponsable.text,
+                            cargoResponsable: controllerCargoResponsable.text,
+                            telfResponsable: controllerTelfResponsable.text,
+                          );
+
+                          // if (widget.edanModel != null) {
+                          //   db.updateEDAN(modelo);
+                          // } else {
+                          //   db.insertEDAN(modelo);
+                          // }
+                          db.insertPLANILLA(modelo);
+                          planillasNoEnviadasProvider.readDataBase();
+                          Navigator.pop(context);
+                          // db.insertEVENTO();
+                        },
+                      ),
+                      const SizedBox(width: 10),
+                      ButtonWidget(
+                        text: 'Cancelar',
+                        ontap: () {
+                          Navigator.pop(context);
+                          // db.insertEVENTO();
+                        },
+                        color: Colors.grey.shade200,
+                        textcolor: Colors.black,
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(
                   height: 250,
                 ),
@@ -153,5 +283,21 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
         const Divider()
       ],
     );
+  }
+
+  void _showDialogMessage(
+      {required String titulo, required String descripcion}) {
+    EasyDialog(
+      title: Text(
+        titulo,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+        textScaleFactor: 1.2,
+      ),
+      description: Text(
+        descripcion,
+        textScaleFactor: 1.1,
+        textAlign: TextAlign.center,
+      ),
+    ).show(context);
   }
 }

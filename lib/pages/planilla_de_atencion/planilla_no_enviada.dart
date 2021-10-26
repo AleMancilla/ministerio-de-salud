@@ -7,6 +7,7 @@ import 'package:ministerio_de_salud/bussiness/database/database.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencion.dart';
 import 'package:ministerio_de_salud/bussiness/providers/planillas_no_enviadas_provider.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_edans.dart';
+import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_de_atencion.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/button_widget.dart';
@@ -78,15 +79,6 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
     );
   }
 
-  // void _internetConnect() async {
-  //   bool result = await InternetConnectionChecker().hasConnection;
-  //   if (result == true) {
-  //     print('YAY! Free cute dog pics!');
-  //   } else {
-  //     print('No internet :( Reason:');
-  //     print(InternetConnectionChecker());
-  //   }
-  // }
   Widget connectionInternet = Container();
   late StreamSubscription subscription;
   void _internetConnectListener() async {
@@ -172,7 +164,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                     children: [
                       ButtonWidget(
                         ontap: () {
-                          navigatorPush(context, const PageEdans());
+                          navigatorPush(context, const PagePlanillaAtencion());
                         },
                         color: Colors.grey[200],
                         text: 'Registrar Nuevo',

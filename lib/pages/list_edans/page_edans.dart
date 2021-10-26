@@ -21,6 +21,7 @@ import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_expanded.da
 import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_list_boolean.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_list_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/title_expansion.dart';
+import 'package:ministerio_de_salud/utils/user_preferens.dart';
 import 'package:provider/provider.dart';
 
 class PageEdans extends StatefulWidget {
@@ -114,6 +115,7 @@ class _PageEdansState extends State<PageEdans> {
 
   ///[DATABASE]
   DataBaseEdans db = DataBaseEdans();
+  UserPreferences prefs = UserPreferences();
 
   late EdanProvider edanProvider;
 
@@ -205,23 +207,42 @@ class _PageEdansState extends State<PageEdans> {
       controllerfechap.text = widget.edanModel!.fechap ?? '';
       controllerenviado.text = widget.edanModel!.enviado ?? '';
     } else {
+      controllerViviendasAfectadas.text = '0';
+      controllerFamiliasDamnificadas.text = '0';
+      controllerHeridos.text = '0';
+      controllerFallecidos.text = '0';
+      controllerDesaparecidos.text = '0';
       controllerFecha.text =
-          '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
-      controllerHora.text = '${DateTime.now().hour}:${DateTime.now().minute}';
+          '${DateTime.now().day.toString().padLeft(2, '0')}/${DateTime.now().month.toString().padLeft(2, '0')}/${DateTime.now().year}';
+      controllerHora.text =
+          '${DateTime.now().hour.toString().padLeft(2, '0')}:${DateTime.now().minute.toString().padLeft(2, '0')}';
 
       controllerFechaEDAN.text =
-          '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
+          '${DateTime.now().day.toString().padLeft(2, '0')}/${DateTime.now().month.toString().padLeft(2, '0')}/${DateTime.now().year}';
       controllerHoraEDAN.text =
-          '${DateTime.now().hour}:${DateTime.now().minute}';
+          '${DateTime.now().hour.toString().padLeft(2, '0')}:${DateTime.now().minute.toString().padLeft(2, '0')}';
     }
     scrollControllergroupInstalacionDeAlbergues = ScrollController();
     scrollControllergroupDaniosEstablecimiendosDeSalud = ScrollController();
     scrollControllergroupDaniosAlPersonalDeSalud = ScrollController();
+
     super.initState();
   }
 
   void initDB() async {
     db.initDB();
+    Future.delayed(Duration.zero, () async {
+      // db.getLastIDEDAN();
+      if (widget.edanModel != null) {
+        controllercodEdan.text = widget.edanModel!.codEdan!.toString();
+      } else {
+        String data = await db.getLastIDEDAN();
+        int id = int.parse(data);
+        id = id + 1;
+        controllercodEdan.text = id.toString();
+      }
+      print(controllercodEdan.text);
+    });
   }
 
   @override
@@ -453,9 +474,8 @@ class _PageEdansState extends State<PageEdans> {
                             telfFijoLle: controllerTelfFijoEDAN.text,
                             telfCelLle: controllerTelfMovilEDAN.text,
                             email: controllerCorreoEDAN.text,
-                            usuario: '',
+                            usuario: prefs.userCarnet,
                             fechap: '',
-                            enviado: '',
                           );
 
                           if (widget.edanModel != null) {
