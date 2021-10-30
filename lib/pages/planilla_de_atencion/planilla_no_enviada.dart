@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencion.dart';
 import 'package:ministerio_de_salud/bussiness/providers/planillas_no_enviadas_provider.dart';
-import 'package:ministerio_de_salud/pages/list_edans/page_edans.dart';
 import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_de_atencion.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
+import 'package:ministerio_de_salud/pages/widgets/group/group_planillas_no_enviados.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/button_widget.dart';
-import 'package:ministerio_de_salud/pages/widgets/unit/group_planillas_no_enviados.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/check_box_demo.dart';
 import 'package:ministerio_de_salud/utils/navigator_route.dart';
 import 'package:provider/provider.dart';
 
@@ -408,31 +408,5 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
         return Colors.white;
       }
     }
-  }
-}
-
-// ignore: must_be_immutable
-class CheckBoxDemo extends StatefulWidget {
-  CheckBoxDemo({Key? key, required this.controller, required this.onchange})
-      : super(key: key);
-  bool controller;
-  Function onchange;
-
-  @override
-  _CheckBoxDemoState createState() => _CheckBoxDemoState();
-}
-
-class _CheckBoxDemoState extends State<CheckBoxDemo> {
-  @override
-  Widget build(BuildContext context) {
-    return Checkbox(
-      value: widget.controller,
-      onChanged: (value) {
-        widget.onchange();
-        setState(() {
-          widget.controller = value!;
-        });
-      },
-    );
   }
 }

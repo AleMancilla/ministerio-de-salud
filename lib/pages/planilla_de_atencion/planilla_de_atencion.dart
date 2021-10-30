@@ -1,10 +1,12 @@
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_detalle_de_planilla.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencion.dart';
 import 'package:ministerio_de_salud/bussiness/providers/planillas_no_enviadas_provider.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
+import 'package:ministerio_de_salud/pages/widgets/group/group_detalle_planilla.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/button_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_date_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_expanded.dart';
@@ -51,6 +53,13 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
   }
 
   @override
+  void didChangeDependencies() {
+    planillasNoEnviadasProvider =
+        Provider.of<PlanillasNoEnviadasProvider>(context, listen: true);
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
@@ -70,6 +79,23 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                   child: BodyAppBar(text: 'PLANILLA DE ATENCION'),
                 ),
                 _datosGenerales(size),
+                _groupDetallesDePlanilla(size),
+                Material(
+                  color: Colors.grey.shade100,
+                  child: InkWell(
+                    onTap: () async {
+                      planillasNoEnviadasProvider.addModelDetalleDePlanilla();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blueGrey.shade200),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      padding: const EdgeInsets.all(10),
+                      child: const Icon(Icons.add),
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Row(
@@ -299,5 +325,202 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
         textAlign: TextAlign.center,
       ),
     ).show(context);
+  }
+
+  ScrollController scrollControllerEdansNoEnviados = ScrollController();
+
+  Widget _groupDetallesDePlanilla(Size size) {
+    int i = 0;
+    return Scrollbar(
+      isAlwaysShown: true,
+      showTrackOnHover: true,
+      controller: scrollControllerEdansNoEnviados,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          width: size.width > 600 ? size.width - 40 : 600,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.lightBlue),
+          ),
+          child: GroupDetallePlanilla(listWidgets: [
+            ...planillasNoEnviadasProvider.listDetalleDePlanilla
+                .map((ModelDetalleDePlanilla demo) {
+              // print(demo.enviado);
+              // if (demo.enviado == 'no') {
+              i++;
+              return Container(
+                color: _colorItem(i),
+                child: IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.lightBlue.shade100),
+                          ),
+                          child: _itemInput(demo),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.lightBlue.shade100),
+                          ),
+                          child: Row(
+                            children: [
+                              _selected('Hombre', demo),
+                              Text('Hombre'),
+                              _selected('Mujer', demo),
+                              Text('Mujer'),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.lightBlue.shade100),
+                          ),
+                          child: _itemSelectedInputText(demo),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.lightBlue.shade100),
+                          ),
+                          child: IconButton(
+                            padding: const EdgeInsets.all(0),
+                            icon: const Icon(Icons.remove_circle),
+                            onPressed: () {
+                              // print(demo.nombre);
+                              planillasNoEnviadasProvider
+                                  .removeModelDetalleDePlanilla(demo);
+                            },
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
+          ], titles: const [
+            'Edad',
+            'Sexo',
+            'Diagnostico',
+          ]),
+        ),
+      ),
+    );
+  }
+
+  Color? _colorItem(int i) {
+    if (i % 2 == 0) {
+      return Colors.blue[50];
+    } else {
+      return Colors.white;
+    }
+  }
+
+  SizedBox _itemInput(ModelDetalleDePlanilla demo) {
+    return SizedBox(
+      height: 35,
+      child: TextField(
+        // minLines: (widget.descrip) ? 3 : 1,
+        // maxLines: (widget.descrip) ? 10 : 1,
+        decoration: const InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 15),
+          border: OutlineInputBorder(),
+          hintText: 'Edad',
+          // helperText: widget.helptext,
+        ),
+        keyboardType: TextInputType.phone,
+        controller: demo.edad,
+        onChanged: (value) {
+          setState(() {});
+        },
+        // onChanged: (n) {
+        //   print("completo########");
+        //   if(!ordenData.flagEdit){ordenData.flagEdit = true;}
+        // },
+      ),
+    );
+  }
+
+  Widget _itemSelectedInputText(ModelDetalleDePlanilla demo) {
+    return InkWell(
+      // onTap: () {
+      //   showDialog(
+      //     context: context,
+      //     builder: (context) {
+      //       return AlertDialog(
+      //         title: const Text('Seleccione Sexo'),
+      //         content: Text('data'),
+      //       );
+      //     },
+      //   );
+      // },
+      child: SizedBox(
+        height: 35,
+        child: TextField(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Seleccione Sexo'),
+                  content: Text('data'),
+                );
+              },
+            );
+          },
+          // minLines: (widget.descrip) ? 3 : 1,
+          // maxLines: (widget.descrip) ? 10 : 1,
+          decoration: const InputDecoration(
+            contentPadding: EdgeInsets.symmetric(horizontal: 15),
+            border: OutlineInputBorder(),
+            hintText: '- Seleccione una opcion -',
+            // helperText: widget.helptext,
+          ),
+          keyboardType: TextInputType.phone,
+          controller: demo.edad,
+          onChanged: (value) {
+            setState(() {});
+          },
+          // onChanged: (n) {
+          //   print("completo########");
+          //   if(!ordenData.flagEdit){ordenData.flagEdit = true;}
+          // },
+        ),
+      ),
+    );
+  }
+
+  Radio<String> _selected(String data, ModelDetalleDePlanilla demo) {
+    return Radio(
+      value: data,
+      groupValue: demo.sexo.text,
+      onChanged: (String? value) {
+        setState(() {
+          demo.sexo.text = value!;
+        });
+      },
+    );
   }
 }
