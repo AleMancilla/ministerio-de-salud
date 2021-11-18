@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_detalle_de_planilla.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_lista_sintomas.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencion.dart';
 
 class PlanillasNoEnviadasProvider with ChangeNotifier {
@@ -11,10 +12,11 @@ class PlanillasNoEnviadasProvider with ChangeNotifier {
     _listPlanillasProvider = data;
   }
 
-  readDataBase() async {
+  readDataBaseListPlanillas() async {
     DataBaseEdans db = DataBaseEdans();
     await db.initDB();
     _listPlanillasProvider = await db.getAllPlanillaDeAtencion();
+    db.closeDB();
     notifyListeners();
   }
 
@@ -35,5 +37,20 @@ class PlanillasNoEnviadasProvider with ChangeNotifier {
   removeModelDetalleDePlanilla(ModelDetalleDePlanilla item) {
     _listDetalleDePlanilla.remove(item);
     notifyListeners();
+  }
+
+  readDataBaseListtModelListaSintomas() async {
+    DataBaseEdans db = DataBaseEdans();
+    await db.initDB();
+    _listModelListaSintomas = await db.getAllModelListaSintomas();
+    db.closeDB();
+    notifyListeners();
+  }
+
+  List<ModelListaSintomas> _listModelListaSintomas = [];
+  List<ModelListaSintomas> get listModelListaSintomas =>
+      _listModelListaSintomas;
+  set listModelListaSintomas(List<ModelListaSintomas> data) {
+    _listModelListaSintomas = data;
   }
 }

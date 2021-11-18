@@ -32,6 +32,10 @@ class DataBaseEdans {
     );
   }
 
+  closeDB() async {
+    await _db.close();
+  }
+
   insertEDAN(ModelEdan edan) async {
     int response = await _db.rawInsert(edan.insertSql());
     print('###### $response');
@@ -67,13 +71,11 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
   }
 
   Future<List<ModelEvento>> getAllEventos() async {
-    print('#############');
     List<Map<String, dynamic>> result = await _db.query('evento');
     return result.map((map) => ModelEvento.fromMap(map)).toList();
   }
 
   Future<List<ModelListaSintomas>> getAllModelListaSintomas() async {
-    print('#############');
     List<Map<String, dynamic>> result = await _db.query('lista_sintomas');
     return result.map((map) => ModelListaSintomas.fromMap(map)).toList();
   } //ModelPlanillaDeAtencion
@@ -82,6 +84,7 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
     List<Map<String, dynamic>> result = await _db.query('planilla_atencion');
     return result.map((map) => ModelPlanillaDeAtencion.fromMap(map)).toList();
   }
+
 
   Future<String> getLastIDEDAN() async {
     var result = await _db.rawQuery('SELECT Max(cod_edan) as newID from edan');

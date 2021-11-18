@@ -71,6 +71,7 @@ codrequeri TEXT NOT NULL PRIMARY KEY ,
 nomrequeri TEXT DEFAULT NULL
 )""",
   """CREATE TABLE IF NOT EXISTS todos_anterior_redu (
+cod_table INTEGER PRIMARY KEY AUTOINCREMENT ,
 Codigo TEXT DEFAULT NULL,
 Departamento TEXT DEFAULT NULL,
 Municipio TEXT DEFAULT NULL,

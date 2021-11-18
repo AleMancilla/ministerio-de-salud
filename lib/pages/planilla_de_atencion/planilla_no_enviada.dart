@@ -31,6 +31,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
   List<Widget> listPlanillasNoEnviadosWidget = [];
 
   late PlanillasNoEnviadasProvider planillasProvider;
+
   @override
   void initState() {
     super.initState();
@@ -51,7 +52,8 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
 
   _cargandoDatos() async {
     Future.delayed(Duration.zero, () {
-      planillasProvider.readDataBase();
+      planillasProvider.readDataBaseListPlanillas();
+      planillasProvider.readDataBaseListtModelListaSintomas();
       setState(() {});
     });
   }
@@ -100,43 +102,9 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
         connectionInternet = Container();
         setState(() {});
       }
-      // Got a new connectivity status!
-      print(result);
     });
-
-    // final bool isConnected = await InternetConnectionChecker().hasConnection;
-
-    // // actively listen for status updates
-    // final StreamSubscription<InternetConnectionStatus> listener =
-    //     InternetConnectionChecker().onStatusChange.listen(
-    //   (InternetConnectionStatus status) {
-    //     switch (status) {
-    //       case InternetConnectionStatus.connected:
-    //         // ignore: avoid_print
-    //         print('Data connection is available.');
-    //         connectionInternet = Container();
-    //         setState(() {});
-    //         break;
-    //       case InternetConnectionStatus.disconnected:
-    //         // ignore: avoid_print
-    //         print('You are disconnected from the internet.');
-    //         connectionInternet = Container(
-    //           width: double.infinity,
-    //           child: Text(
-    //             'No tienes coneccion a internet',
-    //             style: TextStyle(color: Colors.white),
-    //           ),
-    //           color: Colors.red,
-    //           padding: EdgeInsets.all(20),
-    //         );
-    //         setState(() {});
-    //         break;
-    //     }
-    //   },
-    // );
   }
 
-  // Be sure to cancel subscription after you are done
   @override
   dispose() {
     super.dispose();

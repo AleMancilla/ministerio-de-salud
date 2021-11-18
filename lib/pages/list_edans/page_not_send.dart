@@ -49,7 +49,7 @@ class _PageNotSendState extends State<PageNotSend> {
 
   _cargandoDatos() async {
     Future.delayed(Duration.zero, () {
-      edanProvider.readDataBase();
+      edanProvider.readDataBaseListEdans();
       setState(() {});
     });
   }

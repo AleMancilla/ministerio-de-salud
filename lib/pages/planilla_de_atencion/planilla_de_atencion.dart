@@ -79,20 +79,27 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                   child: BodyAppBar(text: 'PLANILLA DE ATENCION'),
                 ),
                 _datosGenerales(size),
-                _groupDetallesDePlanilla(size),
-                Material(
-                  color: Colors.grey.shade100,
-                  child: InkWell(
-                    onTap: () async {
-                      planillasNoEnviadasProvider.addModelDetalleDePlanilla();
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blueGrey.shade200),
-                        borderRadius: BorderRadius.circular(5),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: _groupDetallesDePlanilla(size),
+                ),
+                Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  child: Material(
+                    color: Colors.grey.shade100,
+                    child: InkWell(
+                      onTap: () async {
+                        planillasNoEnviadasProvider.addModelDetalleDePlanilla();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.blueGrey.shade200),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        padding: const EdgeInsets.all(10),
+                        child: const Icon(Icons.add),
                       ),
-                      padding: const EdgeInsets.all(10),
-                      child: const Icon(Icons.add),
                     ),
                   ),
                 ),
@@ -196,7 +203,8 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                           //   db.insertEDAN(modelo);
                           // }
                           db.insertPLANILLA(modelo);
-                          planillasNoEnviadasProvider.readDataBase();
+                          planillasNoEnviadasProvider
+                              .readDataBaseListPlanillas();
                           Navigator.pop(context);
                           // db.insertEVENTO();
                         },
@@ -338,6 +346,7 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(
+          alignment: Alignment.center,
           width: size.width > 600 ? size.width - 40 : 600,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.lightBlue),
@@ -485,7 +494,50 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
               builder: (context) {
                 return AlertDialog(
                   title: const Text('Seleccione Sexo'),
-                  content: Text('data'),
+                  content: Container(
+                    color: Colors.blue,
+                    width: 600,
+                    height: 400,
+                    child: Column(
+                      children: [
+                        // Text(planillasNoEnviadasProvider
+                        //     .listModelListaSintomas.length
+                        //     .toString()),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: planillasNoEnviadasProvider
+                                .listModelListaSintomas.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Text(planillasNoEnviadasProvider
+                                        .listModelListaSintomas[index]
+                                        .sintoma ??
+                                    'Date Null.'),
+                                // onTap: () {
+                                //   demo.sexo.text = 'Hombre';
+                                //   Navigator.pop(context);
+                                // },
+                              );
+                            },
+                          ),
+                        ),
+                        // Expanded(
+                        //   child: ListView.builder(
+                        //     itemCount: 2,
+                        //     itemBuilder: (context, index) {
+                        //       return ListTile(
+                        //         title: Text('Mujer'),
+                        //         onTap: () {
+                        //           demo.sexo.text = 'Mujer';
+                        //           Navigator.pop(context);
+                        //         },
+                        //       );
+                        //     },
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  ),
                 );
               },
             );

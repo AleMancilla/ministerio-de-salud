@@ -242,6 +242,7 @@ class _PageEdansState extends State<PageEdans> {
         controllercodEdan.text = id.toString();
       }
       print(controllercodEdan.text);
+      db.closeDB();
     });
   }
 
@@ -484,7 +485,7 @@ class _PageEdansState extends State<PageEdans> {
                             db.insertEDAN(modelo);
                           }
 
-                          edanProvider.readDataBase();
+                          edanProvider.readDataBaseListEdans();
                           Navigator.pop(context);
                           // db.insertEVENTO();
                         },
