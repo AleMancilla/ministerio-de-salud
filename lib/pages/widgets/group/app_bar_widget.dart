@@ -7,8 +7,10 @@ import 'package:ministerio_de_salud/utils/user_preferens.dart';
 
 class AppBarWidget extends StatefulWidget {
   final Size size;
+  final bool backActivate;
 
-  const AppBarWidget({Key? key, required this.size}) : super(key: key);
+  const AppBarWidget({Key? key, required this.size, this.backActivate = false})
+      : super(key: key);
   @override
   _AppBarWidgetState createState() => _AppBarWidgetState();
 }
@@ -34,6 +36,15 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           Expanded(
             child: Row(
               children: [
+                if (widget.backActivate)
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.chevron_left_outlined,
+                        color: Colors.white,
+                      )),
                 iconButtonSelect(
                   const SizedBox(
                     height: 50,
@@ -71,7 +82,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         () {
           prefs.userIsRegister = false;
           prefs.userCarnet = '';
-          prefs.userNivel = '';
+          prefs.userNivel = '0';
           navigatorPushReplacement(context, const LoginPage());
           // print('object');
         },

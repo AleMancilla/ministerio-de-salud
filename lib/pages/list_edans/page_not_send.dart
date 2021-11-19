@@ -60,7 +60,9 @@ class _PageNotSendState extends State<PageNotSend> {
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
-          child: AppBarWidget(size: size),
+          child: AppBarWidget(
+            size: size,
+          ),
           preferredSize: const Size(double.infinity, 50),
         ),
         body: Padding(
@@ -160,6 +162,8 @@ class _PageNotSendState extends State<PageNotSend> {
     );
   }
 
+  // ScrollController controllerScroll = ScrollController();
+
   Widget _groupDaniosEdansNotSend(Size size) {
     int i = 0;
     return Scrollbar(
@@ -167,6 +171,7 @@ class _PageNotSendState extends State<PageNotSend> {
       showTrackOnHover: true,
       controller: scrollControllerEdansNoEnviados,
       child: SingleChildScrollView(
+        // controller: controllerScroll,
         scrollDirection: Axis.horizontal,
         child: Container(
           width: size.width > 600 ? size.width - 40 : 600,
@@ -179,6 +184,7 @@ class _PageNotSendState extends State<PageNotSend> {
               // if (demo.enviado == 'no') {
               if (demo.enviado == 'NO') {
                 i++;
+                print(' --- ${demo.controllerEnviar} -- ${demo.enviado}');
                 return Container(
                   color: _colorItem(i, demo.controllerEnviar),
                   child: IntrinsicHeight(
@@ -194,9 +200,10 @@ class _PageNotSendState extends State<PageNotSend> {
                                   Border.all(color: Colors.lightBlue.shade100),
                             ),
                             child: CheckBoxDemo(
-                              controller: demo.controllerEnviar!,
+                              controller: demo.controllerEnviar,
+                              // controller: false,
                               onchange: () {
-                                demo.controllerEnviar = !demo.controllerEnviar!;
+                                demo.controllerEnviar = !demo.controllerEnviar;
                                 setState(() {});
                               },
                             ),

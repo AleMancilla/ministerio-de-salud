@@ -6,6 +6,7 @@ import 'package:ministerio_de_salud/bussiness/providers/edan_provider.dart';
 import 'package:ministerio_de_salud/bussiness/providers/planillas_no_enviadas_provider.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_not_send.dart';
 import 'package:ministerio_de_salud/pages/login/login_page.dart';
+import 'package:ministerio_de_salud/pages/login/redirect_page.dart';
 import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_no_enviada.dart';
 import 'package:ministerio_de_salud/utils/user_preferens.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Ministerio de salud',
         theme: ThemeData(
           primarySwatch: Colors.blueGrey,
         ),
@@ -58,14 +59,18 @@ class MyApp extends StatelessWidget {
 
   Widget _pageHome(BuildContext context) {
     if (!prefs.userIsRegister) {
-      return const LoginPage();
+      if (prefs.userNivel == '0' || prefs.userNivel == '') {
+        return const RedirectPage();
+      } else {
+        return const LoginPage();
+      }
     } else {
       if (prefs.userNivel == '1') {
         return const PageNotSend();
       } else if (prefs.userNivel == '2') {
         return const PlanillaNoEnviada();
       } else {
-        return const LoginPage();
+        return const RedirectPage();
       }
     }
   }

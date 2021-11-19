@@ -26,7 +26,10 @@ class _LoginPageState extends State<LoginPage> {
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
-          child: AppBarWidget(size: size),
+          child: AppBarWidget(
+            size: size,
+            backActivate: true,
+          ),
           preferredSize: const Size(double.infinity, 50),
         ),
         body: Padding(
@@ -61,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
           constraints: const BoxConstraints(maxWidth: 450),
           child: InputTextFielfWidget(
             controller: controllerCarnet,
-            hint: 'Carnet',
+            hint: 'Usuario o Carnet',
           ),
         ),
         Container(

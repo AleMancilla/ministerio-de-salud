@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class CheckBoxDemo extends StatefulWidget {
-  CheckBoxDemo({Key? key, required this.controller, required this.onchange})
+  CheckBoxDemo({Key? key, this.controller = false, required this.onchange})
       : super(key: key);
   bool controller;
   Function onchange;

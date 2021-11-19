@@ -47,7 +47,7 @@ class ModelEdan {
   String? usuario;
   String? fechap;
   String? enviado;
-  bool? controllerEnviar = false;
+  bool controllerEnviar = false;
 
   ModelEdan({
     this.codEdan,

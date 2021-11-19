@@ -31,7 +31,7 @@ class UserPreferences {
     _prefs.setString('prefs_userNivel', status);
   }
 
-  String get userNivel => _prefs.getString('prefs_userNivel') ?? 'Sin Datos';
+  String get userNivel => _prefs.getString('prefs_userNivel') ?? '0';
 
   // void setAcceptLocation() {
   //   _prefs.setBool('accept_location', true);
