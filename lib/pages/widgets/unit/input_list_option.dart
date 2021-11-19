@@ -67,7 +67,9 @@ class _InputListOptionState extends State<InputListOption> {
     if (size.width >= 720) {
       return Row(
         children: [
-          SizedBox(
+          Container(
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.symmetric(horizontal: 15),
             width: 170,
             child: RichText(
               text: TextSpan(

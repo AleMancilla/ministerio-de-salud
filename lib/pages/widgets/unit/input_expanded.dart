@@ -46,13 +46,17 @@ class _InputExpandedState extends State<InputExpanded> {
     if (size.width >= 720) {
       return Row(
         children: [
-          SizedBox(
+          Container(
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.symmetric(horizontal: 15),
             width: 170,
             child: RichText(
               text: TextSpan(
                   text: widget.title,
                   style: const TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                   children: <TextSpan>[
                     if (widget.isRequired)
                       const TextSpan(
@@ -94,8 +98,10 @@ class _InputExpandedState extends State<InputExpanded> {
     }
   }
 
-  SizedBox _itemInput() {
-    return SizedBox(
+  Widget _itemInput() {
+    return Container(
+      alignment: Alignment.centerRight,
+      padding: EdgeInsets.symmetric(horizontal: 15),
       height: 35,
       child: TextField(
         // minLines: (widget.descrip) ? 3 : 1,

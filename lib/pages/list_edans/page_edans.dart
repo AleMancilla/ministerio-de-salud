@@ -62,6 +62,13 @@ class _PageEdansState extends State<PageEdans> {
   TextEditingController controllerCondicionClimatica = TextEditingController();
   TextEditingController controllerMediosDeComunicacion =
       TextEditingController();
+  TextEditingController controllerCanalDeRadiofrecuencia =
+      TextEditingController();
+  TextEditingController controllerNombreDeLaRadioEmisora =
+      TextEditingController();
+  TextEditingController controllerDialDeLaEmisora = TextEditingController();
+  TextEditingController controllerTelfContactoDeLaRadioEmisora =
+      TextEditingController();
 
   int number = 0;
 
@@ -69,6 +76,17 @@ class _PageEdansState extends State<PageEdans> {
   TextEditingController controllerViviendasAfectadas = TextEditingController();
   TextEditingController controllerFamiliasDamnificadas =
       TextEditingController();
+
+  TextEditingController controllerNinosVulnerables = TextEditingController();
+  TextEditingController controllerNinasVulnerables = TextEditingController();
+  TextEditingController controllerPersonasConDiscapacidadVaron =
+      TextEditingController();
+  TextEditingController controllerPersonasConDiscapacidadMujer =
+      TextEditingController();
+  TextEditingController controllerMujeresEmbarazadas = TextEditingController();
+  TextEditingController controllerAdultosMayoresVaron = TextEditingController();
+  TextEditingController controllerAdultosMayoresMujer = TextEditingController();
+  TextEditingController controllerNroAlbergues = TextEditingController();
 
   TextEditingController controllerServicioDeAgua = TextEditingController();
   TextEditingController controllerServicioDeRecoleccion =
@@ -80,11 +98,14 @@ class _PageEdansState extends State<PageEdans> {
       TextEditingController();
   TextEditingController controllerServicioDeTransporte =
       TextEditingController();
+  TextEditingController controllerEstablecimientosDeSalud =
+      TextEditingController();
 
   /// [DAÑOS_A_LA_SALUD]
   TextEditingController controllerHeridos = TextEditingController();
   TextEditingController controllerFallecidos = TextEditingController();
   TextEditingController controllerDesaparecidos = TextEditingController();
+  TextEditingController controllerLesionados = TextEditingController();
 
   List<Widget> listDaniosEstablecimientosDeSaludWidget = [];
   List<_DaniosEstablecimientosDeSalud> listDaniosEstablecimientosDeSalud = [];
@@ -385,7 +406,7 @@ class _PageEdansState extends State<PageEdans> {
                             _showDialogMessage(
                                 titulo: 'Campo obligatorio no llenado',
                                 descripcion:
-                                    'Debes llenar: "Medios de comunicacion disponibles"');
+                                    'Debes llenar: "Medios de comunicación disponibles"');
                             return;
                           }
                           if (controllerViviendasAfectadas.text.isEmpty) {
@@ -530,6 +551,17 @@ class _PageEdansState extends State<PageEdans> {
     ).show(context);
   }
 
+  Widget _subTitle(String text) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      width: double.infinity,
+      child: Text(
+        text,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
   Widget _datosGenerales(Size size) {
     return Column(
       children: [
@@ -544,6 +576,7 @@ class _PageEdansState extends State<PageEdans> {
           initiallyExpanded: true,
           title: const TitleExpansion(texto: '1.- DATOS GENERALES'),
           children: <Widget>[
+            _subTitle('1.1 TIPO DE EVENTO'),
             InputListOption(
               title: 'Evento',
               controller: controllerEvento,
@@ -567,6 +600,7 @@ class _PageEdansState extends State<PageEdans> {
                 'Terremoto',
               ],
             ),
+            _subTitle('1.2 FECHA Y HORA DE LA OCURRENCIA'),
             InputDateOption(
               title: 'Fecha',
               controller: controllerFecha,
@@ -581,6 +615,7 @@ class _PageEdansState extends State<PageEdans> {
               controller: controllerSigueEnDesarrollo,
               options: const ['Si', 'No'],
             ),
+            _subTitle('1.3 PERSONA DE CONTACTO DE LA ZONA AFECTADA'),
             InputExpanded(
               title: 'Nombre de contacto',
               controller: controllerNombreDeContacto,
@@ -602,6 +637,7 @@ class _PageEdansState extends State<PageEdans> {
               controller: controllerTelefonoMovil,
               isRequired: true,
             ),
+            _subTitle('1.4 UBICACIÓN GEOGRÁFICA DE LA ZONA AFECTADA'),
             InputExpanded(
               title: 'Departamento',
               controller: controllerDepartamento,
@@ -623,6 +659,7 @@ class _PageEdansState extends State<PageEdans> {
               controller: controllerTieneCoordenadas,
               options: const ['Si', 'No'],
             ),
+            _subTitle('1.5 VIAS DE ACCESO DISPONIBLES A LA ZONA AFECTADA'),
             InputListBoolean(
               title: 'Via aerea disponible',
               controller: controllerViaAerea,
@@ -655,14 +692,13 @@ class _PageEdansState extends State<PageEdans> {
             InputListSelectedCheck(
               title: 'Condicion climatica actual',
               controller: controllerCondicionClimatica,
-              isRequired: true,
               options: const ['Lluvioso', 'Nublado', 'Con viento'],
             ),
 
+            _subTitle('1.6 MEDIOS DE COMUNICACIÓN'),
             InputListSelectedCheck(
-              title: 'Medios de comunicacion disponibles',
+              title: 'Medios de comunicación disponibles',
               controller: controllerMediosDeComunicacion,
-              isRequired: true,
               options: const [
                 'Radio frecuencia 20/40 m',
                 'Telefono fijo',
@@ -671,6 +707,22 @@ class _PageEdansState extends State<PageEdans> {
                 'Internet',
                 'Radio emisora'
               ],
+            ),
+            InputExpanded(
+              title: 'Canal de Radio Frecuencia:',
+              controller: controllerCanalDeRadiofrecuencia,
+            ),
+            InputExpanded(
+              title: 'Nombre de la Radio Emisora:',
+              controller: controllerNombreDeLaRadioEmisora,
+            ),
+            InputExpanded(
+              title: 'Dial de la Radio Emisora:',
+              controller: controllerDialDeLaEmisora,
+            ),
+            InputExpanded(
+              title: 'Telefono de Contacto de la Radio Emisora:',
+              controller: controllerTelfContactoDeLaRadioEmisora,
             ),
             // ExpansionTile(
             //   title: const TitleExpansion(texto: '1.- DEMO 1'),
@@ -701,17 +753,70 @@ class _PageEdansState extends State<PageEdans> {
           title: const TitleExpansion(texto: '2.- DAÑOS GENERALES'),
           children: <Widget>[
             InputExpanded(
-              title: 'Viviendas afectadas',
+              title: '2.1 Cant. viviendas afectadas',
               controller: controllerViviendasAfectadas,
               isRequired: true,
               initValue: '0',
             ),
             InputExpanded(
-              title: 'Flias. damnificadas',
+              title: '2.2 Cant. Flias. damnificadas',
               controller: controllerFamiliasDamnificadas,
               isRequired: true,
               initValue: '0',
             ),
+
+            InputExpanded(
+              title: '2.3 Cant. Niños vulnerables',
+              controller: controllerNinosVulnerables,
+              isRequired: true,
+              initValue: '0',
+            ),
+            InputExpanded(
+              title: 'Cant. Niñas vulnerables',
+              controller: controllerNinasVulnerables,
+              isRequired: true,
+              initValue: '0',
+            ),
+
+            InputExpanded(
+              title: '2.4 Cant. Personas con Discapacidad Varon',
+              controller: controllerPersonasConDiscapacidadVaron,
+              isRequired: true,
+              initValue: '0',
+            ),
+            InputExpanded(
+              title: 'Cant. Personas con Discapacidad Mujer',
+              controller: controllerPersonasConDiscapacidadMujer,
+              isRequired: true,
+              initValue: '0',
+            ),
+            InputExpanded(
+              title: '2.5 Cant. Mujeres Embarazadas',
+              controller: controllerMujeresEmbarazadas,
+              isRequired: true,
+              initValue: '0',
+            ),
+            InputExpanded(
+              title: '2.6 Cant. Adultos Mayores Varon',
+              controller: controllerAdultosMayoresVaron,
+              isRequired: true,
+              initValue: '0',
+            ),
+            InputExpanded(
+              title: 'Cant. Adultos Mayores Mujer',
+              controller: controllerAdultosMayoresMujer,
+              isRequired: true,
+              initValue: '0',
+            ),
+            InputExpanded(
+              title: '2.7 Numero de Albergues',
+              controller: controllerNroAlbergues,
+              isRequired: true,
+              initValue: '0',
+            ),
+            _subTitle(
+                '2.8 SERVICIOS AFECTADOS DE LA ZONA AFECTADA Y/O POBLACIÓN'),
+
             InputListBoolean(
               title: 'Servicio de agua potable',
               controller: controllerServicioDeAgua,
@@ -740,6 +845,12 @@ class _PageEdansState extends State<PageEdans> {
             InputListBoolean(
               title: 'Servicio de transporte',
               controller: controllerServicioDeTransporte,
+              options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
+            ),
+
+            InputListBoolean(
+              title: 'Establecimientos de Salud',
+              controller: controllerEstablecimientosDeSalud,
               options: const ['Sin daño', 'Afectado', 'Destruido', 'No existe'],
             ),
 
@@ -810,22 +921,27 @@ class _PageEdansState extends State<PageEdans> {
           title: const TitleExpansion(texto: '3.- DAÑOS A LA SALUD'),
           children: <Widget>[
             InputExpanded(
-              title: 'Heridos',
+              title: '3.1 Cant. Heridos',
               controller: controllerHeridos,
               isRequired: true,
               initValue: '0',
             ),
             InputExpanded(
-              title: 'Fallecidos',
+              title: '3.2 Cant. Fallecidos',
               controller: controllerFallecidos,
               isRequired: true,
               initValue: '0',
             ),
             InputExpanded(
-              title: 'Desaparecidos',
+              title: '3.3 Cant. Desaparecidos',
               controller: controllerDesaparecidos,
               initValue: '0',
               isRequired: true,
+            ),
+            InputExpanded(
+              title: '3.4 Cant. Lesionados',
+              controller: controllerDesaparecidos,
+              initValue: '0',
             ),
             ExpansionTile(
               title: const TitleExpansion(
