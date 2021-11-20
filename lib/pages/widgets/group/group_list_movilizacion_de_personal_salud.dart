@@ -19,7 +19,7 @@ class GroupDaniosEstablecimientosDeSalud extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
-                  flex: 4,
+                  flex: 2,
                   child: Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -58,6 +58,21 @@ class GroupDaniosEstablecimientosDeSalud extends StatelessWidget {
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: Text(
                       titles[2],
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue),
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Text(
+                      titles[3],
                       style: const TextStyle(
                           color: Colors.white, fontWeight: FontWeight.w600),
                     ),

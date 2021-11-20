@@ -49,8 +49,8 @@ class _InputListBooleanState extends State<InputListBoolean> {
             alignment: Alignment.centerRight,
             padding: EdgeInsets.symmetric(horizontal: 15),
             width: 170,
-            child: RichText(
-              text: TextSpan(
+            child: SelectableText.rich(
+              TextSpan(
                   text: widget.title,
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.black),
@@ -74,8 +74,8 @@ class _InputListBooleanState extends State<InputListBoolean> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            child: RichText(
-              text: TextSpan(
+            child: SelectableText.rich(
+              TextSpan(
                   text: widget.title,
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.black),

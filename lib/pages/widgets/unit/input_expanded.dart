@@ -50,8 +50,8 @@ class _InputExpandedState extends State<InputExpanded> {
             alignment: Alignment.centerRight,
             padding: EdgeInsets.symmetric(horizontal: 15),
             width: 170,
-            child: RichText(
-              text: TextSpan(
+            child: SelectableText.rich(
+              TextSpan(
                   text: widget.title,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
@@ -77,8 +77,8 @@ class _InputExpandedState extends State<InputExpanded> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            child: RichText(
-              text: TextSpan(
+            child: SelectableText.rich(
+              TextSpan(
                   text: widget.title,
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.black),

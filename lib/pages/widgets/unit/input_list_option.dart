@@ -71,8 +71,8 @@ class _InputListOptionState extends State<InputListOption> {
             alignment: Alignment.centerRight,
             padding: EdgeInsets.symmetric(horizontal: 15),
             width: 170,
-            child: RichText(
-              text: TextSpan(
+            child: SelectableText.rich(
+              TextSpan(
                   text: widget.title,
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.black),
@@ -96,8 +96,8 @@ class _InputListOptionState extends State<InputListOption> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            child: RichText(
-              text: TextSpan(
+            child: SelectableText.rich(
+              TextSpan(
                   text: widget.title,
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.black),

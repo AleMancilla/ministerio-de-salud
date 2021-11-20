@@ -17,6 +17,7 @@ import 'package:ministerio_de_salud/pages/widgets/unit/input_hour_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_boolean.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_check.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_option.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/input_text_field_description.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_expanded.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_list_boolean.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_list_option.dart';
@@ -555,7 +556,7 @@ class _PageEdansState extends State<PageEdans> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
       width: double.infinity,
-      child: Text(
+      child: SelectableText(
         text,
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
@@ -869,44 +870,6 @@ class _PageEdansState extends State<PageEdans> {
     );
   }
 
-  Widget _accionesARealizar(Size size) {
-    return Column(
-      children: [
-        Container(
-          width: size.width - 50,
-          height: 5,
-          decoration: BoxDecoration(
-              color: Colors.blueGrey.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(100)),
-        ),
-        ExpansionTile(
-          title: const TitleExpansion(
-              texto:
-                  '4.- ACCIONES REALIZADAS, 5.- ACCIONES PRIORITARIAS, 6.- REQUERIMIENTOS'),
-          children: <Widget>[
-            ExpansionTile(
-              title: const TitleExpansion(texto: 'Instalación de albergues'),
-              children: [_groupInstalacionDeAlbergues(size)],
-            ),
-            InputExpanded(
-              title:
-                  '5.- Acciones prioritarias para el control de la situación y atencion en salud',
-              controller: controllerAccionesPrioritarias,
-              isRequired: true,
-            ),
-            // ExpansionTile(
-            //   title: const TitleExpansion(
-            //       texto:
-            //           'Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),
-            //   children: [_groupDaniosAlPersonalDeSalud(size)],
-            // )
-          ],
-        ),
-        const Divider()
-      ],
-    );
-  }
-
   Widget _daniosALaSalud(Size size) {
     return Column(
       children: [
@@ -945,15 +908,52 @@ class _PageEdansState extends State<PageEdans> {
             ),
             ExpansionTile(
               title: const TitleExpansion(
-                  texto: 'Daños a establecimientos de salud'),
+                  texto: '3.4 Daños a establecimientos de salud'),
               children: [_groupDaniosEstablecimiendosDeSalud(size)],
             ),
             ExpansionTile(
               title: const TitleExpansion(
                   texto:
-                      'Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),
+                      '3.5 Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),
               children: [_groupDaniosAlPersonalDeSalud(size)],
             )
+          ],
+        ),
+        const Divider()
+      ],
+    );
+  }
+
+  Widget _accionesARealizar(Size size) {
+    return Column(
+      children: [
+        Container(
+          width: size.width - 50,
+          height: 5,
+          decoration: BoxDecoration(
+              color: Colors.blueGrey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(100)),
+        ),
+        ExpansionTile(
+          title: const TitleExpansion(
+              texto: '4.- ACCIONES REALIZADAS HASTA EL MOMENTO'),
+          children: <Widget>[
+            ExpansionTile(
+              title: const TitleExpansion(texto: 'Instalación de albergues'),
+              children: [_groupInstalacionDeAlbergues(size)],
+            ),
+            InputExpanded(
+              title:
+                  '5.- Acciones prioritarias para el control de la situación y atencion en salud',
+              controller: controllerAccionesPrioritarias,
+              isRequired: true,
+            ),
+            // ExpansionTile(
+            //   title: const TitleExpansion(
+            //       texto:
+            //           'Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),
+            //   children: [_groupDaniosAlPersonalDeSalud(size)],
+            // )
           ],
         ),
         const Divider()
@@ -1051,7 +1051,8 @@ class _PageEdansState extends State<PageEdans> {
           ], titles: const [
             'Estab. de Salud',
             'Funciona',
-            'Tiene agua'
+            'Tiene agua',
+            'Area afectada'
           ]),
         ),
       ),
@@ -1072,7 +1073,7 @@ class _PageEdansState extends State<PageEdans> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
-                  flex: 4,
+                  flex: 2,
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     alignment: Alignment.center,
@@ -1109,6 +1110,17 @@ class _PageEdansState extends State<PageEdans> {
                       controller: demo.controllerAgua,
                       options: const ['Si', 'No'],
                     ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: InputTextFielfDescriptionWidget(
+                        controller: demo.controllerAreaAfectada),
                   ),
                 ),
                 Expanded(
@@ -1406,6 +1418,7 @@ class _DaniosEstablecimientosDeSalud {
   TextEditingController controllerSalud = TextEditingController();
   TextEditingController controllerFunciona = TextEditingController();
   TextEditingController controllerAgua = TextEditingController();
+  TextEditingController controllerAreaAfectada = TextEditingController();
 
   _DaniosEstablecimientosDeSalud();
 }
