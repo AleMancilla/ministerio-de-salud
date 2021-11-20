@@ -7,6 +7,7 @@ import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 import 'package:ministerio_de_salud/bussiness/providers/edan_provider.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
+import 'package:ministerio_de_salud/pages/widgets/group/group_list_acciones.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/group_list_danios_personal_de_salud.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/group_list_instalacion_albergues.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/group_list_movilizacion_de_personal_salud.dart';
@@ -120,6 +121,9 @@ class _PageEdansState extends State<PageEdans> {
   List<Widget> listInstalacionDeAlberguesWidget = [];
   List<_InstalacionAlbergues> listInstalacionDeAlbergues = [];
 
+  List<Widget> listAccionesWidget = [];
+  List<_Acciones> listAcciones = [];
+
   ///[ACCIONES_REALIZADAS]
   TextEditingController controllerAccionesPrioritarias =
       TextEditingController();
@@ -145,6 +149,7 @@ class _PageEdansState extends State<PageEdans> {
 
   // double _scrollPositiongroupInstalacionDeAlbergues = 0;
   late ScrollController scrollControllergroupInstalacionDeAlbergues;
+  late ScrollController scrollControllergroupAcciones;
   // double _scrollPositiongroupDaniosEstablecimiendosDeSalud = 0;
   late ScrollController scrollControllergroupDaniosEstablecimiendosDeSalud;
   // double _scrollPositiongroupDaniosAlPersonalDeSalud = 0;
@@ -245,6 +250,7 @@ class _PageEdansState extends State<PageEdans> {
           '${DateTime.now().hour.toString().padLeft(2, '0')}:${DateTime.now().minute.toString().padLeft(2, '0')}';
     }
     scrollControllergroupInstalacionDeAlbergues = ScrollController();
+    scrollControllergroupAcciones = ScrollController();
     scrollControllergroupDaniosEstablecimiendosDeSalud = ScrollController();
     scrollControllergroupDaniosAlPersonalDeSalud = ScrollController();
 
@@ -939,8 +945,9 @@ class _PageEdansState extends State<PageEdans> {
               texto: '4.- ACCIONES REALIZADAS HASTA EL MOMENTO'),
           children: <Widget>[
             ExpansionTile(
-              title: const TitleExpansion(texto: 'Instalación de albergues'),
-              children: [_groupInstalacionDeAlbergues(size)],
+              title: const TitleExpansion(
+                  texto: 'Acciones Realizadas hasta el Momento'),
+              children: [_groupAcciones(size)],
             ),
             InputExpanded(
               title:
@@ -1351,6 +1358,49 @@ class _PageEdansState extends State<PageEdans> {
     );
   }
 
+  /////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////
+  Widget _groupAcciones(Size size) {
+    return Scrollbar(
+      isAlwaysShown: true,
+      showTrackOnHover: true,
+      controller: scrollControllergroupAcciones,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          width: size.width > 600 ? size.width - 20 : 600,
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.lightBlue),
+          ),
+          child: GroupAcciones(listWidgets: [
+            ...listAccionesWidget,
+            Material(
+              color: Colors.grey.shade100,
+              child: InkWell(
+                onTap: () async {
+                  listAcciones.add(_Acciones());
+                  await _actualizarListaAcciones();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blueGrey.shade200),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  child: const Icon(Icons.add),
+                ),
+              ),
+            ),
+          ], titles: const [
+            'Acción',
+          ]),
+        ),
+      ),
+    );
+  }
+
   Future<void> _actualizarListaInstalacionAlbergues() async {
     listInstalacionDeAlberguesWidget = [];
     int i = 0;
@@ -1412,6 +1462,57 @@ class _PageEdansState extends State<PageEdans> {
       setState(() {});
     });
   }
+  /////////////////////////////////
+
+  Future<void> _actualizarListaAcciones() async {
+    listAccionesWidget = [];
+    int i = 0;
+    Future.delayed(Duration.zero, () {
+      listAccionesWidget = listAcciones.map((demo) {
+        i++;
+        return Container(
+          color: i % 2 == 0 ? Colors.blue[50] : Colors.white,
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: SublistInputExpanded(
+                      controller: demo.controllerAccion,
+                      isNumber: true,
+                      hint: 'Acción',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        listAcciones.remove(demo);
+                        _actualizarListaAcciones();
+                        setState(() {});
+                      },
+                      icon: const Icon(Icons.remove_circle_outlined),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      }).toList();
+      setState(() {});
+    });
+  }
 }
 
 class _DaniosEstablecimientosDeSalud {
@@ -1438,4 +1539,10 @@ class _InstalacionAlbergues {
   TextEditingController controllerLugarDeAlbergue = TextEditingController();
 
   _InstalacionAlbergues();
+}
+
+class _Acciones {
+  TextEditingController controllerAccion = TextEditingController();
+
+  _Acciones();
 }
