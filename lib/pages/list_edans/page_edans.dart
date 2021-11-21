@@ -11,6 +11,7 @@ import 'package:ministerio_de_salud/pages/widgets/group/group_list_acciones.dart
 import 'package:ministerio_de_salud/pages/widgets/group/group_list_danios_personal_de_salud.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/group_list_instalacion_albergues.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/group_list_movilizacion_de_personal_salud.dart';
+import 'package:ministerio_de_salud/pages/widgets/group/group_list_requerimientos_apoyo.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/button_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_date_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_expanded.dart';
@@ -18,6 +19,7 @@ import 'package:ministerio_de_salud/pages/widgets/unit/input_hour_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_boolean.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_check.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_option.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/input_text_field.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_text_field_description.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_expanded.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_list_boolean.dart';
@@ -122,9 +124,13 @@ class _PageEdansState extends State<PageEdans> {
   List<_InstalacionAlbergues> listInstalacionDeAlbergues = [];
 
   List<Widget> listAccionesWidget = [];
-  List<Widget> listAccionesPrioritariasWidget = [];
   List<_Acciones> listAcciones = [];
+
+  List<Widget> listAccionesPrioritariasWidget = [];
   List<_AccionesPrioritarias> listAccionesPrioritarias = [];
+
+  List<Widget> listRequerimientoApoyoWidget = [];
+  List<_RequerimientoApoyo> listRequerimientoApoyo = [];
 
   ///[ACCIONES_REALIZADAS]
   TextEditingController controllerOrganizacionQueRealizeTrabajos =
@@ -155,6 +161,7 @@ class _PageEdansState extends State<PageEdans> {
   late ScrollController scrollControllergroupInstalacionDeAlbergues;
   late ScrollController scrollControllergroupAcciones;
   late ScrollController scrollControllergroupAccionesPrioritarias;
+  late ScrollController scrollControllergroupRequerimientosDeApoyo;
   // double _scrollPositiongroupDaniosEstablecimiendosDeSalud = 0;
   late ScrollController scrollControllergroupDaniosEstablecimiendosDeSalud;
   // double _scrollPositiongroupDaniosAlPersonalDeSalud = 0;
@@ -258,6 +265,7 @@ class _PageEdansState extends State<PageEdans> {
     scrollControllergroupInstalacionDeAlbergues = ScrollController();
     scrollControllergroupAcciones = ScrollController();
     scrollControllergroupAccionesPrioritarias = ScrollController();
+    scrollControllergroupRequerimientosDeApoyo = ScrollController();
     scrollControllergroupDaniosEstablecimiendosDeSalud = ScrollController();
     scrollControllergroupDaniosAlPersonalDeSalud = ScrollController();
 
@@ -305,6 +313,7 @@ class _PageEdansState extends State<PageEdans> {
                 _daniosALaSalud(size),
                 _accionesRealizadasHastaElMomento(size),
                 _accionesPrioritariasParaElControl(size),
+                _accionesRequerimientosDeApoyo(size),
                 _datosLlenadoDelEdan(size),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -1011,6 +1020,35 @@ class _PageEdansState extends State<PageEdans> {
     );
   }
 
+  Widget _accionesRequerimientosDeApoyo(Size size) {
+    return Column(
+      children: [
+        Container(
+          width: size.width - 50,
+          height: 5,
+          decoration: BoxDecoration(
+              color: Colors.blueGrey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(100)),
+        ),
+        ExpansionTile(
+          title: const TitleExpansion(
+              texto:
+                  '6.- REQUERIMIENTOS DE APOYO PARA LA EJECUCIÓN DE ACCIONES PRIORITARIAS'),
+          children: <Widget>[
+            ExpansionTile(
+              initiallyExpanded: true,
+              title: const TitleExpansion(
+                  texto:
+                      'Requerimiento de apoyo para la ejecución de acciones prioritarias'),
+              children: [_groupRequerimientosDeApoyo(size)],
+            ),
+          ],
+        ),
+        const Divider()
+      ],
+    );
+  }
+
   Widget _datosLlenadoDelEdan(Size size) {
     return Column(
       children: [
@@ -1170,7 +1208,9 @@ class _PageEdansState extends State<PageEdans> {
                       border: Border.all(color: Colors.lightBlue.shade100),
                     ),
                     child: InputTextFielfDescriptionWidget(
-                        controller: demo.controllerAreaAfectada),
+                      controller: demo.controllerAreaAfectada,
+                      hint: 'Area afectada',
+                    ),
                   ),
                 ),
                 Expanded(
@@ -1487,6 +1527,52 @@ class _PageEdansState extends State<PageEdans> {
     );
   }
 
+  /////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////
+  Widget _groupRequerimientosDeApoyo(Size size) {
+    return Scrollbar(
+      isAlwaysShown: true,
+      showTrackOnHover: true,
+      controller: scrollControllergroupRequerimientosDeApoyo,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          width: size.width > 600 ? size.width - 20 : 600,
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.lightBlue),
+          ),
+          child: GroupRequerimientosApoyo(listWidgets: [
+            ...listRequerimientoApoyoWidget,
+            Material(
+              color: Colors.grey.shade100,
+              child: InkWell(
+                onTap: () async {
+                  listRequerimientoApoyo.add(_RequerimientoApoyo());
+                  await _actualizarListaRequerimientoApoyo();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blueGrey.shade200),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  child: const Icon(Icons.add),
+                ),
+              ),
+            ),
+          ], titles: const [
+            'Requerimiento',
+            'Cant.',
+            'Tipo',
+            'Prioridad',
+          ]),
+        ),
+      ),
+    );
+  }
+
   Future<void> _actualizarListaInstalacionAlbergues() async {
     listInstalacionDeAlberguesWidget = [];
     int i = 0;
@@ -1653,6 +1739,104 @@ class _PageEdansState extends State<PageEdans> {
       setState(() {});
     });
   }
+
+  Future<void> _actualizarListaRequerimientoApoyo() async {
+    listRequerimientoApoyoWidget = [];
+    int i = 0;
+    Future.delayed(Duration.zero, () {
+      listRequerimientoApoyoWidget = listRequerimientoApoyo.map((demo) {
+        i++;
+        return Container(
+          color: i % 2 == 0 ? Colors.blue[50] : Colors.white,
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InputTextFielfWidget(
+                        controller: demo.controllerRequerimiento,
+                        hint: 'Requerimiento',
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InputTextFielfWidget(
+                        controller: demo.controllerCant,
+                        hint: '0',
+                        isNumber: true,
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InputTextFielfDescriptionWidget(
+                        controller: demo.controllerTipo,
+                        hint: 'Tipo',
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SubListInputListBoolean(
+                        controller: demo.controllerPrioridad,
+                        options: const ['Alta', 'Media', 'Baja'],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        listRequerimientoApoyo.remove(demo);
+                        _actualizarListaRequerimientoApoyo();
+                        setState(() {});
+                      },
+                      icon: const Icon(Icons.remove_circle_outlined),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      }).toList();
+      setState(() {});
+    });
+  }
 }
 
 class _DaniosEstablecimientosDeSalud {
@@ -1691,4 +1875,13 @@ class _AccionesPrioritarias {
   TextEditingController controllerAccion = TextEditingController();
 
   _AccionesPrioritarias();
+}
+
+class _RequerimientoApoyo {
+  TextEditingController controllerRequerimiento = TextEditingController();
+  TextEditingController controllerCant = TextEditingController();
+  TextEditingController controllerTipo = TextEditingController();
+  TextEditingController controllerPrioridad = TextEditingController();
+
+  _RequerimientoApoyo();
 }
