@@ -13,7 +13,7 @@ class DataBaseEdans {
 
   initDB() async {
     _db = await openDatabase(
-      'my_database7.db',
+      'my_database11.db',
       version: 1,
       onCreate: (Database db, int newVersion) async {
         Batch batch = db.batch();
@@ -84,7 +84,6 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
     List<Map<String, dynamic>> result = await _db.query('planilla_atencion');
     return result.map((map) => ModelPlanillaDeAtencion.fromMap(map)).toList();
   }
-
 
   Future<String> getLastIDEDAN() async {
     var result = await _db.rawQuery('SELECT Max(cod_edan) as newID from edan');

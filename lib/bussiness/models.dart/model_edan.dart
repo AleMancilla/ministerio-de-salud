@@ -24,18 +24,34 @@ class ModelEdan {
   String? horaLlegada;
   String? clima;
   String? medioComunicacion;
+  String? canal;
+  String? nombreEmisora;
+  String? dialEmisora;
+  String? telefonoEmisora;
   int? viviendas;
   int? familias;
+  int? ninios;
+  int? ninias;
+  int? discapacidad;
+  int? discapacidadm;
+  int? embarazadas;
+  int? adultoMayor;
+  int? adultoMayorm;
+  int? numAlbergues;
   String? agua;
   String? basura;
   String? alcantarillado;
   String? electricidad;
   String? telecom;
   String? transporte;
+  String? establecimientossalud;
   int? heridos;
   int? muertos;
   int? desaparecidos;
-  String? accionesPrioritarias;
+  int? lesionados;
+  String? otraOrganizacion;
+  String? sci;
+  String? sciDonde;
   String? lugarLle;
   String? fechaLle;
   String? horaLle;
@@ -47,6 +63,7 @@ class ModelEdan {
   String? usuario;
   String? fechap;
   String? enviado;
+
   bool controllerEnviar = false;
 
   ModelEdan({
@@ -75,18 +92,34 @@ class ModelEdan {
     this.horaLlegada,
     this.clima,
     this.medioComunicacion,
+    this.canal,
+    this.nombreEmisora,
+    this.dialEmisora,
+    this.telefonoEmisora,
     this.viviendas,
     this.familias,
+    this.ninios,
+    this.ninias,
+    this.discapacidad,
+    this.discapacidadm,
+    this.embarazadas,
+    this.adultoMayor,
+    this.adultoMayorm,
+    this.numAlbergues,
     this.agua,
     this.basura,
     this.alcantarillado,
     this.electricidad,
     this.telecom,
     this.transporte,
+    this.establecimientossalud,
     this.heridos,
     this.muertos,
     this.desaparecidos,
-    this.accionesPrioritarias,
+    this.lesionados,
+    this.otraOrganizacion,
+    this.sci,
+    this.sciDonde,
     this.lugarLle,
     this.fechaLle,
     this.horaLle,
@@ -103,54 +136,70 @@ class ModelEdan {
 
   Map<String, dynamic> toMap() {
     return {
-      'coddan': codEdan,
+      'cod_edan': codEdan,
       'evento': evento,
-      'claseEvento': claseEvento,
+      'clase_evento': claseEvento,
       'fecha': fecha,
       'hora': hora,
       'continua': continua,
       'nombre': nombre,
       'cargo': cargo,
       'dreccion': dreccion,
-      'telFc': telFc,
-      'telCc': telCc,
+      'tel_fc': telFc,
+      'tel_cc': telCc,
       'depto': depto,
       'municipio': municipio,
       'comunidad': comunidad,
-      'tieneCoord': tieneCoord,
-      'coordenadaX': coordenadaX,
-      'coordenadaY': coordenadaY,
+      'tiene_coord': tieneCoord,
+      'coordenada_x': coordenadaX,
+      'coordenada_y': coordenadaY,
       'aereo': aereo,
       'terrestre': terrestre,
       'fluvial': fluvial,
       'ferroviario': ferroviario,
       'partida': partida,
-      'horaLlegada': horaLlegada,
+      'hora_llegada': horaLlegada,
       'clima': clima,
-      'medioComunicacion': medioComunicacion,
+      'medio_comunicacion': medioComunicacion,
+      'canal': canal,
+      'nombre_emisora': nombreEmisora,
+      'dial_emisora': dialEmisora,
+      'telefono_emisora': telefonoEmisora,
       'viviendas': viviendas,
       'familias': familias,
+      'ninios': ninios,
+      'ninias': ninias,
+      'discapacidad': discapacidad,
+      'discapacidadm': discapacidadm,
+      'embarazadas': embarazadas,
+      'adulto_mayor': adultoMayor,
+      'adulto_mayorm': adultoMayorm,
+      'num_albergues': numAlbergues,
       'agua': agua,
       'basura': basura,
       'alcantarillado': alcantarillado,
       'electricidad': electricidad,
       'telecom': telecom,
       'transporte': transporte,
+      'establecimientossalud': establecimientossalud,
       'heridos': heridos,
       'muertos': muertos,
       'desaparecidos': desaparecidos,
-      'accionesPrioritarias': accionesPrioritarias,
-      'lugarLle': lugarLle,
-      'fechaLle': fechaLle,
-      'horaLle': horaLle,
-      'responsableLle': responsableLle,
-      'cargoLle': cargoLle,
-      'telfFijoLle': telfFijoLle,
-      'telfCelLle': telfCelLle,
+      'lesionados': lesionados,
+      'otra_organizacion': otraOrganizacion,
+      'sci': sci,
+      'sci_donde': sciDonde,
+      'lugar_lle': lugarLle,
+      'fecha_lle': fechaLle,
+      'hora_lle': horaLle,
+      'responsable_lle': responsableLle,
+      'cargo_lle': cargoLle,
+      'telf_fijo_lle': telfFijoLle,
+      'telf_cel_lle': telfCelLle,
       'email': email,
       'usuario': usuario,
       'fechap': fechap,
-      'enviado': enviado
+      'enviado': enviado,
     };
   }
 
@@ -180,18 +229,34 @@ class ModelEdan {
     horaLlegada = map['hora_llegada'];
     clima = map['clima'];
     medioComunicacion = map['medio_comunicacion'];
+    canal = map['canal'];
+    nombreEmisora = map['nombre_emisora'];
+    dialEmisora = map['dial_emisora'];
+    telefonoEmisora = map['telefono_emisora'];
     viviendas = map['viviendas'];
     familias = map['familias'];
+    ninios = map['ninios'];
+    ninias = map['ninias'];
+    discapacidad = map['discapacidad'];
+    discapacidadm = map['discapacidadm'];
+    embarazadas = map['embarazadas'];
+    adultoMayor = map['adulto_mayor'];
+    adultoMayorm = map['adulto_mayorm'];
+    numAlbergues = map['num_albergues'];
     agua = map['agua'];
     basura = map['basura'];
     alcantarillado = map['alcantarillado'];
     electricidad = map['electricidad'];
     telecom = map['telecom'];
     transporte = map['transporte'];
+    establecimientossalud = map['establecimientossalud'];
     heridos = map['heridos'];
     muertos = map['muertos'];
     desaparecidos = map['desaparecidos'];
-    accionesPrioritarias = map['acciones_prioritarias'];
+    lesionados = map['lesionados'];
+    otraOrganizacion = map['otra_organizacion'];
+    sci = map['sci'];
+    sciDonde = map['sci_donde'];
     lugarLle = map['lugar_lle'];
     fechaLle = map['fecha_lle'];
     horaLle = map['hora_lle'];
@@ -206,7 +271,8 @@ class ModelEdan {
   }
 
   String insertSql() {
-    return """INSERT INTO edan (evento,
+    return """INSERT INTO edan (
+evento,
 clase_evento,
 fecha,
 hora,
@@ -230,18 +296,34 @@ partida,
 hora_llegada,
 clima,
 medio_comunicacion,
+canal,
+nombre_emisora,
+dial_emisora,
+telefono_emisora,
 viviendas,
 familias,
+ninios,
+ninias,
+discapacidad,
+discapacidadm,
+embarazadas,
+adulto_mayor,
+adulto_mayorm,
+num_albergues,
 agua,
 basura,
 alcantarillado,
 electricidad,
 telecom,
 transporte,
+establecimientossalud,
 heridos,
 muertos,
 desaparecidos,
-acciones_prioritarias,
+lesionados,
+otra_organizacion,
+sci,
+sci_donde,
 lugar_lle,
 fecha_lle,
 hora_lle,
@@ -253,14 +335,76 @@ email,
 usuario,
 fechap,
 enviado
-) VALUES ( '$evento', '$claseEvento', '$fecha', '$hora', '$continua', '$nombre', '$cargo', '$dreccion', '$telFc', '$telCc', '$depto', '$municipio', '$comunidad', '$tieneCoord', '$coordenadaX', '$coordenadaY', '$aereo', '$terrestre', '$fluvial', '$ferroviario', '$partida', '$horaLlegada', '$clima', '$medioComunicacion', '$viviendas', '$familias', '$agua', '$basura', '$alcantarillado', '$electricidad', '$telecom', '$transporte', '$heridos', '$muertos', '$desaparecidos', '$accionesPrioritarias', '$lugarLle', '$fechaLle', '$horaLle', '$responsableLle', '$cargoLle', '$telfFijoLle', '$telfCelLle', '$email', '$usuario', '$fechap', 'NO')""";
-    // return "INSERT INTO `edan` VALUES (DEFAULT', '$evento', '$claseEvento', '$fecha', '$hora', '$continua', '$nombre', '$cargo', '$dreccion', '$telFc', '$telCc', '$depto', '$municipio', '$comunidad', '$tieneCoord', '$coordenadaX', '$coordenadaY', '$aereo', '$terrestre', '$fluvial', '$ferroviario', '$partida', '$horaLlegada', '$clima', '$medioComunicacion', $viviendas, $familias, '$agua', '$basura', '$alcantarillado', '$electricidad', '$telecom', '$transporte', $heridos, $muertos, $desaparecidos, '$accionesPrioritarias', '$lugarLle', '$fechaLle', '$horaLle', '$responsableLle', '$cargoLle', '$telfFijoLle', '$telfCelLle', '$email', '$usuario', '$fechap', 'NO')";
+) VALUES ( 
+  '$evento'
+  '$claseEvento'
+  '$fecha'
+  '$hora'
+  '$continua'
+  '$nombre'
+  '$cargo'
+  '$dreccion'
+  '$telFc'
+  '$telCc'
+  '$depto'
+  '$municipio'
+  '$comunidad'
+  '$tieneCoord'
+  '$coordenadaX'
+  '$coordenadaY'
+  '$aereo'
+  '$terrestre'
+  '$fluvial'
+  '$ferroviario'
+  '$partida'
+  '$horaLlegada'
+  '$clima'
+  '$medioComunicacion'
+  '$canal'
+  '$nombreEmisora'
+  '$dialEmisora'
+  '$telefonoEmisora'
+  '$viviendas'
+  '$familias'
+  '$ninios'
+  '$ninias'
+  '$discapacidad'
+  '$discapacidadm'
+  '$embarazadas'
+  '$adultoMayor'
+  '$adultoMayorm'
+  '$numAlbergues'
+  '$agua'
+  '$basura'
+  '$alcantarillado'
+  '$electricidad'
+  '$telecom'
+  '$transporte'
+  '$establecimientossalud'
+  '$heridos'
+  '$muertos'
+  '$desaparecidos'
+  '$lesionados'
+  '$otraOrganizacion'
+  '$sci'
+  '$sciDonde'
+  '$lugarLle'
+  '$fechaLle'
+  '$horaLle'
+  '$responsableLle'
+  '$cargoLle'
+  '$telfFijoLle'
+  '$telfCelLle'
+  '$email'
+  '$usuario'
+  '$fechap'
+  'NO')""";
+    // return "INSERT INTO `edan` VALUES (DEFAULT','$evento','$claseEvento','$fecha','$hora','$continua','$nombre','$cargo','$dreccion','$telFc','$telCc', '$depto', '$municipio', '$comunidad', '$tieneCoord', '$coordenadaX', '$coordenadaY', '$aereo', '$terrestre', '$fluvial', '$ferroviario', '$partida', '$horaLlegada', '$clima', '$medioComunicacion', $viviendas, $familias, '$agua', '$basura', '$alcantarillado', '$electricidad', '$telecom', '$transporte', $heridos, $muertos, $desaparecidos, '$accionesPrioritarias', '$lugarLle', '$fechaLle', '$horaLle', '$responsableLle', '$cargoLle', '$telfFijoLle', '$telfCelLle', '$email', '$usuario', '$fechap', 'NO')";
   }
 
   String updateSql() {
     return """
-UPDATE edan SET  
-cod_edan = '$codEdan',
+UPDATE edan SET
 evento = '$evento',
 clase_evento = '$claseEvento',
 fecha = '$fecha',
@@ -285,18 +429,34 @@ partida = '$partida',
 hora_llegada = '$horaLlegada',
 clima = '$clima',
 medio_comunicacion = '$medioComunicacion',
+canal = '$canal',
+nombre_emisora = '$nombreEmisora',
+dial_emisora = '$dialEmisora',
+telefono_emisora = '$telefonoEmisora',
 viviendas = '$viviendas',
 familias = '$familias',
+ninios = '$ninios',
+ninias = '$ninias',
+discapacidad = '$discapacidad',
+discapacidadm = '$discapacidadm',
+embarazadas = '$embarazadas',
+adulto_mayor = '$adultoMayor',
+adulto_mayorm = '$adultoMayorm',
+num_albergues = '$numAlbergues',
 agua = '$agua',
 basura = '$basura',
 alcantarillado = '$alcantarillado',
 electricidad = '$electricidad',
 telecom = '$telecom',
 transporte = '$transporte',
+establecimientossalud = '$establecimientossalud',
 heridos = '$heridos',
 muertos = '$muertos',
 desaparecidos = '$desaparecidos',
-acciones_prioritarias = '$accionesPrioritarias',
+lesionados = '$lesionados',
+otra_organizacion = '$otraOrganizacion',
+sci = '$sci',
+sci_donde = '$sciDonde',
 lugar_lle = '$lugarLle',
 fecha_lle = '$fechaLle',
 hora_lle = '$horaLle',
@@ -309,7 +469,7 @@ usuario = '$usuario',
 fechap = '$fechap',
 enviado = 'NO'
 WHERE
-    cod_edan = '$codEdan' 
+    cod_edan = '$codEdan'
 """;
     // return "INSERT INTO `edan` VALUES (DEFAULT', '$evento', '$claseEvento', '$fecha', '$hora', '$continua', '$nombre', '$cargo', '$dreccion', '$telFc', '$telCc', '$depto', '$municipio', '$comunidad', '$tieneCoord', '$coordenadaX', '$coordenadaY', '$aereo', '$terrestre', '$fluvial', '$ferroviario', '$partida', '$horaLlegada', '$clima', '$medioComunicacion', $viviendas, $familias, '$agua', '$basura', '$alcantarillado', '$electricidad', '$telecom', '$transporte', $heridos, $muertos, $desaparecidos, '$accionesPrioritarias', '$lugarLle', '$fechaLle', '$horaLle', '$responsableLle', '$cargoLle', '$telfFijoLle', '$telfCelLle', '$email', '$usuario', '$fechap', 'NO')";
   }

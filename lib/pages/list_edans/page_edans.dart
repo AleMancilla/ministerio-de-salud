@@ -233,9 +233,7 @@ class _PageEdansState extends State<PageEdans> {
       //     widget.edanModel!.accionesPrioritarias == null
       //         ? widget.edanModel!.accionesPrioritarias.toString()
       //         : '0';
-      controllerLugarEDAN.text = widget.edanModel!.lugarLle == null
-          ? widget.edanModel!.accionesPrioritarias.toString()
-          : '0';
+
       controllerFechaEDAN.text = widget.edanModel!.fechaLle ?? '';
       controllerHoraEDAN.text = widget.edanModel!.horaLle ?? '';
       controllerResponsableEDAN.text = widget.edanModel!.responsableLle ?? '';
