@@ -122,11 +122,15 @@ class _PageEdansState extends State<PageEdans> {
   List<_InstalacionAlbergues> listInstalacionDeAlbergues = [];
 
   List<Widget> listAccionesWidget = [];
+  List<Widget> listAccionesPrioritariasWidget = [];
   List<_Acciones> listAcciones = [];
+  List<_AccionesPrioritarias> listAccionesPrioritarias = [];
 
   ///[ACCIONES_REALIZADAS]
-  TextEditingController controllerAccionesPrioritarias =
+  TextEditingController controllerOrganizacionQueRealizeTrabajos =
       TextEditingController();
+
+  TextEditingController controllerSistemaDeComandos = TextEditingController();
 
   ///[SECCION DATOS GENERALES]
   TextEditingController controllerLugarEDAN = TextEditingController();
@@ -150,6 +154,7 @@ class _PageEdansState extends State<PageEdans> {
   // double _scrollPositiongroupInstalacionDeAlbergues = 0;
   late ScrollController scrollControllergroupInstalacionDeAlbergues;
   late ScrollController scrollControllergroupAcciones;
+  late ScrollController scrollControllergroupAccionesPrioritarias;
   // double _scrollPositiongroupDaniosEstablecimiendosDeSalud = 0;
   late ScrollController scrollControllergroupDaniosEstablecimiendosDeSalud;
   // double _scrollPositiongroupDaniosAlPersonalDeSalud = 0;
@@ -216,10 +221,11 @@ class _PageEdansState extends State<PageEdans> {
       controllerDesaparecidos.text = widget.edanModel!.desaparecidos == null
           ? widget.edanModel!.desaparecidos.toString()
           : '0';
-      controllerAccionesPrioritarias.text =
-          widget.edanModel!.accionesPrioritarias == null
-              ? widget.edanModel!.accionesPrioritarias.toString()
-              : '0';
+      //TODO: REVISAR SI ES IMPORTANTE
+      // controllerAccionesPrioritarias.text =
+      //     widget.edanModel!.accionesPrioritarias == null
+      //         ? widget.edanModel!.accionesPrioritarias.toString()
+      //         : '0';
       controllerLugarEDAN.text = widget.edanModel!.lugarLle == null
           ? widget.edanModel!.accionesPrioritarias.toString()
           : '0';
@@ -251,6 +257,7 @@ class _PageEdansState extends State<PageEdans> {
     }
     scrollControllergroupInstalacionDeAlbergues = ScrollController();
     scrollControllergroupAcciones = ScrollController();
+    scrollControllergroupAccionesPrioritarias = ScrollController();
     scrollControllergroupDaniosEstablecimiendosDeSalud = ScrollController();
     scrollControllergroupDaniosAlPersonalDeSalud = ScrollController();
 
@@ -296,7 +303,8 @@ class _PageEdansState extends State<PageEdans> {
                 _datosGenerales(size),
                 _daniosGenerales(size),
                 _daniosALaSalud(size),
-                _accionesARealizar(size),
+                _accionesRealizadasHastaElMomento(size),
+                _accionesPrioritariasParaElControl(size),
                 _datosLlenadoDelEdan(size),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -493,8 +501,8 @@ class _PageEdansState extends State<PageEdans> {
                             muertos: int.parse(controllerFallecidos.text),
                             desaparecidos:
                                 int.parse(controllerDesaparecidos.text),
-                            accionesPrioritarias:
-                                controllerAccionesPrioritarias.text,
+                            // accionesPrioritarias:
+                            //     controllerAccionesPrioritarias.text,
                             lugarLle: controllerLugarEDAN.text,
                             fechaLle: controllerFechaEDAN.text,
                             horaLle: controllerHoraEDAN.text,
@@ -930,7 +938,7 @@ class _PageEdansState extends State<PageEdans> {
     );
   }
 
-  Widget _accionesARealizar(Size size) {
+  Widget _accionesRealizadasHastaElMomento(Size size) {
     return Column(
       children: [
         Container(
@@ -945,15 +953,21 @@ class _PageEdansState extends State<PageEdans> {
               texto: '4.- ACCIONES REALIZADAS HASTA EL MOMENTO'),
           children: <Widget>[
             ExpansionTile(
+              initiallyExpanded: true,
               title: const TitleExpansion(
                   texto: 'Acciones Realizadas hasta el Momento'),
               children: [_groupAcciones(size)],
             ),
             InputExpanded(
+              title: 'Existe otra Organización que Realiza Trabajos',
+              controller: controllerOrganizacionQueRealizeTrabajos,
+            ),
+
+            InputListBoolean(
               title:
-                  '5.- Acciones prioritarias para el control de la situación y atencion en salud',
-              controller: controllerAccionesPrioritarias,
-              isRequired: true,
+                  'Se ha Instalado un Sistema de Comando de Incidentes - SCI',
+              controller: controllerSistemaDeComandos,
+              options: const ['Si', 'No'],
             ),
             // ExpansionTile(
             //   title: const TitleExpansion(
@@ -961,6 +975,35 @@ class _PageEdansState extends State<PageEdans> {
             //           'Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),
             //   children: [_groupDaniosAlPersonalDeSalud(size)],
             // )
+          ],
+        ),
+        const Divider()
+      ],
+    );
+  }
+
+  Widget _accionesPrioritariasParaElControl(Size size) {
+    return Column(
+      children: [
+        Container(
+          width: size.width - 50,
+          height: 5,
+          decoration: BoxDecoration(
+              color: Colors.blueGrey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(100)),
+        ),
+        ExpansionTile(
+          title: const TitleExpansion(
+              texto:
+                  '5.- ACCIONES PRIORITARIAS PARA EL CONTROL DE LA SITUACIÓN Y ATENCIÓN DE LA SALUD'),
+          children: <Widget>[
+            ExpansionTile(
+              initiallyExpanded: true,
+              title: const TitleExpansion(
+                  texto:
+                      'Acciones Prioritarias para el Control de la Situación y Atención de la Salud'),
+              children: [_groupAccionesPrioritarias(size)],
+            ),
           ],
         ),
         const Divider()
@@ -1401,6 +1444,49 @@ class _PageEdansState extends State<PageEdans> {
     );
   }
 
+  /////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////
+  Widget _groupAccionesPrioritarias(Size size) {
+    return Scrollbar(
+      isAlwaysShown: true,
+      showTrackOnHover: true,
+      controller: scrollControllergroupAccionesPrioritarias,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          width: size.width > 600 ? size.width - 20 : 600,
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.lightBlue),
+          ),
+          child: GroupAcciones(listWidgets: [
+            ...listAccionesPrioritariasWidget,
+            Material(
+              color: Colors.grey.shade100,
+              child: InkWell(
+                onTap: () async {
+                  listAccionesPrioritarias.add(_AccionesPrioritarias());
+                  await _actualizarListaAccionesPrioritarias();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blueGrey.shade200),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  child: const Icon(Icons.add),
+                ),
+              ),
+            ),
+          ], titles: const [
+            'Acción',
+          ]),
+        ),
+      ),
+    );
+  }
+
   Future<void> _actualizarListaInstalacionAlbergues() async {
     listInstalacionDeAlberguesWidget = [];
     int i = 0;
@@ -1482,10 +1568,12 @@ class _PageEdansState extends State<PageEdans> {
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue.shade100),
                     ),
-                    child: SublistInputExpanded(
-                      controller: demo.controllerAccion,
-                      isNumber: true,
-                      hint: 'Acción',
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InputTextFielfDescriptionWidget(
+                        controller: demo.controllerAccion,
+                        hint: 'Acción',
+                      ),
                     ),
                   ),
                 ),
@@ -1499,6 +1587,58 @@ class _PageEdansState extends State<PageEdans> {
                       onPressed: () {
                         listAcciones.remove(demo);
                         _actualizarListaAcciones();
+                        setState(() {});
+                      },
+                      icon: const Icon(Icons.remove_circle_outlined),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      }).toList();
+      setState(() {});
+    });
+  }
+
+  Future<void> _actualizarListaAccionesPrioritarias() async {
+    listAccionesPrioritariasWidget = [];
+    int i = 0;
+    Future.delayed(Duration.zero, () {
+      listAccionesPrioritariasWidget = listAccionesPrioritarias.map((demo) {
+        i++;
+        return Container(
+          color: i % 2 == 0 ? Colors.blue[50] : Colors.white,
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InputTextFielfDescriptionWidget(
+                        controller: demo.controllerAccion,
+                        hint: 'Acción',
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        listAccionesPrioritarias.remove(demo);
+                        _actualizarListaAccionesPrioritarias();
                         setState(() {});
                       },
                       icon: const Icon(Icons.remove_circle_outlined),
@@ -1545,4 +1685,10 @@ class _Acciones {
   TextEditingController controllerAccion = TextEditingController();
 
   _Acciones();
+}
+
+class _AccionesPrioritarias {
+  TextEditingController controllerAccion = TextEditingController();
+
+  _AccionesPrioritarias();
 }
