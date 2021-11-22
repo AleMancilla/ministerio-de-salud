@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
+import 'package:ministerio_de_salud/bussiness/database/mysqlphp/mysql_data.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 import 'package:ministerio_de_salud/bussiness/providers/edan_provider.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_edans.dart';
@@ -12,6 +14,7 @@ import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/group_edans_no_enviados.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/button_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/check_box_demo.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/input_text_field.dart';
 import 'package:ministerio_de_salud/utils/navigator_route.dart';
 import 'package:provider/provider.dart';
 
@@ -54,11 +57,18 @@ class _PageNotSendState extends State<PageNotSend> {
     });
   }
 
+  TextEditingController controllerid = TextEditingController();
+  TextEditingController controllertext = TextEditingController();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () async {
+        //     insertMethod(controllerid.text, controllertext.text);
+        //   },
+        // ),
         appBar: PreferredSize(
           child: AppBarWidget(
             size: size,
@@ -72,6 +82,8 @@ class _PageNotSendState extends State<PageNotSend> {
               connectionInternet,
               const BodyAppBar(text: 'Lista EDANs NO enviados'),
               _boddy(size),
+              // InputTextFielfWidget(controller: controllerid),
+              // InputTextFielfWidget(controller: controllertext),
             ],
           ),
         ),
@@ -140,12 +152,9 @@ class _PageNotSendState extends State<PageNotSend> {
                         width: 10,
                       ),
                       ButtonWidget(
-                        ontap: () {
+                        ontap: () async {
                           // navigatorPush(context, const PageEdans());
-                          edanProvider.listEdansProvider
-                              .forEach((ModelEdan edan) {
-                            print(edan.controllerEnviar);
-                          });
+                          confirmDialog();
                         },
                         color: Colors.grey[200],
                         text: 'Enviar al PNCAD',
@@ -159,6 +168,64 @@ class _PageNotSendState extends State<PageNotSend> {
           ],
         ),
       ),
+    );
+  }
+
+  confirmDialog() {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Estas apunto de enviar los datos al servidor'),
+          actions: [
+            CupertinoButton(
+              child: Text(
+                'Cancelar',
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            CupertinoButton(
+              child: Text(
+                'Confirmar',
+                style: TextStyle(color: Colors.blue),
+              ),
+              onPressed: () async {
+                bool resp = true;
+                edanProvider.listEdansProvider.forEach((ModelEdan edan) async {
+                  print(edan.controllerEnviar);
+                  if (edan.controllerEnviar) {
+                    resp = await insertEdan(edan);
+                    if (resp) {
+                      edan.enviado = 'SI';
+                      db.updateEDAN(edan);
+                    }
+                  }
+                });
+                Navigator.pop(context);
+                if (resp) {
+                  CoolAlert.show(
+                    context: context,
+                    type: CoolAlertType.success,
+                    text: 'Los datos se cargaron correctamente',
+                    onConfirmBtnTap: () {
+                      setState(() {});
+                    },
+                  );
+                } else {
+                  CoolAlert.show(
+                      context: context,
+                      type: CoolAlertType.error,
+                      text: 'Hubo un error al cargar los datos');
+                }
+                edanProvider.setstate();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 

@@ -9,6 +9,10 @@ class EdanProvider with ChangeNotifier {
     _listEdansProvider = data;
   }
 
+  setstate() {
+    notifyListeners();
+  }
+
   readDataBaseListEdans() async {
     DataBaseEdans db = DataBaseEdans();
     await db.initDB();
