@@ -9,12 +9,20 @@ class MySqlConnect {
 
   MySqlConnect._internal();
 
+  // var settings = ConnectionSettings(
+  //   host: 'localhost',
+  //   port: 3306,
+  //   user: 'id17985222_ministerio',
+  //   password: '0)-rYWkRwI[^u%e4',
+  //   db: 'id17985222_min_salud',
+  //   // useSSL: true,
+  // );
   var settings = ConnectionSettings(
-    host: 'localhost',
+    host: '47.243.63.127',
     port: 3306,
-    user: 'id17985222_ministerio',
-    password: '0)-rYWkRwI[^u%e4',
-    db: 'id17985222_min_salud',
+    user: 'edan',
+    password: 'Edan123\$',
+    db: 'pncad',
     // useSSL: true,
   );
   var conn;

@@ -34,7 +34,7 @@ class GroupEdansNoEnviados extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -64,21 +64,6 @@ class GroupEdansNoEnviados extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 5,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.lightBlue),
-                    ),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: Text(
-                      titles[3],
-                      style: const TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-                Expanded(
                   flex: 3,
                   child: Container(
                     decoration: BoxDecoration(
@@ -87,7 +72,7 @@ class GroupEdansNoEnviados extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: Text(
-                      titles[4],
+                      titles[3],
                       style: const TextStyle(
                           color: Colors.white, fontWeight: FontWeight.w600),
                     ),

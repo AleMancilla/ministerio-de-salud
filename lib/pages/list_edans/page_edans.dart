@@ -39,6 +39,7 @@ class PageEdans extends StatefulWidget {
 class _PageEdansState extends State<PageEdans> {
   ///[SECCION DATOS GENERALES]
   TextEditingController controllerEvento = TextEditingController();
+  TextEditingController controllerOtroEvento = TextEditingController();
   TextEditingController controllerFecha = TextEditingController();
   TextEditingController controllerHora = TextEditingController();
 
@@ -179,77 +180,86 @@ class _PageEdansState extends State<PageEdans> {
     edanProvider = Provider.of<EdanProvider>(context, listen: false);
     initDB();
     if (widget.edanModel != null) {
-      controllercodEdan.text = widget.edanModel!.codEdan!.toString();
-      controllerEvento.text = widget.edanModel!.evento ?? '';
-      controllerclaseEvento.text = widget.edanModel!.claseEvento ?? '';
-      controllerFecha.text = widget.edanModel!.fecha ?? '';
-      controllerHora.text = widget.edanModel!.hora ?? '';
-      controllerSigueEnDesarrollo.text = widget.edanModel!.continua ?? '';
-      controllerNombreDeContacto.text = widget.edanModel!.nombre ?? '';
-      controllerCargoDeContacto.text = widget.edanModel!.cargo ?? '';
-      controllerDireccionDeContacto.text = widget.edanModel!.dreccion ?? '';
-      controllerTelefonoFijo.text = widget.edanModel!.telFc ?? '';
-      controllerTelefonoMovil.text = widget.edanModel!.telCc ?? '';
-      controllerDepartamento.text = widget.edanModel!.depto ?? '';
-      controllerMunicipio.text = widget.edanModel!.municipio ?? '';
-      controllerComunidad.text = widget.edanModel!.comunidad ?? '';
-      controllerTieneCoordenadas.text = widget.edanModel!.tieneCoord ?? '';
-      controllerCoordenadaX.text = widget.edanModel!.coordenadaX ?? '';
-      controllerCoordenadaY.text = widget.edanModel!.coordenadaY ?? '';
-      controllerViaAerea.text = widget.edanModel!.aereo ?? '';
-      controllerViaTerrestre.text = widget.edanModel!.terrestre ?? '';
-      controllerViaFluvial.text = widget.edanModel!.fluvial ?? '';
-      controllerViaFerroviaria.text = widget.edanModel!.ferroviario ?? '';
-      controllerParaLlegar.text = widget.edanModel!.partida ?? '';
-      controllerTiempoLlegada.text = widget.edanModel!.horaLlegada ?? '';
-      controllerCondicionClimatica.text = widget.edanModel!.clima ?? '';
-      controllerMediosDeComunicacion.text =
-          widget.edanModel!.medioComunicacion ?? '';
-      controllerViviendasAfectadas.text = widget.edanModel!.viviendas == null
-          ? widget.edanModel!.viviendas.toString()
-          : '0';
-      controllerFamiliasDamnificadas.text = widget.edanModel!.familias == null
-          ? widget.edanModel!.familias.toString()
-          : '0';
-      controllerServicioDeAgua.text = widget.edanModel!.agua ?? '';
-      controllerServicioDeRecoleccion.text = widget.edanModel!.basura ?? '';
-      controllerServicioDeAlcantarilla.text =
-          widget.edanModel!.alcantarillado ?? '';
-      controllerServicioDeEnergia.text = widget.edanModel!.electricidad ?? '';
-      controllerServicioDeTelecomunicaciones.text =
-          widget.edanModel!.telecom ?? '';
-      controllerServicioDeTransporte.text = widget.edanModel!.transporte ?? '';
-      controllerHeridos.text = widget.edanModel!.heridos == null
-          ? widget.edanModel!.heridos.toString()
-          : '0';
-      controllerFallecidos.text = widget.edanModel!.muertos == null
-          ? widget.edanModel!.muertos.toString()
-          : '0';
-      controllerDesaparecidos.text = widget.edanModel!.desaparecidos == null
-          ? widget.edanModel!.desaparecidos.toString()
-          : '0';
-      //TODO: REVISAR SI ES IMPORTANTE
-      // controllerAccionesPrioritarias.text =
-      //     widget.edanModel!.accionesPrioritarias == null
-      //         ? widget.edanModel!.accionesPrioritarias.toString()
-      //         : '0';
+      // controllercodEdan.text = widget.edanModel!.codEdan!.toString();
+      // controllerEvento.text = widget.edanModel!.evento ?? '';
+      // controllerclaseEvento.text = widget.edanModel!.claseEvento ?? '';
+      // controllerFecha.text = widget.edanModel!.fecha ?? '';
+      // controllerHora.text = widget.edanModel!.hora ?? '';
+      // controllerSigueEnDesarrollo.text = widget.edanModel!.continua ?? '';
+      // controllerNombreDeContacto.text = widget.edanModel!.nombre ?? '';
+      // controllerCargoDeContacto.text = widget.edanModel!.cargo ?? '';
+      // controllerDireccionDeContacto.text = widget.edanModel!.dreccion ?? '';
+      // controllerTelefonoFijo.text = widget.edanModel!.telFc ?? '';
+      // controllerTelefonoMovil.text = widget.edanModel!.telCc ?? '';
+      // controllerDepartamento.text = widget.edanModel!.depto ?? '';
+      // controllerMunicipio.text = widget.edanModel!.municipio ?? '';
+      // controllerComunidad.text = widget.edanModel!.comunidad ?? '';
+      // controllerTieneCoordenadas.text = widget.edanModel!.tieneCoord ?? '';
+      // controllerCoordenadaX.text = widget.edanModel!.coordenadaX ?? '';
+      // controllerCoordenadaY.text = widget.edanModel!.coordenadaY ?? '';
+      // controllerViaAerea.text = widget.edanModel!.aereo ?? '';
+      // controllerViaTerrestre.text = widget.edanModel!.terrestre ?? '';
+      // controllerViaFluvial.text = widget.edanModel!.fluvial ?? '';
+      // controllerViaFerroviaria.text = widget.edanModel!.ferroviario ?? '';
+      // controllerParaLlegar.text = widget.edanModel!.partida ?? '';
+      // controllerTiempoLlegada.text = widget.edanModel!.horaLlegada ?? '';
+      // controllerCondicionClimatica.text = widget.edanModel!.clima ?? '';
+      // controllerMediosDeComunicacion.text =
+      //     widget.edanModel!.medioComunicacion ?? '';
+      // controllerViviendasAfectadas.text = widget.edanModel!.viviendas == null
+      //     ? widget.edanModel!.viviendas.toString()
+      //     : '0';
+      // controllerFamiliasDamnificadas.text = widget.edanModel!.familias == null
+      //     ? widget.edanModel!.familias.toString()
+      //     : '0';
+      // controllerServicioDeAgua.text = widget.edanModel!.agua ?? '';
+      // controllerServicioDeRecoleccion.text = widget.edanModel!.basura ?? '';
+      // controllerServicioDeAlcantarilla.text =
+      //     widget.edanModel!.alcantarillado ?? '';
+      // controllerServicioDeEnergia.text = widget.edanModel!.electricidad ?? '';
+      // controllerServicioDeTelecomunicaciones.text =
+      //     widget.edanModel!.telecom ?? '';
+      // controllerServicioDeTransporte.text = widget.edanModel!.transporte ?? '';
+      // controllerHeridos.text = widget.edanModel!.heridos == null
+      //     ? widget.edanModel!.heridos.toString()
+      //     : '0';
+      // controllerFallecidos.text = widget.edanModel!.muertos == null
+      //     ? widget.edanModel!.muertos.toString()
+      //     : '0';
+      // controllerDesaparecidos.text = widget.edanModel!.desaparecidos == null
+      //     ? widget.edanModel!.desaparecidos.toString()
+      //     : '0';
+      // //TODO: REVISAR SI ES IMPORTANTE
+      // // controllerAccionesPrioritarias.text =
+      // //     widget.edanModel!.accionesPrioritarias == null
+      // //         ? widget.edanModel!.accionesPrioritarias.toString()
+      // //         : '0';
 
-      controllerFechaEDAN.text = widget.edanModel!.fechaLle ?? '';
-      controllerHoraEDAN.text = widget.edanModel!.horaLle ?? '';
-      controllerResponsableEDAN.text = widget.edanModel!.responsableLle ?? '';
-      controllerCargoEDAN.text = widget.edanModel!.cargoLle ?? '';
-      controllerTelfFijoEDAN.text = widget.edanModel!.telfFijoLle ?? '';
-      controllerTelfMovilEDAN.text = widget.edanModel!.telfCelLle ?? '';
-      controllerCorreoEDAN.text = widget.edanModel!.email ?? '';
-      controllerFechaAuxEDAN.text = widget.edanModel!.usuario ?? '';
-      controllerfechap.text = widget.edanModel!.fechap ?? '';
-      controllerenviado.text = widget.edanModel!.enviado ?? '';
+      // controllerFechaEDAN.text = widget.edanModel!.fechaLle ?? '';
+      // controllerHoraEDAN.text = widget.edanModel!.horaLle ?? '';
+      // controllerResponsableEDAN.text = widget.edanModel!.responsableLle ?? '';
+      // controllerCargoEDAN.text = widget.edanModel!.cargoLle ?? '';
+      // controllerTelfFijoEDAN.text = widget.edanModel!.telfFijoLle ?? '';
+      // controllerTelfMovilEDAN.text = widget.edanModel!.telfCelLle ?? '';
+      // controllerCorreoEDAN.text = widget.edanModel!.email ?? '';
+      // controllerFechaAuxEDAN.text = widget.edanModel!.usuario ?? '';
+      // controllerfechap.text = widget.edanModel!.fechap ?? '';
+      // controllerenviado.text = widget.edanModel!.enviado ?? '';
     } else {
       controllerViviendasAfectadas.text = '0';
       controllerFamiliasDamnificadas.text = '0';
       controllerHeridos.text = '0';
       controllerFallecidos.text = '0';
       controllerDesaparecidos.text = '0';
+      controllerNinosVulnerables.text = '0';
+      controllerNinasVulnerables.text = '0';
+      controllerPersonasConDiscapacidadVaron.text = '0';
+      controllerPersonasConDiscapacidadMujer.text = '0';
+      controllerMujeresEmbarazadas.text = '0';
+      controllerAdultosMayoresVaron.text = '0';
+      controllerAdultosMayoresMujer.text = '0';
+      controllerNroAlbergues.text = '0';
+      controllerLesionados.text = '0';
       controllerFecha.text =
           '${DateTime.now().day.toString().padLeft(2, '0')}/${DateTime.now().month.toString().padLeft(2, '0')}/${DateTime.now().year}';
       controllerHora.text =
@@ -465,10 +475,12 @@ class _PageEdansState extends State<PageEdans> {
                           }
                           ModelEdan modelo = ModelEdan(
                             // ignore: unnecessary_null_comparison
+
                             codEdan: controllercodEdan.text != ''
                                 ? int.parse(controllercodEdan.text)
                                 : 0,
                             evento: controllerEvento.text,
+                            claseEvento: controllerOtroEvento.text,
                             fecha: controllerFecha.text,
                             hora: controllerHora.text,
                             continua: controllerSigueEnDesarrollo.text,
@@ -492,10 +504,30 @@ class _PageEdansState extends State<PageEdans> {
                             clima: controllerCondicionClimatica.text,
                             medioComunicacion:
                                 controllerMediosDeComunicacion.text,
+                            canal: controllerCanalDeRadiofrecuencia.text,
+                            nombreEmisora:
+                                controllerNombreDeLaRadioEmisora.text,
+                            dialEmisora: controllerDialDeLaEmisora.text,
+                            telefonoEmisora:
+                                controllerTelfContactoDeLaRadioEmisora.text,
                             viviendas:
                                 int.parse(controllerViviendasAfectadas.text),
                             familias:
                                 int.parse(controllerFamiliasDamnificadas.text),
+                            ninios: int.parse(controllerNinosVulnerables.text),
+                            ninias: int.parse(controllerNinasVulnerables.text),
+                            discapacidad: int.parse(
+                                controllerPersonasConDiscapacidadVaron.text),
+                            discapacidadm: int.parse(
+                                controllerPersonasConDiscapacidadMujer.text),
+                            embarazadas:
+                                int.parse(controllerMujeresEmbarazadas.text),
+                            adultoMayor:
+                                int.parse(controllerAdultosMayoresVaron.text),
+                            adultoMayorm:
+                                int.parse(controllerAdultosMayoresMujer.text),
+                            numAlbergues:
+                                int.parse(controllerNroAlbergues.text),
                             agua: controllerServicioDeAgua.text,
                             basura: controllerServicioDeRecoleccion.text,
                             alcantarillado:
@@ -504,12 +536,16 @@ class _PageEdansState extends State<PageEdans> {
                             telecom:
                                 controllerServicioDeTelecomunicaciones.text,
                             transporte: controllerServicioDeTransporte.text,
+                            establecimientossalud: '',
                             heridos: int.parse(controllerHeridos.text),
                             muertos: int.parse(controllerFallecidos.text),
                             desaparecidos:
                                 int.parse(controllerDesaparecidos.text),
-                            // accionesPrioritarias:
-                            //     controllerAccionesPrioritarias.text,
+                            lesionados: int.parse(controllerLesionados.text),
+                            otraOrganizacion:
+                                controllerOrganizacionQueRealizeTrabajos.text,
+                            sci: controllerSistemaDeComandos.text,
+                            sciDonde: controllerSistemaDeComandos.text,
                             lugarLle: controllerLugarEDAN.text,
                             fechaLle: controllerFechaEDAN.text,
                             horaLle: controllerHoraEDAN.text,
@@ -520,11 +556,14 @@ class _PageEdansState extends State<PageEdans> {
                             email: controllerCorreoEDAN.text,
                             usuario: prefs.userCarnet,
                             fechap: '',
+                            enviado: '',
                           );
 
                           if (widget.edanModel != null) {
+                            print('------- update ');
                             db.updateEDAN(modelo);
                           } else {
+                            print('------- insert ');
                             db.insertEDAN(modelo);
                           }
 

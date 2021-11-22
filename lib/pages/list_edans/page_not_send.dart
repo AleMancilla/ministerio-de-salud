@@ -210,7 +210,7 @@ class _PageNotSendState extends State<PageNotSend> {
                           ),
                         ),
                         Expanded(
-                          flex: 1,
+                          flex: 2,
                           child: Container(
                             alignment: Alignment.centerLeft,
                             padding: const EdgeInsets.all(5),
@@ -231,18 +231,6 @@ class _PageNotSendState extends State<PageNotSend> {
                                   Border.all(color: Colors.lightBlue.shade100),
                             ),
                             child: Text(demo.evento!),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 5,
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            alignment: Alignment.centerLeft,
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.lightBlue.shade100),
-                            ),
-                            child: Text(''),
                           ),
                         ),
                         Expanded(
@@ -289,9 +277,8 @@ class _PageNotSendState extends State<PageNotSend> {
             }).toList(),
           ], titles: const [
             'Enviar',
-            'No.',
+            'cod edan',
             'Evento',
-            'Nombre Evento Biologico',
             'fecha'
           ]),
         ),
