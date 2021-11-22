@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
           constraints: const BoxConstraints(maxWidth: 450),
           child: InputTextFielfWidget(
             controller: controllerCarnet,
-            hint: 'Usuario o Carnet',
+            hint: 'Usuario',
           ),
         ),
         Container(
@@ -77,13 +77,13 @@ class _LoginPageState extends State<LoginPage> {
           // ),
           child: SubListInputListOption(
             controller: controllerNivel,
-            options: const ['1', '2'],
+            options: const ['Reportero Edan', 'Planilla de atencion'],
           ),
         ),
         ButtonWidget(
           text: 'Iniciar Sesión',
           ontap: () {
-            if (controllerCarnet.text.length < 5 ||
+            if (controllerCarnet.text.length < 3 ||
                 controllerNivel.text == '- Seleccione una opción -') {
               CoolAlert.show(
                 context: context,
@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
             } else {
               prefs.userIsRegister = true;
               prefs.userCarnet = controllerCarnet.text;
-              prefs.userNivel = controllerNivel.text;
+              prefs.userNivel = _nivel(controllerNivel.text);
               CoolAlert.show(
                   context: context,
                   type: CoolAlertType.loading,
@@ -121,5 +121,15 @@ class _LoginPageState extends State<LoginPage> {
         )
       ],
     );
+  }
+
+  String _nivel(String nivel) {
+    if (nivel == 'Reportero Edan') {
+      return '1';
+    }
+    if (nivel == 'Planilla de atencion') {
+      return '2';
+    }
+    return '0';
   }
 }

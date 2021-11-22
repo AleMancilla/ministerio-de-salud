@@ -5,6 +5,7 @@ class InputListOption extends StatefulWidget {
   final String title;
   final bool isRequired;
   final TextEditingController controller;
+  final Function onselect;
   List<String> options;
 
   InputListOption({
@@ -13,6 +14,7 @@ class InputListOption extends StatefulWidget {
     this.isRequired = false,
     required this.options,
     required this.controller,
+    required this.onselect,
   }) : super(key: key);
 
   @override
@@ -145,6 +147,7 @@ class _InputListOptionState extends State<InputListOption> {
             _chosenValue = value!;
             widget.controller.text = _chosenValue;
           });
+          widget.onselect();
         },
       );
     } catch (e) {

@@ -329,8 +329,11 @@ class _PageEdansState extends State<PageEdans> {
     super.initState();
   }
 
+  List<String> listDepartamentos = [];
+  List<String> listMunicipio = [];
+
   void initDB() async {
-    db.initDB();
+    await db.initDB();
     Future.delayed(Duration.zero, () async {
       // db.getLastIDEDAN();
       if (widget.edanModel != null) {
@@ -342,7 +345,9 @@ class _PageEdansState extends State<PageEdans> {
         controllercodEdan.text = id.toString();
       }
       print(controllercodEdan.text);
-      db.closeDB();
+      // db.closeDB();
+      listDepartamentos = await db.getListDepartamento();
+      setState(() {});
     });
   }
 
@@ -351,6 +356,11 @@ class _PageEdansState extends State<PageEdans> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     db.getListDepartamento();
+        //   },
+        // ),
         appBar: PreferredSize(
           child: AppBarWidget(size: size),
           preferredSize: const Size(double.infinity, 50),
@@ -690,6 +700,7 @@ class _PageEdansState extends State<PageEdans> {
             InputListOption(
               title: 'Evento',
               controller: controllerEvento,
+              onselect: () {},
               isRequired: true,
               options: const [
                 'Accidentes por prod. y sust. peligrosas',
@@ -748,15 +759,24 @@ class _PageEdansState extends State<PageEdans> {
               isRequired: true,
             ),
             _subTitle('1.4 UBICACIÓN GEOGRÁFICA DE LA ZONA AFECTADA'),
-            InputExpanded(
+            InputListOption(
               title: 'Departamento',
               controller: controllerDepartamento,
+              options: listDepartamentos,
               isRequired: true,
+              onselect: () async {
+                print(' ====> ${controllerDepartamento.text}');
+                listMunicipio =
+                    await db.getListMunicipio(controllerDepartamento.text);
+                setState(() {});
+              },
             ),
-            InputExpanded(
+            InputListOption(
               title: 'Municipio',
+              options: listMunicipio,
               controller: controllerMunicipio,
               isRequired: true,
+              onselect: () {},
             ),
             InputExpanded(
               title: 'Comunidad o zona',

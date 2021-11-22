@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 
-// String apiBase = "https://edan-demo.000webhostapp.com";//http://47.243.63.127/pncad/
-String apiBase = "http://47.243.63.127/pncad"; //http://47.243.63.127/pncad/
+String apiBase = "https://edan-demo.000webhostapp.com";
+// String apiBase = "http://47.243.63.127/pncad"; //http://47.243.63.127/pncad/
 
 getMethod() async {
   String theUrl = "$apiBase/getData.php";

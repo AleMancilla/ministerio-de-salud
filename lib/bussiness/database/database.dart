@@ -89,6 +89,28 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
     var result = await _db.rawQuery('SELECT Max(cod_edan) as newID from edan');
     return result[0]['newID'].toString();
   }
+
+  Future<List<String>> getListDepartamento() async {
+    var result = await _db.rawQuery(
+        'SELECT Departamento FROM `todos_anterior_redu` group by Departamento');
+    var listReturn = result
+        .map((e) =>
+            e.toString().replaceAll('{Departamento: ', '').replaceAll('}', ''))
+        .toList();
+    print(listReturn);
+    return listReturn;
+  }
+
+  Future<List<String>> getListMunicipio(String ciudad) async {
+    var result = await _db.rawQuery(
+        "select DISTINCT(Municipio) from todos_anterior_redu where Departamento like '$ciudad'");
+    var listReturn = result
+        .map((e) =>
+            e.toString().replaceAll('{Municipio: ', '').replaceAll('}', ''))
+        .toList();
+    print(listReturn);
+    return listReturn;
+  }
 }
 
 // class Task {

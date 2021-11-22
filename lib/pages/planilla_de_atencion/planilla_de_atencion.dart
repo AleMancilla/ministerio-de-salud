@@ -248,11 +248,13 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
           controller: controllerEvento,
           isRequired: true,
           options: const [],
+          onselect: () {},
         ),
         InputListOption(
           title: 'Departamento',
           controller: controllerDepartamento,
           isRequired: true,
+          onselect: () {},
           options: const [
             'BENI',
             'CHUQUISACA',
@@ -269,6 +271,7 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
           title: 'Municipio',
           controller: controllerMunicipio,
           isRequired: true,
+          onselect: () {},
           options: const [],
         ),
         InputExpanded(
