@@ -180,9 +180,9 @@ class _PageEdansState extends State<PageEdans> {
     edanProvider = Provider.of<EdanProvider>(context, listen: false);
     initDB();
     if (widget.edanModel != null) {
-      controllercodEdan.text = widget.edanModel!.codEdan == null
-          ? widget.edanModel!.codEdan.toString()
-          : '0';
+      // controllercodEdan.text = widget.edanModel!.codEdan == null
+      //     ? widget.edanModel!.codEdan.toString()
+      //     : '0';
       controllerEvento.text = widget.edanModel!.evento.toString();
       controllerOtroEvento.text = widget.edanModel!.claseEvento.toString();
       controllerFecha.text = widget.edanModel!.fecha.toString();

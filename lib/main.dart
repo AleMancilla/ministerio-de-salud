@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
+import 'package:ministerio_de_salud/bussiness/database/mysqlphp/mysql_data.dart';
 import 'package:ministerio_de_salud/bussiness/my_sql_connect.dart';
 import 'package:ministerio_de_salud/bussiness/providers/edan_provider.dart';
 import 'package:ministerio_de_salud/bussiness/providers/planillas_no_enviadas_provider.dart';
@@ -21,6 +22,7 @@ void main() async {
   await prefs.initPreferences();
   // final mysql = MySqlConnect();
   // await mysql.initDataBaseMySql();
+  getMethod();
   if (Platform.isWindows || Platform.isLinux) {
     // Initialize FFI
     sqfliteFfiInit();
