@@ -1,38 +1,38 @@
 class Desastreestablecimiento {
   int? coddesastreestablecimiento;
-  int? cod_edan;
+  int? codEdan;
   String? nomestablecimiento;
   String? funciona;
   String? tieneagua;
-  String? area_afectada;
+  String? areaAfectada;
 
   Desastreestablecimiento({
     this.coddesastreestablecimiento,
-    this.cod_edan,
+    this.codEdan,
     this.nomestablecimiento,
     this.funciona,
     this.tieneagua,
-    this.area_afectada,
+    this.areaAfectada,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'coddesastreestablecimiento': coddesastreestablecimiento,
-      'cod_edan': cod_edan,
+      'cod_edan': codEdan,
       'nomestablecimiento': nomestablecimiento,
       'funciona': funciona,
       'tieneagua': tieneagua,
-      'area_afectada': area_afectada,
+      'area_afectada': areaAfectada,
     };
   }
 
   Desastreestablecimiento.fromMap(Map<String, dynamic> map) {
     coddesastreestablecimiento = map['coddesastreestablecimiento'];
-    cod_edan = map['cod_edan'];
+    codEdan = map['cod_edan'];
     nomestablecimiento = map['nomestablecimiento'];
     funciona = map['funciona'];
     tieneagua = map['tieneagua'];
-    area_afectada = map['area_afectada'];
+    areaAfectada = map['area_afectada'];
   }
 
   String insertSql() {
@@ -45,11 +45,11 @@ class Desastreestablecimiento {
   area_afectada
 ) VALUES ( 
   '$coddesastreestablecimiento',
-  '$cod_edan',
+  '$codEdan',
   '$nomestablecimiento',
   '$funciona',
   '$tieneagua',
-  '$area_afectada'
+  '$areaAfectada'
   )""";
   }
 
@@ -57,11 +57,11 @@ class Desastreestablecimiento {
     return """
 UPDATE desastreestablecimiento SET
 coddesastreestablecimiento = '$coddesastreestablecimiento',
-cod_edan = '$cod_edan',
+cod_edan = '$codEdan',
 nomestablecimiento = '$nomestablecimiento',
 funciona = '$funciona',
 tieneagua = '$tieneagua',
-area_afectada = '$area_afectada'
+area_afectada = '$areaAfectada'
 WHERE
     coddesastreestablecimiento = '$coddesastreestablecimiento'
 """;

@@ -3,6 +3,11 @@ import 'dart:async';
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_danos_personal_de_salud.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_acciones.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_acciones2.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_establecimiento.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_requerimientos.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 import 'package:ministerio_de_salud/bussiness/providers/edan_provider.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
@@ -121,8 +126,8 @@ class _PageEdansState extends State<PageEdans> {
   /// [SECCION_INSTALACION_DE_ALBERGUES]
   ///InstalacionDeAlbergues
 
-  List<Widget> listInstalacionDeAlberguesWidget = [];
-  List<_InstalacionAlbergues> listInstalacionDeAlbergues = [];
+  // List<Widget> listInstalacionDeAlberguesWidget = [];
+  // List<_InstalacionAlbergues> listInstalacionDeAlbergues = [];
 
   List<Widget> listAccionesWidget = [];
   List<_Acciones> listAcciones = [];
@@ -331,6 +336,7 @@ class _PageEdansState extends State<PageEdans> {
 
   List<String> listDepartamentos = [];
   List<String> listMunicipio = [];
+  List<String> listHospitales = [];
 
   void initDB() async {
     await db.initDB();
@@ -360,11 +366,13 @@ class _PageEdansState extends State<PageEdans> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {
-        //     db.getListDepartamento();
-        //   },
-        // ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // db.getListEstablecimientoDeSalud(
+            //     controllerDepartamento.text, controllerMunicipio.text);
+            db.getLastdesastreestablecimiento();
+          },
+        ),
         appBar: PreferredSize(
           child: AppBarWidget(size: size),
           preferredSize: const Size(double.infinity, 50),
@@ -392,7 +400,7 @@ class _PageEdansState extends State<PageEdans> {
                     children: [
                       ButtonWidget(
                         text: 'Guardar',
-                        ontap: () {
+                        ontap: () async {
                           // log('''
                           // controllerEvento => ${controllerEvento.text}
                           // controllerFecha => ${controllerFecha.text}
@@ -628,6 +636,83 @@ class _PageEdansState extends State<PageEdans> {
                           } else {
                             print('------- insert ');
                             db.insertEDAN(modelo);
+                            int idDesastre = int.parse(
+                                await db.getLastdesastreestablecimiento());
+                            int idDaniosPersonalDeSalud = int.parse(
+                                await db.getLastdanospersonaldesalud());
+                            int idDesastreRequerimientos = int.parse(
+                                await db.getLastdesastrerequerimientos());
+                            listDaniosEstablecimientosDeSalud.forEach(
+                                (_DaniosEstablecimientosDeSalud element) async {
+                              idDesastre = idDesastre + 1;
+                              print('####=====> $idDesastre');
+                              Desastreestablecimiento modelo =
+                                  Desastreestablecimiento(
+                                coddesastreestablecimiento: idDesastre,
+                                codEdan: int.parse(controllercodEdan.text),
+                                nomestablecimiento:
+                                    element.controllerSalud.text,
+                                funciona: element.controllerFunciona.text,
+                                tieneagua: element.controllerAgua.text,
+                                areaAfectada:
+                                    element.controllerAreaAfectada.text,
+                              );
+                              await db
+                                  .insertDaniosEstablecimientosDeSalud(modelo);
+                            });
+                            listDaniosPersonalDeSalud.forEach(
+                                (_DaniosAlPersonalDeSalud element) async {
+                              idDaniosPersonalDeSalud =
+                                  idDaniosPersonalDeSalud + 1;
+                              Danospersonaldesalud modelo =
+                                  Danospersonaldesalud(
+                                codpersalud: idDaniosPersonalDeSalud,
+                                codEdan: int.parse(controllercodEdan.text),
+                                personal: element.controllerPersonalSalud.text,
+                                muertos: int.parse(
+                                    element.controllerFaleecidos.text),
+                                heridos:
+                                    int.parse(element.controllerHeridos.text),
+                                disponibles:
+                                    int.parse(element.controllerDisp.text),
+                                desaparecidos: int.parse(
+                                    element.controllerDesaparecidos.text),
+                              );
+
+                              await db.insertDaniosPersonalDeSalud(modelo);
+                            });
+                            listAcciones.forEach((_Acciones element) async {
+                              Desastreacciones modelo = Desastreacciones(
+                                codEdan: int.parse(controllercodEdan.text),
+                                accion: element.controllerAccion.text,
+                              );
+                              await db.insertlistAcciones(modelo);
+                            });
+                            listAccionesPrioritarias
+                                .forEach((_AccionesPrioritarias element) async {
+                              Desastreacciones2 modelo = Desastreacciones2(
+                                codEdan: int.parse(controllercodEdan.text),
+                                accion: element.controllerAccion.text,
+                              );
+                              await db.insertlistAcciones2(modelo);
+                            });
+                            listRequerimientoApoyo
+                                .forEach((_RequerimientoApoyo element) async {
+                              idDesastreRequerimientos =
+                                  idDesastreRequerimientos + 1;
+                              Desastrerequerimientos modelo =
+                                  Desastrerequerimientos(
+                                codrequerimientos: idDesastreRequerimientos,
+                                codEdan: int.parse(controllercodEdan.text),
+                                requerimiento:
+                                    element.controllerRequerimiento.text,
+                                cantidad:
+                                    int.parse(element.controllerCant.text),
+                                prioridad: element.controllerPrioridad.text,
+                                observaciones: element.controllerTipo.text,
+                              );
+                              await db.insertDesastrerequerimientos(modelo);
+                            });
                           }
 
                           edanProvider.readDataBaseListEdans();
@@ -771,7 +856,6 @@ class _PageEdansState extends State<PageEdans> {
               isRequired: true,
               onselect: () async {
                 print(' ====> ${controllerDepartamento.text}');
-                controllerMunicipio.text = '';
                 listMunicipio =
                     await db.getListMunicipio(controllerDepartamento.text);
                 // controllerMunicipio.text = listMunicipio[0];
@@ -785,8 +869,11 @@ class _PageEdansState extends State<PageEdans> {
               options: listMunicipio,
               controller: controllerMunicipio,
               isRequired: true,
-              onselect: () {
+              onselect: () async {
                 print('# ${controllerMunicipio.text}');
+                listHospitales = await db.getListEstablecimientoDeSalud(
+                    controllerDepartamento.text, controllerMunicipio.text);
+                setState(() {});
               },
             ),
             InputExpanded(
@@ -1241,8 +1328,13 @@ class _PageEdansState extends State<PageEdans> {
               color: Colors.grey.shade100,
               child: InkWell(
                 onTap: () async {
-                  listDaniosEstablecimientosDeSalud
-                      .add(_DaniosEstablecimientosDeSalud());
+                  _DaniosEstablecimientosDeSalud _demo =
+                      _DaniosEstablecimientosDeSalud();
+                  _demo.actualizarListaHospitales(listHospitales);
+
+                  print(_demo.listaHospitales);
+
+                  listDaniosEstablecimientosDeSalud.add(_demo);
                   await _actualizarListaEstableciemientosDeSalud();
                 },
                 child: Container(
@@ -1290,7 +1382,7 @@ class _PageEdansState extends State<PageEdans> {
                     child: Center(
                       child: SubListInputListOption(
                         controller: demo.controllerSalud,
-                        options: const [],
+                        options: demo.listaHospitales,
                       ),
                     ),
                   ),
@@ -1516,49 +1608,49 @@ class _PageEdansState extends State<PageEdans> {
     });
   }
 
-  /////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////
-  Widget _groupInstalacionDeAlbergues(Size size) {
-    return Scrollbar(
-      isAlwaysShown: true,
-      showTrackOnHover: true,
-      controller: scrollControllergroupInstalacionDeAlbergues,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Container(
-          width: size.width > 600 ? size.width - 20 : 600,
-          margin: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.lightBlue),
-          ),
-          child: GroupInstalacionDeAlbergues(listWidgets: [
-            ...listInstalacionDeAlberguesWidget,
-            Material(
-              color: Colors.grey.shade100,
-              child: InkWell(
-                onTap: () async {
-                  listInstalacionDeAlbergues.add(_InstalacionAlbergues());
-                  await _actualizarListaInstalacionAlbergues();
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blueGrey.shade200),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  padding: const EdgeInsets.all(10),
-                  child: const Icon(Icons.add),
-                ),
-              ),
-            ),
-          ], titles: const [
-            'Cant. albergues',
-            'Lugar de albergues',
-          ]),
-        ),
-      ),
-    );
-  }
+  // /////////////////////////////////////////////////////////
+  // /////////////////////////////////////////////////////////
+  // /////////////////////////////////////////////////////////
+  // Widget _groupInstalacionDeAlbergues(Size size) {
+  //   return Scrollbar(
+  //     isAlwaysShown: true,
+  //     showTrackOnHover: true,
+  //     controller: scrollControllergroupInstalacionDeAlbergues,
+  //     child: SingleChildScrollView(
+  //       scrollDirection: Axis.horizontal,
+  //       child: Container(
+  //         width: size.width > 600 ? size.width - 20 : 600,
+  //         margin: const EdgeInsets.all(10),
+  //         decoration: BoxDecoration(
+  //           border: Border.all(color: Colors.lightBlue),
+  //         ),
+  //         child: GroupInstalacionDeAlbergues(listWidgets: [
+  //           ...listInstalacionDeAlberguesWidget,
+  //           Material(
+  //             color: Colors.grey.shade100,
+  //             child: InkWell(
+  //               onTap: () async {
+  //                 listInstalacionDeAlbergues.add(_InstalacionAlbergues());
+  //                 await _actualizarListaInstalacionAlbergues();
+  //               },
+  //               child: Container(
+  //                 decoration: BoxDecoration(
+  //                   border: Border.all(color: Colors.blueGrey.shade200),
+  //                   borderRadius: BorderRadius.circular(5),
+  //                 ),
+  //                 padding: const EdgeInsets.all(10),
+  //                 child: const Icon(Icons.add),
+  //               ),
+  //             ),
+  //           ),
+  //         ], titles: const [
+  //           'Cant. albergues',
+  //           'Lugar de albergues',
+  //         ]),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   /////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////
@@ -1692,67 +1784,67 @@ class _PageEdansState extends State<PageEdans> {
     );
   }
 
-  Future<void> _actualizarListaInstalacionAlbergues() async {
-    listInstalacionDeAlberguesWidget = [];
-    int i = 0;
-    Future.delayed(Duration.zero, () {
-      listInstalacionDeAlberguesWidget = listInstalacionDeAlbergues.map((demo) {
-        i++;
-        return Container(
-          color: i % 2 == 0 ? Colors.blue[50] : Colors.white,
-          child: IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.lightBlue.shade100),
-                    ),
-                    child: SublistInputExpanded(
-                      controller: demo.controllerCantidad,
-                      isNumber: true,
-                      hint: '0',
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.lightBlue.shade100),
-                    ),
-                    child: SublistInputExpanded(
-                      controller: demo.controllerLugarDeAlbergue,
-                      hint: 'Lugar de albergues',
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.lightBlue.shade100),
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        listInstalacionDeAlbergues.remove(demo);
-                        _actualizarListaInstalacionAlbergues();
-                        setState(() {});
-                      },
-                      icon: const Icon(Icons.remove_circle_outlined),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-      }).toList();
-      setState(() {});
-    });
-  }
+  // Future<void> _actualizarListaInstalacionAlbergues() async {
+  //   listInstalacionDeAlberguesWidget = [];
+  //   int i = 0;
+  //   Future.delayed(Duration.zero, () {
+  //     listInstalacionDeAlberguesWidget = listInstalacionDeAlbergues.map((demo) {
+  //       i++;
+  //       return Container(
+  //         color: i % 2 == 0 ? Colors.blue[50] : Colors.white,
+  //         child: IntrinsicHeight(
+  //           child: Row(
+  //             crossAxisAlignment: CrossAxisAlignment.stretch,
+  //             children: [
+  //               Expanded(
+  //                 flex: 2,
+  //                 child: Container(
+  //                   decoration: BoxDecoration(
+  //                     border: Border.all(color: Colors.lightBlue.shade100),
+  //                   ),
+  //                   child: SublistInputExpanded(
+  //                     controller: demo.controllerCantidad,
+  //                     isNumber: true,
+  //                     hint: '0',
+  //                   ),
+  //                 ),
+  //               ),
+  //               Expanded(
+  //                 flex: 3,
+  //                 child: Container(
+  //                   decoration: BoxDecoration(
+  //                     border: Border.all(color: Colors.lightBlue.shade100),
+  //                   ),
+  //                   child: SublistInputExpanded(
+  //                     controller: demo.controllerLugarDeAlbergue,
+  //                     hint: 'Lugar de albergues',
+  //                   ),
+  //                 ),
+  //               ),
+  //               Expanded(
+  //                 flex: 1,
+  //                 child: Container(
+  //                   decoration: BoxDecoration(
+  //                     border: Border.all(color: Colors.lightBlue.shade100),
+  //                   ),
+  //                   child: IconButton(
+  //                     onPressed: () {
+  //                       listInstalacionDeAlbergues.remove(demo);
+  //                       _actualizarListaInstalacionAlbergues();
+  //                       setState(() {});
+  //                     },
+  //                     icon: const Icon(Icons.remove_circle_outlined),
+  //                   ),
+  //                 ),
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     }).toList();
+  //     setState(() {});
+  //   });
+  // }
   /////////////////////////////////
 
   Future<void> _actualizarListaAcciones() async {
@@ -1963,6 +2055,11 @@ class _DaniosEstablecimientosDeSalud {
   TextEditingController controllerFunciona = TextEditingController();
   TextEditingController controllerAgua = TextEditingController();
   TextEditingController controllerAreaAfectada = TextEditingController();
+  List<String> listaHospitales = [];
+
+  actualizarListaHospitales(List<String> list) {
+    this.listaHospitales = list;
+  }
 
   _DaniosEstablecimientosDeSalud();
 }

@@ -1,6 +1,6 @@
 class Danospersonaldesalud {
   int? codpersalud;
-  int? cod_edan;
+  int? codEdan;
   String? personal;
   int? muertos;
   int? heridos;
@@ -9,7 +9,7 @@ class Danospersonaldesalud {
 
   Danospersonaldesalud({
     this.codpersalud,
-    this.cod_edan,
+    this.codEdan,
     this.personal,
     this.muertos,
     this.heridos,
@@ -20,7 +20,7 @@ class Danospersonaldesalud {
   Map<String, dynamic> toMap() {
     return {
       'codpersalud': codpersalud,
-      'cod_edan': cod_edan,
+      'cod_edan': codEdan,
       'personal': personal,
       'muertos': muertos,
       'heridos': heridos,
@@ -31,7 +31,7 @@ class Danospersonaldesalud {
 
   Danospersonaldesalud.fromMap(Map<String, dynamic> map) {
     codpersalud = map['codpersalud'];
-    cod_edan = map['cod_edan'];
+    codEdan = map['cod_edan'];
     personal = map['personal'];
     muertos = map['muertos'];
     heridos = map['heridos'];
@@ -50,7 +50,7 @@ class Danospersonaldesalud {
   desaparecidos
 ) VALUES ( 
   '$codpersalud',
-  '$cod_edan',
+  '$codEdan',
   '$personal',
   '$muertos',
   '$heridos',
@@ -63,7 +63,7 @@ class Danospersonaldesalud {
     return """
 UPDATE danospersonaldesalud SET
 codpersalud = '$codpersalud',
-cod_edan = '$cod_edan',
+cod_edan = '$codEdan',
 personal = '$personal',
 muertos = '$muertos',
 heridos = '$heridos',

@@ -2,6 +2,11 @@
 
 import 'package:ministerio_de_salud/bussiness/database/comando_data_base.dart';
 import 'package:ministerio_de_salud/bussiness/database/comando_insert.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_danos_personal_de_salud.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_acciones.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_acciones2.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_establecimiento.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_requerimientos.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_evento.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_lista_sintomas.dart';
@@ -114,18 +119,104 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
     print(listReturn);
     return listReturn;
   }
+
+  Future<List<String>> getListEstablecimientoDeSalud(
+      String ciudad, String municipio) async {
+    var result = await _db.rawQuery(
+        "select Establecimiento from todos_anterior_redu where Departamento like '$ciudad' and Municipio like '$municipio'");
+    var listReturn = result
+        .map((e) => e
+            .toString()
+            .replaceAll('{Establecimiento: ', '')
+            .replaceAll('}', ''))
+        .toList();
+    print(listReturn);
+    return listReturn;
+  }
+
+  ////////////////////////////////////////////////////////
+
+  Future<String> getLastdesastreestablecimiento() async {
+    var result = await _db.rawQuery(
+        'SELECT Max(coddesastreestablecimiento) as newID from desastreestablecimiento');
+    print('$result ---****');
+    return result[0]['newID'].toString() != 'null'
+        ? result[0]['newID'].toString()
+        : '1';
+  }
+
+  Future<String> getLastdanospersonaldesalud() async {
+    var result = await _db
+        .rawQuery('SELECT Max(codpersalud) as newID from danospersonaldesalud');
+    print('$result ---****');
+    return result[0]['newID'].toString() != 'null'
+        ? result[0]['newID'].toString()
+        : '1';
+  }
+
+  Future<String> getLastdesastreacciones() async {
+    var result = await _db
+        .rawQuery('SELECT Max(cod_edan) as newID from desastreacciones');
+    print('$result ---****');
+    return result[0]['newID'].toString() != 'null'
+        ? result[0]['newID'].toString()
+        : '1';
+  }
+
+  Future<String> getLastdesastrerequerimientos() async {
+    var result = await _db.rawQuery(
+        'SELECT Max(codrequerimientos) as newID from desastrerequerimientos');
+    print('$result ---****');
+    return result[0]['newID'].toString() != 'null'
+        ? result[0]['newID'].toString()
+        : '1';
+  }
+
+  void getDaniosEstablecimientosDeSalud() async {
+    var result = await _db
+        .rawQuery("select * from desastreestablecimiento where Departamento");
+    // var listReturn = result
+    //     .map((e) => e
+    //         .toString()
+    //         .replaceAll('{Establecimiento: ', '')
+    //         .replaceAll('}', ''))
+    //     .toList();
+    print('==============');
+    print(result);
+    print('==============');
+    // return listReturn;
+  }
+
+  ///
+  Future<void> insertDaniosEstablecimientosDeSalud(
+      Desastreestablecimiento model) async {
+    int response = await _db.rawInsert(model.insertSql());
+    print('###### $response');
+  }
+
+  Future<void> insertDaniosAlPersonalDeSalud(Danospersonaldesalud model) async {
+    int response = await _db.rawInsert(model.insertSql());
+    print('###### $response');
+  }
+
+  Future<void> insertDaniosPersonalDeSalud(Danospersonaldesalud model) async {
+    int response = await _db.rawInsert(model.insertSql());
+    print('###### $response');
+  }
+
+  Future<void> insertlistAcciones(Desastreacciones model) async {
+    int response = await _db.rawInsert(model.insertSql());
+    print('###### $response');
+  }
+
+  Future<void> insertlistAcciones2(Desastreacciones2 model) async {
+    int response = await _db.rawInsert(model.insertSql());
+    print('###### $response');
+  }
+
+  Future<void> insertDesastrerequerimientos(
+      Desastrerequerimientos model) async {
+    int response = await _db.rawInsert(model.insertSql());
+    print('###### $response');
+  }
 }
-
-// class Task {
-//   late String name;
-
-//   Task(this.name);
-
-//   Map<String, dynamic> toMap() {
-//     return {'name': name};
-//   }
-
-//   Task.fromMap(Map<String, dynamic> map) {
-//     name = map['name'];
-//   }
-// }

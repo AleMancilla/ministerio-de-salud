@@ -36,7 +36,7 @@ class Desastrerequerimientos {
   }
 
   String insertSql() {
-    return """INSERT INTO desastreestablecimiento (
+    return """INSERT INTO desastrerequerimientos (
   codrequerimientos,
   cod_edan,
   requerimiento,
@@ -55,7 +55,7 @@ class Desastrerequerimientos {
 
   String updateSql() {
     return """
-UPDATE desastreestablecimiento SET
+UPDATE desastrerequerimientos SET
 codrequerimientos = '$codrequerimientos',
 cod_edan = '$codEdan',
 requerimiento = '$requerimiento',

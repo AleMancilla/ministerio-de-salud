@@ -1,21 +1,21 @@
 class Desastreacciones2 {
-  int? cod_edan;
+  int? codEdan;
   String? accion;
 
   Desastreacciones2({
-    this.cod_edan,
+    this.codEdan,
     this.accion,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'cod_edan': cod_edan,
+      'cod_edan': codEdan,
       'accion': accion,
     };
   }
 
   Desastreacciones2.fromMap(Map<String, dynamic> map) {
-    cod_edan = map['cod_edan'];
+    codEdan = map['cod_edan'];
     accion = map['accion'];
   }
 
@@ -24,7 +24,7 @@ class Desastreacciones2 {
   cod_edan,
   accion
 ) VALUES ( 
-  '$cod_edan',
+  '$codEdan',
   '$accion'
   )""";
   }
@@ -32,10 +32,10 @@ class Desastreacciones2 {
   String updateSql() {
     return """
 UPDATE desastreacciones2 SET
-cod_edan = '$cod_edan',
+cod_edan = '$codEdan',
 accion = '$accion'
 WHERE
-    cod_edan = '$cod_edan'
+    cod_edan = '$codEdan'
 """;
   }
 }
