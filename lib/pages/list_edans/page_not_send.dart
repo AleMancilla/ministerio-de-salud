@@ -154,7 +154,21 @@ class _PageNotSendState extends State<PageNotSend> {
                       ButtonWidget(
                         ontap: () async {
                           // navigatorPush(context, const PageEdans());
-                          confirmDialog();
+                          bool st = false;
+                          edanProvider.listEdansProvider
+                              .forEach((ModelEdan edan) {
+                            if (edan.controllerEnviar) {
+                              st = true;
+                            }
+                          });
+                          if (st) {
+                            confirmDialog();
+                          } else {
+                            CoolAlert.show(
+                                context: context,
+                                type: CoolAlertType.error,
+                                text: 'No selecionaste ningun edan a enviar');
+                          }
                         },
                         color: Colors.grey[200],
                         text: 'Enviar al PNCAD',
@@ -193,33 +207,37 @@ class _PageNotSendState extends State<PageNotSend> {
                 style: TextStyle(color: Colors.blue),
               ),
               onPressed: () async {
-                bool resp = true;
                 edanProvider.listEdansProvider.forEach((ModelEdan edan) async {
                   print(edan.controllerEnviar);
                   if (edan.controllerEnviar) {
-                    resp = await insertEdan(edan);
+                    bool resp = await insertEdan(edan);
+                    print(' LA RESPUESTA ES $resp');
+                    Navigator.pop(context);
                     if (resp) {
                       edan.enviado = 'SI';
                       db.updateEDAN(edan);
+                      CoolAlert.show(
+                        context: context,
+                        type: CoolAlertType.success,
+                        text: 'Los datos se cargaron correctamente',
+                        // autoCloseDuration: Duration(seconds: 2),
+                        onConfirmBtnTap: () {
+                          setState(() {});
+                          print('DAMOS ASDASDASDAD');
+                          // Future.delayed(Duration(seconds: 1), () {
+                          //   setState(() {});
+                          // });
+                          Navigator.of(context, rootNavigator: true).pop();
+                        },
+                      );
+                    } else {
+                      CoolAlert.show(
+                          context: context,
+                          type: CoolAlertType.error,
+                          text: 'Hubo un error al cargar los datos');
                     }
                   }
                 });
-                Navigator.pop(context);
-                if (resp) {
-                  CoolAlert.show(
-                    context: context,
-                    type: CoolAlertType.success,
-                    text: 'Los datos se cargaron correctamente',
-                    onConfirmBtnTap: () {
-                      setState(() {});
-                    },
-                  );
-                } else {
-                  CoolAlert.show(
-                      context: context,
-                      type: CoolAlertType.error,
-                      text: 'Hubo un error al cargar los datos');
-                }
                 edanProvider.setstate();
               },
             ),

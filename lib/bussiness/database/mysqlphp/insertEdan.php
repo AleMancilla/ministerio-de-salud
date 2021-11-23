@@ -67,11 +67,11 @@ $usuario = $_POST["usuario"];
 $fechap = $_POST["fechap"];
 
 $timeStamp = strtotime($fecha);
-$dat= date("Y-m-d H:i:s", $timestamp);
+$dat= date("Y-m-d", $timestamp);
 $timeStamplle = strtotime($fechaLle);
-$datlle= date("Y-m-d H:i:s", $timestamplle);
+$datlle= date("Y-m-d", $timestamplle);
 $timeStampP = strtotime($fechap);
-$datP= date("Y-m-d H:i:s", $timestampP);
+$datP= date("Y-m-d", $timestampP);
 
 $querySt = "INSERT INTO edan (
     evento,

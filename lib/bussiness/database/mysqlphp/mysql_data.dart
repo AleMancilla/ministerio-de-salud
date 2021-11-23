@@ -97,10 +97,15 @@ Future<bool> insertEdan(ModelEdan edan) async {
     "usuario": edan.usuario,
     "fechap": edan.fechap,
   });
-  print(res.body);
-  if (res.body.contains('Fatal error')) {
+  print('=====');
+  print(res.body.toString());
+  print('=====');
+  print('===== ${res.body.toString().contains('Invalid')}');
+  if (res.body.toString().contains('Invalid')) {
+    print('- entro a true false');
     return false;
   } else {
+    print('- entro a false true');
     return true;
   }
 }

@@ -340,13 +340,17 @@ class _PageEdansState extends State<PageEdans> {
         controllercodEdan.text = widget.edanModel!.codEdan!.toString();
       } else {
         String data = await db.getLastIDEDAN();
+        print('%%%%%% data $data %%%%%%%%');
         int id = int.parse(data);
         id = id + 1;
         controllercodEdan.text = id.toString();
       }
+      print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
       print(controllercodEdan.text);
+      print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
       // db.closeDB();
       listDepartamentos = await db.getListDepartamento();
+      print('%%%%%%%%%%%%s%%%%%%%%%%%%%%%%%%%%%%%%%');
       setState(() {});
     });
   }
@@ -756,6 +760,7 @@ class _PageEdansState extends State<PageEdans> {
             InputExpanded(
               title: 'Telefono movil de contacto',
               controller: controllerTelefonoMovil,
+              isNumber: true,
               isRequired: true,
             ),
             _subTitle('1.4 UBICACIÓN GEOGRÁFICA DE LA ZONA AFECTADA'),
@@ -766,8 +771,12 @@ class _PageEdansState extends State<PageEdans> {
               isRequired: true,
               onselect: () async {
                 print(' ====> ${controllerDepartamento.text}');
+                controllerMunicipio.text = '';
                 listMunicipio =
                     await db.getListMunicipio(controllerDepartamento.text);
+                // controllerMunicipio.text = listMunicipio[0];
+                print('## ${controllerMunicipio.text}');
+
                 setState(() {});
               },
             ),
@@ -776,7 +785,9 @@ class _PageEdansState extends State<PageEdans> {
               options: listMunicipio,
               controller: controllerMunicipio,
               isRequired: true,
-              onselect: () {},
+              onselect: () {
+                print('# ${controllerMunicipio.text}');
+              },
             ),
             InputExpanded(
               title: 'Comunidad o zona',
@@ -1036,11 +1047,13 @@ class _PageEdansState extends State<PageEdans> {
               initValue: '0',
             ),
             ExpansionTile(
+              initiallyExpanded: true,
               title: const TitleExpansion(
                   texto: '3.4 Daños a establecimientos de salud'),
               children: [_groupDaniosEstablecimiendosDeSalud(size)],
             ),
             ExpansionTile(
+              initiallyExpanded: true,
               title: const TitleExpansion(
                   texto:
                       '3.5 Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),

@@ -13,7 +13,7 @@ class DataBaseEdans {
 
   initDB() async {
     _db = await openDatabase(
-      'my_database11.db',
+      'my_database12.db',
       version: 1,
       onCreate: (Database db, int newVersion) async {
         Batch batch = db.batch();
@@ -62,7 +62,7 @@ class DataBaseEdans {
 INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
     print('###### $response');
   }
-  //INSERT INTO `evento` VALUES ('1', 'Sequia', 'Otros', '22')
+  //INSERT INTO evento VALUES ('1', 'Sequia', 'Otros', '22')
 
   Future<List<ModelEdan>> getAllEdans() async {
     print('lectura sql');
@@ -87,12 +87,15 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
 
   Future<String> getLastIDEDAN() async {
     var result = await _db.rawQuery('SELECT Max(cod_edan) as newID from edan');
-    return result[0]['newID'].toString();
+    print('$result ---****');
+    return result[0]['newID'].toString() != 'null'
+        ? result[0]['newID'].toString()
+        : '1';
   }
 
   Future<List<String>> getListDepartamento() async {
     var result = await _db.rawQuery(
-        'SELECT Departamento FROM `todos_anterior_redu` group by Departamento');
+        'SELECT Departamento FROM todos_anterior_redu group by Departamento');
     var listReturn = result
         .map((e) =>
             e.toString().replaceAll('{Departamento: ', '').replaceAll('}', ''))

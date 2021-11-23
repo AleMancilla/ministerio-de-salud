@@ -38,6 +38,13 @@ class _InputListOptionState extends State<InputListOption> {
     widget.controller.text = _chosenValue;
   }
 
+  // _actualizarDato() {
+  //   Future.delayed(Duration.zero, () {
+
+  //     setState(() {});
+  //   });
+  // }
+
   @override
   void dispose() {
     // print(widget.options);
@@ -151,6 +158,7 @@ class _InputListOptionState extends State<InputListOption> {
         },
       );
     } catch (e) {
+      print('error ==== $e');
       return const CircularProgressIndicator();
     }
   }
