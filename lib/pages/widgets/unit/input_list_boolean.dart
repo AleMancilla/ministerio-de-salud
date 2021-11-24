@@ -5,6 +5,7 @@ class InputListBoolean extends StatefulWidget {
   final String title;
   final bool isRequired;
   final TextEditingController controller;
+  final Function? onselect;
   List<String> options;
 
   InputListBoolean({
@@ -13,6 +14,7 @@ class InputListBoolean extends StatefulWidget {
     this.isRequired = false,
     required this.options,
     required this.controller,
+    this.onselect,
   }) : super(key: key);
 
   @override
@@ -140,6 +142,7 @@ class _InputListBooleanState extends State<InputListBoolean> {
         setState(() {
           widget.controller.text = value!;
         });
+        widget.onselect!();
       },
     );
   }

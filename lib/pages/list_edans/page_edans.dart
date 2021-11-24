@@ -45,6 +45,7 @@ class _PageEdansState extends State<PageEdans> {
   TextEditingController controllerEvento = TextEditingController();
   TextEditingController controllerTipoEDAN = TextEditingController();
   TextEditingController controllerOtroEvento = TextEditingController();
+  bool otroEventoCheck = false;
   TextEditingController controllerFecha = TextEditingController();
   TextEditingController controllerHora = TextEditingController();
 
@@ -316,6 +317,7 @@ class _PageEdansState extends State<PageEdans> {
       controllerNroAlbergues.text = '0';
       controllerLesionados.text = '0';
       controllerTipoEDAN.text = '8 horas';
+      controllerTieneCoordenadas.text = 'No';
       controllerFecha.text =
           '${DateTime.now().day.toString().padLeft(2, '0')}/${DateTime.now().month.toString().padLeft(2, '0')}/${DateTime.now().year}';
       controllerHora.text =
@@ -978,7 +980,11 @@ class _PageEdansState extends State<PageEdans> {
             InputListOption(
               title: 'Evento',
               controller: controllerEvento,
-              onselect: () {},
+              onselect: () {
+                setState(() {
+                  print(controllerEvento.text);
+                });
+              },
               isRequired: true,
               options: const [
                 'Accidentes por prod. y sust. peligrosas',
@@ -992,13 +998,18 @@ class _PageEdansState extends State<PageEdans> {
                 'Inundación lenta',
                 'Mazamorra',
                 'Nevada',
-                'Otros de excepcion',
+                'Otros',
                 'Plagas',
                 'Riada',
                 'Sequia',
                 'Terremoto',
               ],
             ),
+            if (controllerEvento.text == 'Otros')
+              InputExpanded(
+                title: 'Otro Evento',
+                controller: controllerOtroEvento,
+              ),
             _subTitle('1.2 FECHA Y HORA DE LA OCURRENCIA'),
             InputDateOption(
               title: 'Fecha',
@@ -1075,7 +1086,21 @@ class _PageEdansState extends State<PageEdans> {
               title: 'Tiene coordenadas geograficas de GPS?',
               controller: controllerTieneCoordenadas,
               options: const ['Si', 'No'],
+              onselect: () {
+                print(controllerTieneCoordenadas.text);
+                setState(() {});
+              },
             ),
+            if (controllerTieneCoordenadas.text == 'Si')
+              InputExpanded(
+                title: 'Coordenada UTM X',
+                controller: controllerCoordenadaX,
+              ),
+            if (controllerTieneCoordenadas.text == 'Si')
+              InputExpanded(
+                title: 'Coordenada UTM Y',
+                controller: controllerCoordenadaY,
+              ),
             _subTitle('1.5 VIAS DE ACCESO DISPONIBLES A LA ZONA AFECTADA'),
             InputListBoolean(
               title: 'Via aerea disponible',
