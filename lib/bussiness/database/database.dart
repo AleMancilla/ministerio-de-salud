@@ -46,11 +46,6 @@ class DataBaseEdans {
     print('###### $response');
   }
 
-  updateEDAN(ModelEdan edan) async {
-    int response = await _db.rawInsert(edan.updateSql());
-    print('###### $response');
-  }
-
   insertPLANILLA(ModelPlanillaDeAtencion planilla) async {
     int response = await _db.rawInsert(planilla.insertSql());
     print('###### $response');
@@ -65,6 +60,27 @@ class DataBaseEdans {
     int response = await _db.rawInsert(
         '''INSERT INTO evento VALUES (2, 'Granizada', 'Helada/Granizada/Nevada', 18);
 INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
+    print('###### $response');
+  }
+  /////////////////////////////
+
+  updateDesastrerequerimientos(Desastrerequerimientos date) async {
+    int response = await _db.rawInsert(date.updateSql());
+    print('###### $response');
+  }
+
+  updateDaniosEstablecimientosDeSalud(Desastreestablecimiento date) async {
+    int response = await _db.rawInsert(date.updateSql());
+    print('###### $response');
+  }
+
+  updateDaniosPersonalDeSalud(Danospersonaldesalud date) async {
+    int response = await _db.rawInsert(date.updateSql());
+    print('###### $response');
+  }
+
+  updateEDAN(ModelEdan edan) async {
+    int response = await _db.rawInsert(edan.updateSql());
     print('###### $response');
   }
   //INSERT INTO evento VALUES ('1', 'Sequia', 'Otros', '22')

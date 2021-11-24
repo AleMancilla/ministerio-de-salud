@@ -364,6 +364,9 @@ class _PageEdansState extends State<PageEdans> {
           _DaniosEstablecimientosDeSalud model =
               _DaniosEstablecimientosDeSalud();
           model.llenarDatos(
+            controllercodEdan: e.codEdan!.toString(),
+            coddesastreestablecimiento:
+                e.coddesastreestablecimiento!.toString(),
             controllerSalud: e.nomestablecimiento!,
             controllerFunciona: e.funciona!,
             controllerAgua: e.tieneagua!,
@@ -377,6 +380,8 @@ class _PageEdansState extends State<PageEdans> {
         listDaniosPersonalDeSalud = listDanospersonaldesalud.map((e) {
           _DaniosAlPersonalDeSalud model = _DaniosAlPersonalDeSalud();
           model.llenarDatos(
+            controllercodEdan: e.codEdan!.toString(),
+            controllercodpersalud: e.codpersalud!.toString(),
             controllerPersonalSalud: e.personal!,
             controllerFaleecidos: e.muertos!.toString(),
             controllerHeridos: e.heridos!.toString(),
@@ -389,7 +394,9 @@ class _PageEdansState extends State<PageEdans> {
 
         listAcciones = listDesastreacciones.map((e) {
           _Acciones model = _Acciones();
-          model.llenarDatos(controllerAccion: e.accion!);
+          model.llenarDatos(
+              controllerAccion: e.accion!,
+              controllercodEdan: e.codEdan!.toString());
           return model;
         }).toList();
 
@@ -397,7 +404,10 @@ class _PageEdansState extends State<PageEdans> {
 
         listAccionesPrioritarias = listDesastreacciones2.map((e) {
           _AccionesPrioritarias model = _AccionesPrioritarias();
-          model.llenarDatos(controllerAccion: e.accion!);
+          model.llenarDatos(
+            controllerAccion: e.accion!,
+            controllercodEdan: e.codEdan!.toString(),
+          );
           return model;
         }).toList();
         _actualizarListaAccionesPrioritarias();
@@ -405,6 +415,8 @@ class _PageEdansState extends State<PageEdans> {
         listRequerimientoApoyo = listDesastrerequerimientos.map((e) {
           _RequerimientoApoyo model = _RequerimientoApoyo();
           model.llenarDatos(
+            codEdan: e.codEdan!.toString(),
+            codrequerimientos: e.codrequerimientos!.toString(),
             controllerRequerimiento: e.requerimiento!,
             controllerCant: e.cantidad!.toString(),
             controllerTipo: e.observaciones!,
@@ -437,15 +449,15 @@ class _PageEdansState extends State<PageEdans> {
             // List<Desastreestablecimiento> data =
             //     await db.getAllDaniosEstablecimientosDeSalud(
             //         int.parse(controllercodEdan.text));
-            // List<Danospersonaldesalud> data = await db
-            //     .getAllDaniosPersonalDeSalud(int.parse(controllercodEdan.text));
+            List<Danospersonaldesalud> data = await db
+                .getAllDaniosPersonalDeSalud(int.parse(controllercodEdan.text));
             // List<Desastreacciones> data =
             //     await db.getAllAcciones(int.parse(controllercodEdan.text));
             // List<Desastreacciones2> data =
             //     await db.getAllAcciones2(int.parse(controllercodEdan.text));
             // List<Desastrerequerimientos> data = await db
             //     .getRequerimientoApoyo(int.parse(controllercodEdan.text));
-            print(listDaniosEstablecimientosDeSalud);
+            print(data);
           },
         ),
         appBar: PreferredSize(
@@ -705,18 +717,142 @@ class _PageEdansState extends State<PageEdans> {
                             enviado: '',
                           );
 
+                          int idDesastre = int.parse(
+                              await db.getLastdesastreestablecimiento());
+                          int idDaniosPersonalDeSalud =
+                              int.parse(await db.getLastdanospersonaldesalud());
+                          int idDesastreRequerimientos = int.parse(
+                              await db.getLastdesastrerequerimientos());
+
                           if (widget.edanModel != null) {
                             print('------- update ');
                             db.updateEDAN(modelo);
+
+                            listDaniosEstablecimientosDeSalud.forEach(
+                                (_DaniosEstablecimientosDeSalud element) async {
+                              print(
+                                  '==========ID ===> ${element.coddesastreestablecimiento.text}');
+
+                              Desastreestablecimiento modelo =
+                                  Desastreestablecimiento(
+                                coddesastreestablecimiento: int.parse(element
+                                            .coddesastreestablecimiento.text !=
+                                        ''
+                                    ? element.coddesastreestablecimiento.text
+                                    : '0'),
+                                codEdan: int.parse(controllercodEdan.text),
+                                nomestablecimiento:
+                                    element.controllerSalud.text,
+                                funciona: element.controllerFunciona.text,
+                                tieneagua: element.controllerAgua.text,
+                                areaAfectada:
+                                    element.controllerAreaAfectada.text,
+                              );
+                              if (element.coddesastreestablecimiento.text !=
+                                  '') {
+                                await db.updateDaniosEstablecimientosDeSalud(
+                                    modelo);
+                              } else {
+                                idDesastre = idDesastre + 1;
+                                modelo.coddesastreestablecimiento = idDesastre;
+                                await db.insertDaniosEstablecimientosDeSalud(
+                                    modelo);
+                              }
+                            });
+
+                            ///////////////////////////////
+
+                            listDaniosPersonalDeSalud.forEach(
+                                (_DaniosAlPersonalDeSalud element) async {
+                              Danospersonaldesalud modelo =
+                                  Danospersonaldesalud(
+                                codpersalud: int.parse(
+                                    element.controllercodpersalud.text != ''
+                                        ? element.controllercodpersalud.text
+                                        : '0'),
+                                codEdan: int.parse(controllercodEdan.text),
+                                personal: element.controllerPersonalSalud.text,
+                                muertos: int.parse(
+                                    element.controllerFaleecidos.text != ''
+                                        ? element.controllerFaleecidos.text
+                                        : '0'),
+                                heridos: int.parse(
+                                    element.controllerHeridos.text != ''
+                                        ? element.controllerHeridos.text
+                                        : '0'),
+                                disponibles: int.parse(
+                                    element.controllerDisp.text != ''
+                                        ? element.controllerDisp.text
+                                        : '0'),
+                                desaparecidos: int.parse(
+                                    element.controllerDesaparecidos.text != ''
+                                        ? element.controllerDesaparecidos.text
+                                        : '0'),
+                              );
+
+                              if (element.controllercodpersalud.text != '') {
+                                await db.updateDaniosPersonalDeSalud(modelo);
+                              } else {
+                                idDaniosPersonalDeSalud =
+                                    idDaniosPersonalDeSalud + 1;
+                                modelo.codpersalud = idDaniosPersonalDeSalud;
+                                await db.insertDaniosPersonalDeSalud(modelo);
+                              }
+                            });
+
+                            ///////////////////////////////
+                            // listAcciones.forEach((_Acciones element) async {
+                            //   Desastreacciones modelo = Desastreacciones(
+                            //     codEdan: int.parse(controllercodEdan.text),
+                            //     accion: element.controllerAccion.text,
+                            //   );
+                            //   await db.insertlistAcciones(modelo);
+                            // });
+                            // ///////////////////////////////
+                            // listAccionesPrioritarias
+                            //     .forEach((_AccionesPrioritarias element) async {
+                            //   Desastreacciones2 modelo = Desastreacciones2(
+                            //     codEdan: int.parse(controllercodEdan.text),
+                            //     accion: element.controllerAccion.text,
+                            //   );
+                            //   await db.insertlistAcciones2(modelo);
+                            // });
+
+                            //////////////////////////////////////////////
+                            ///
+                            listRequerimientoApoyo
+                                .forEach((_RequerimientoApoyo element) async {
+                              Desastrerequerimientos modelo =
+                                  Desastrerequerimientos(
+                                codrequerimientos: int.parse(
+                                    element.codrequerimientos.text != ''
+                                        ? element.codrequerimientos.text
+                                        : '0'),
+                                codEdan: int.parse(controllercodEdan.text),
+                                requerimiento:
+                                    element.controllerRequerimiento.text,
+                                cantidad: int.parse(
+                                    element.controllerCant.text != ''
+                                        ? element.controllerCant.text
+                                        : '0'),
+                                prioridad: element.controllerPrioridad.text,
+                                observaciones: element.controllerTipo.text,
+                              );
+
+                              if (element.codrequerimientos.text != '') {
+                                await db.updateDesastrerequerimientos(modelo);
+                              } else {
+                                idDesastreRequerimientos =
+                                    idDesastreRequerimientos + 1;
+                                modelo.codrequerimientos =
+                                    idDesastreRequerimientos;
+                                await db.insertDesastrerequerimientos(modelo);
+                              }
+                            });
+                            //////////////////////////////
                           } else {
                             print('------- insert ');
                             db.insertEDAN(modelo);
-                            int idDesastre = int.parse(
-                                await db.getLastdesastreestablecimiento());
-                            int idDaniosPersonalDeSalud = int.parse(
-                                await db.getLastdanospersonaldesalud());
-                            int idDesastreRequerimientos = int.parse(
-                                await db.getLastdesastrerequerimientos());
                             listDaniosEstablecimientosDeSalud.forEach(
                                 (_DaniosEstablecimientosDeSalud element) async {
                               idDesastre = idDesastre + 1;
@@ -745,13 +881,21 @@ class _PageEdansState extends State<PageEdans> {
                                 codEdan: int.parse(controllercodEdan.text),
                                 personal: element.controllerPersonalSalud.text,
                                 muertos: int.parse(
-                                    element.controllerFaleecidos.text),
-                                heridos:
-                                    int.parse(element.controllerHeridos.text),
-                                disponibles:
-                                    int.parse(element.controllerDisp.text),
+                                    element.controllerFaleecidos.text != ''
+                                        ? element.controllerFaleecidos.text
+                                        : '0'),
+                                heridos: int.parse(
+                                    element.controllerHeridos.text != ''
+                                        ? element.controllerHeridos.text
+                                        : '0'),
+                                disponibles: int.parse(
+                                    element.controllerDisp.text != ''
+                                        ? element.controllerDisp.text
+                                        : '0'),
                                 desaparecidos: int.parse(
-                                    element.controllerDesaparecidos.text),
+                                    element.controllerDesaparecidos.text != ''
+                                        ? element.controllerDesaparecidos.text
+                                        : '0'),
                               );
 
                               await db.insertDaniosPersonalDeSalud(modelo);
@@ -2126,6 +2270,8 @@ class _PageEdansState extends State<PageEdans> {
 }
 
 class _DaniosEstablecimientosDeSalud {
+  TextEditingController coddesastreestablecimiento = TextEditingController();
+  TextEditingController controllercodEdan = TextEditingController();
   TextEditingController controllerSalud = TextEditingController();
   TextEditingController controllerFunciona = TextEditingController();
   TextEditingController controllerAgua = TextEditingController();
@@ -2138,12 +2284,16 @@ class _DaniosEstablecimientosDeSalud {
 
   _DaniosEstablecimientosDeSalud();
   llenarDatos({
+    required String coddesastreestablecimiento,
+    required String controllercodEdan,
     required String controllerSalud,
     required String controllerFunciona,
     required String controllerAgua,
     required String controllerAreaAfectada,
     required List<String> listaHospitales,
   }) {
+    this.coddesastreestablecimiento.text = coddesastreestablecimiento;
+    this.controllercodEdan.text = controllercodEdan;
     this.controllerSalud.text = controllerSalud;
     this.controllerFunciona.text = controllerFunciona;
     this.controllerAgua.text = controllerAgua;
@@ -2153,6 +2303,8 @@ class _DaniosEstablecimientosDeSalud {
 }
 
 class _DaniosAlPersonalDeSalud {
+  TextEditingController controllercodpersalud = TextEditingController();
+  TextEditingController controllercodEdan = TextEditingController();
   TextEditingController controllerPersonalSalud = TextEditingController();
   TextEditingController controllerFaleecidos = TextEditingController();
   TextEditingController controllerHeridos = TextEditingController();
@@ -2161,12 +2313,16 @@ class _DaniosAlPersonalDeSalud {
 
   _DaniosAlPersonalDeSalud();
   llenarDatos({
+    required String controllercodpersalud,
+    required String controllercodEdan,
     required String controllerPersonalSalud,
     required String controllerFaleecidos,
     required String controllerHeridos,
     required String controllerDisp,
     required String controllerDesaparecidos,
   }) {
+    this.controllercodpersalud.text = controllercodpersalud;
+    this.controllercodEdan.text = controllercodEdan;
     this.controllerPersonalSalud.text = controllerPersonalSalud;
     this.controllerFaleecidos.text = controllerFaleecidos;
     this.controllerHeridos.text = controllerHeridos;
@@ -2175,43 +2331,51 @@ class _DaniosAlPersonalDeSalud {
   }
 }
 
-class _InstalacionAlbergues {
-  TextEditingController controllerCantidad = TextEditingController();
-  TextEditingController controllerLugarDeAlbergue = TextEditingController();
+// class _InstalacionAlbergues {
+//   TextEditingController controllerCantidad = TextEditingController();
+//   TextEditingController controllerLugarDeAlbergue = TextEditingController();
 
-  _InstalacionAlbergues();
-  llenarDatos({
-    required String controllerCantidad,
-    required String controllerLugarDeAlbergue,
-  }) {
-    this.controllerCantidad.text = controllerCantidad;
-    this.controllerLugarDeAlbergue.text = controllerLugarDeAlbergue;
-  }
-}
+//   _InstalacionAlbergues();
+//   llenarDatos({
+//     required String controllerCantidad,
+//     required String controllerLugarDeAlbergue,
+//   }) {
+//     this.controllerCantidad.text = controllerCantidad;
+//     this.controllerLugarDeAlbergue.text = controllerLugarDeAlbergue;
+//   }
+// }
 
 class _Acciones {
+  TextEditingController controllercodEdan = TextEditingController();
   TextEditingController controllerAccion = TextEditingController();
 
   _Acciones();
   llenarDatos({
+    required String controllercodEdan,
     required String controllerAccion,
   }) {
+    this.controllercodEdan.text = controllercodEdan;
     this.controllerAccion.text = controllerAccion;
   }
 }
 
 class _AccionesPrioritarias {
+  TextEditingController controllercodEdan = TextEditingController();
   TextEditingController controllerAccion = TextEditingController();
 
   _AccionesPrioritarias();
   llenarDatos({
+    required String controllercodEdan,
     required String controllerAccion,
   }) {
+    this.controllercodEdan.text = controllercodEdan;
     this.controllerAccion.text = controllerAccion;
   }
 }
 
 class _RequerimientoApoyo {
+  TextEditingController codrequerimientos = TextEditingController();
+  TextEditingController codEdan = TextEditingController();
   TextEditingController controllerRequerimiento = TextEditingController();
   TextEditingController controllerCant = TextEditingController();
   TextEditingController controllerTipo = TextEditingController();
@@ -2219,11 +2383,15 @@ class _RequerimientoApoyo {
 
   _RequerimientoApoyo();
   llenarDatos({
+    required String codrequerimientos,
+    required String codEdan,
     required String controllerRequerimiento,
     required String controllerCant,
     required String controllerTipo,
     required String controllerPrioridad,
   }) {
+    this.codrequerimientos.text = codrequerimientos;
+    this.codEdan.text = codEdan;
     this.controllerRequerimiento.text = controllerRequerimiento;
     this.controllerCant.text = controllerCant;
     this.controllerTipo.text = controllerTipo;
