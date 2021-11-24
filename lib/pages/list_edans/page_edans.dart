@@ -14,7 +14,6 @@ import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/group_list_acciones.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/group_list_danios_personal_de_salud.dart';
-import 'package:ministerio_de_salud/pages/widgets/group/group_list_instalacion_albergues.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/group_list_movilizacion_de_personal_salud.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/group_list_requerimientos_apoyo.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/button_widget.dart';
@@ -344,19 +343,86 @@ class _PageEdansState extends State<PageEdans> {
       // db.getLastIDEDAN();
       if (widget.edanModel != null) {
         controllercodEdan.text = widget.edanModel!.codEdan!.toString();
+        listMunicipio = await db.getListMunicipio(controllerDepartamento.text);
+        listHospitales = await db.getListEstablecimientoDeSalud(
+            controllerDepartamento.text, controllerMunicipio.text);
+
+        List<Desastreestablecimiento> listDesastreestablecimiento =
+            await db.getAllDaniosEstablecimientosDeSalud(
+                int.parse(controllercodEdan.text));
+        List<Danospersonaldesalud> listDanospersonaldesalud = await db
+            .getAllDaniosPersonalDeSalud(int.parse(controllercodEdan.text));
+        List<Desastreacciones> listDesastreacciones =
+            await db.getAllAcciones(int.parse(controllercodEdan.text));
+        List<Desastreacciones2> listDesastreacciones2 =
+            await db.getAllAcciones2(int.parse(controllercodEdan.text));
+        List<Desastrerequerimientos> listDesastrerequerimientos =
+            await db.getRequerimientoApoyo(int.parse(controllercodEdan.text));
+
+        listDaniosEstablecimientosDeSalud =
+            listDesastreestablecimiento.map((e) {
+          _DaniosEstablecimientosDeSalud model =
+              _DaniosEstablecimientosDeSalud();
+          model.llenarDatos(
+            controllerSalud: e.nomestablecimiento!,
+            controllerFunciona: e.funciona!,
+            controllerAgua: e.tieneagua!,
+            controllerAreaAfectada: e.areaAfectada!,
+            listaHospitales: listHospitales,
+          );
+          return model;
+        }).toList();
+        _actualizarListaEstableciemientosDeSalud();
+
+        listDaniosPersonalDeSalud = listDanospersonaldesalud.map((e) {
+          _DaniosAlPersonalDeSalud model = _DaniosAlPersonalDeSalud();
+          model.llenarDatos(
+            controllerPersonalSalud: e.personal!,
+            controllerFaleecidos: e.muertos!.toString(),
+            controllerHeridos: e.heridos!.toString(),
+            controllerDisp: e.disponibles!.toString(),
+            controllerDesaparecidos: e.desaparecidos!.toString(),
+          );
+          return model;
+        }).toList();
+        _actualizarListaAlPersonalDeSalud();
+
+        listAcciones = listDesastreacciones.map((e) {
+          _Acciones model = _Acciones();
+          model.llenarDatos(controllerAccion: e.accion!);
+          return model;
+        }).toList();
+
+        _actualizarListaAcciones();
+
+        listAccionesPrioritarias = listDesastreacciones2.map((e) {
+          _AccionesPrioritarias model = _AccionesPrioritarias();
+          model.llenarDatos(controllerAccion: e.accion!);
+          return model;
+        }).toList();
+        _actualizarListaAccionesPrioritarias();
+
+        listRequerimientoApoyo = listDesastrerequerimientos.map((e) {
+          _RequerimientoApoyo model = _RequerimientoApoyo();
+          model.llenarDatos(
+            controllerRequerimiento: e.requerimiento!,
+            controllerCant: e.cantidad!.toString(),
+            controllerTipo: e.observaciones!,
+            controllerPrioridad: e.prioridad!,
+          );
+          return model;
+        }).toList();
+        _actualizarListaRequerimientoApoyo();
       } else {
         String data = await db.getLastIDEDAN();
-        print('%%%%%% data $data %%%%%%%%');
         int id = int.parse(data);
         id = id + 1;
         controllercodEdan.text = id.toString();
       }
-      print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-      print(controllercodEdan.text);
-      print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
       // db.closeDB();
       listDepartamentos = await db.getListDepartamento();
-      print('%%%%%%%%%%%%s%%%%%%%%%%%%%%%%%%%%%%%%%');
+      // controllerMunicipio.text = listMunicipio[0];
+
       setState(() {});
     });
   }
@@ -367,10 +433,19 @@ class _PageEdansState extends State<PageEdans> {
     return SafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // db.getListEstablecimientoDeSalud(
-            //     controllerDepartamento.text, controllerMunicipio.text);
-            db.getLastdesastreestablecimiento();
+          onPressed: () async {
+            // List<Desastreestablecimiento> data =
+            //     await db.getAllDaniosEstablecimientosDeSalud(
+            //         int.parse(controllercodEdan.text));
+            // List<Danospersonaldesalud> data = await db
+            //     .getAllDaniosPersonalDeSalud(int.parse(controllercodEdan.text));
+            // List<Desastreacciones> data =
+            //     await db.getAllAcciones(int.parse(controllercodEdan.text));
+            // List<Desastreacciones2> data =
+            //     await db.getAllAcciones2(int.parse(controllercodEdan.text));
+            // List<Desastrerequerimientos> data = await db
+            //     .getRequerimientoApoyo(int.parse(controllercodEdan.text));
+            print(listDaniosEstablecimientosDeSalud);
           },
         ),
         appBar: PreferredSize(
@@ -2062,6 +2137,19 @@ class _DaniosEstablecimientosDeSalud {
   }
 
   _DaniosEstablecimientosDeSalud();
+  llenarDatos({
+    required String controllerSalud,
+    required String controllerFunciona,
+    required String controllerAgua,
+    required String controllerAreaAfectada,
+    required List<String> listaHospitales,
+  }) {
+    this.controllerSalud.text = controllerSalud;
+    this.controllerFunciona.text = controllerFunciona;
+    this.controllerAgua.text = controllerAgua;
+    this.controllerAreaAfectada.text = controllerAreaAfectada;
+    this.listaHospitales = listaHospitales;
+  }
 }
 
 class _DaniosAlPersonalDeSalud {
@@ -2072,6 +2160,19 @@ class _DaniosAlPersonalDeSalud {
   TextEditingController controllerDesaparecidos = TextEditingController();
 
   _DaniosAlPersonalDeSalud();
+  llenarDatos({
+    required String controllerPersonalSalud,
+    required String controllerFaleecidos,
+    required String controllerHeridos,
+    required String controllerDisp,
+    required String controllerDesaparecidos,
+  }) {
+    this.controllerPersonalSalud.text = controllerPersonalSalud;
+    this.controllerFaleecidos.text = controllerFaleecidos;
+    this.controllerHeridos.text = controllerHeridos;
+    this.controllerDisp.text = controllerDisp;
+    this.controllerDesaparecidos.text = controllerDesaparecidos;
+  }
 }
 
 class _InstalacionAlbergues {
@@ -2079,18 +2180,35 @@ class _InstalacionAlbergues {
   TextEditingController controllerLugarDeAlbergue = TextEditingController();
 
   _InstalacionAlbergues();
+  llenarDatos({
+    required String controllerCantidad,
+    required String controllerLugarDeAlbergue,
+  }) {
+    this.controllerCantidad.text = controllerCantidad;
+    this.controllerLugarDeAlbergue.text = controllerLugarDeAlbergue;
+  }
 }
 
 class _Acciones {
   TextEditingController controllerAccion = TextEditingController();
 
   _Acciones();
+  llenarDatos({
+    required String controllerAccion,
+  }) {
+    this.controllerAccion.text = controllerAccion;
+  }
 }
 
 class _AccionesPrioritarias {
   TextEditingController controllerAccion = TextEditingController();
 
   _AccionesPrioritarias();
+  llenarDatos({
+    required String controllerAccion,
+  }) {
+    this.controllerAccion.text = controllerAccion;
+  }
 }
 
 class _RequerimientoApoyo {
@@ -2100,4 +2218,15 @@ class _RequerimientoApoyo {
   TextEditingController controllerPrioridad = TextEditingController();
 
   _RequerimientoApoyo();
+  llenarDatos({
+    required String controllerRequerimiento,
+    required String controllerCant,
+    required String controllerTipo,
+    required String controllerPrioridad,
+  }) {
+    this.controllerRequerimiento.text = controllerRequerimiento;
+    this.controllerCant.text = controllerCant;
+    this.controllerTipo.text = controllerTipo;
+    this.controllerPrioridad.text = controllerPrioridad;
+  }
 }

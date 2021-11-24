@@ -219,4 +219,57 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
     int response = await _db.rawInsert(model.insertSql());
     print('###### $response');
   }
+
+  /////////////////////////////////
+
+  Future<List<Desastreestablecimiento>> getAllDaniosEstablecimientosDeSalud(
+      int id) async {
+    print('lectura sql');
+    List<Map<String, dynamic>> result = await _db.query(
+      'desastreestablecimiento',
+      where: 'cod_edan = $id',
+      // whereArgs: [id]
+    );
+    return result.map((map) => Desastreestablecimiento.fromMap(map)).toList();
+  }
+
+  Future<List<Danospersonaldesalud>> getAllDaniosPersonalDeSalud(int id) async {
+    print('lectura sql');
+    List<Map<String, dynamic>> result = await _db.query(
+      'danospersonaldesalud',
+      where: 'cod_edan = $id',
+      // whereArgs: [id]
+    );
+    return result.map((map) => Danospersonaldesalud.fromMap(map)).toList();
+  }
+
+  Future<List<Desastreacciones>> getAllAcciones(int id) async {
+    print('lectura sql');
+    List<Map<String, dynamic>> result = await _db.query(
+      'desastreacciones',
+      where: 'cod_edan = $id',
+      // whereArgs: [id]
+    );
+    return result.map((map) => Desastreacciones.fromMap(map)).toList();
+  }
+
+  Future<List<Desastreacciones2>> getAllAcciones2(int id) async {
+    print('lectura sql');
+    List<Map<String, dynamic>> result = await _db.query(
+      'desastreacciones2',
+      where: 'cod_edan = $id',
+      // whereArgs: [id]
+    );
+    return result.map((map) => Desastreacciones2.fromMap(map)).toList();
+  }
+
+  Future<List<Desastrerequerimientos>> getRequerimientoApoyo(int id) async {
+    print('lectura sql');
+    List<Map<String, dynamic>> result = await _db.query(
+      'desastrerequerimientos',
+      where: 'cod_edan = $id',
+      // whereArgs: [id]
+    );
+    return result.map((map) => Desastrerequerimientos.fromMap(map)).toList();
+  }
 }
