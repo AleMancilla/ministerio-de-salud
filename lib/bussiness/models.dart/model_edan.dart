@@ -1,5 +1,6 @@
 class ModelEdan {
   int? codEdan;
+  String? tipoEdan;
   String? evento;
   String? claseEvento;
   String? fecha;
@@ -68,6 +69,7 @@ class ModelEdan {
 
   ModelEdan({
     this.codEdan,
+    this.tipoEdan,
     this.evento,
     this.claseEvento,
     this.fecha,
@@ -137,6 +139,7 @@ class ModelEdan {
   Map<String, dynamic> toMap() {
     return {
       'cod_edan': codEdan,
+      'tipo_edan': tipoEdan,
       'evento': evento,
       'clase_evento': claseEvento,
       'fecha': fecha,
@@ -205,6 +208,7 @@ class ModelEdan {
 
   ModelEdan.fromMap(Map<String, dynamic> map) {
     codEdan = map['cod_edan'];
+    tipoEdan = map['tipo_edan'];
     evento = map['evento'];
     claseEvento = map['clase_evento'];
     fecha = map['fecha'];
@@ -273,6 +277,7 @@ class ModelEdan {
   String insertSql() {
     return """INSERT INTO edan (
 evento,
+tipo_edan,
 clase_evento,
 fecha,
 hora,
@@ -337,6 +342,7 @@ fechap,
 enviado
 ) VALUES ( 
   '$evento',
+  '$tipoEdan',
   '$claseEvento',
   '$fecha',
   '$hora',
@@ -406,6 +412,7 @@ enviado
     return """
 UPDATE edan SET
 evento = '$evento',
+tipo_edan = '$tipoEdan',
 clase_evento = '$claseEvento',
 fecha = '$fecha',
 hora = '$hora',

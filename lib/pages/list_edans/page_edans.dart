@@ -43,6 +43,7 @@ class PageEdans extends StatefulWidget {
 class _PageEdansState extends State<PageEdans> {
   ///[SECCION DATOS GENERALES]
   TextEditingController controllerEvento = TextEditingController();
+  TextEditingController controllerTipoEDAN = TextEditingController();
   TextEditingController controllerOtroEvento = TextEditingController();
   TextEditingController controllerFecha = TextEditingController();
   TextEditingController controllerHora = TextEditingController();
@@ -188,6 +189,7 @@ class _PageEdansState extends State<PageEdans> {
       //     ? widget.edanModel!.codEdan.toString()
       //     : '0';
       controllerEvento.text = widget.edanModel!.evento.toString();
+      controllerTipoEDAN.text = widget.edanModel!.tipoEdan.toString();
       controllerOtroEvento.text = widget.edanModel!.claseEvento.toString();
       controllerFecha.text = widget.edanModel!.fecha.toString();
       controllerHora.text = widget.edanModel!.hora.toString();
@@ -313,6 +315,7 @@ class _PageEdansState extends State<PageEdans> {
       controllerAdultosMayoresMujer.text = '0';
       controllerNroAlbergues.text = '0';
       controllerLesionados.text = '0';
+      controllerTipoEDAN.text = '8 horas';
       controllerFecha.text =
           '${DateTime.now().day.toString().padLeft(2, '0')}/${DateTime.now().month.toString().padLeft(2, '0')}/${DateTime.now().year}';
       controllerHora.text =
@@ -488,50 +491,6 @@ class _PageEdansState extends State<PageEdans> {
                       ButtonWidget(
                         text: 'Guardar',
                         ontap: () async {
-                          // log('''
-                          // controllerEvento => ${controllerEvento.text}
-                          // controllerFecha => ${controllerFecha.text}
-                          // controllerHora => ${controllerHora.text}
-                          // controllerSigueEnDesarrollo => ${controllerSigueEnDesarrollo.text}
-                          // controllerNombreDeContacto => ${controllerNombreDeContacto.text}
-                          // controllerCargoDeContacto => ${controllerCargoDeContacto.text}
-                          // controllerDireccionDeContacto => ${controllerDireccionDeContacto.text}
-                          // controllerTelefonoFijo => ${controllerTelefonoFijo.text}
-                          // controllerTelefonoMovil => ${controllerTelefonoMovil.text}
-                          // controllerDepartamento => ${controllerDepartamento.text}
-                          // controllerMunicipio => ${controllerMunicipio.text}
-                          // controllerComunidad => ${controllerComunidad.text}
-                          // controllerTieneCoordenadas => ${controllerTieneCoordenadas.text}
-                          // controllerViaAerea => ${controllerViaAerea.text}
-                          // controllerViaTerrestre => ${controllerViaTerrestre.text}
-                          // controllerViaFluvial => ${controllerViaFluvial.text}
-                          // controllerViaFerroviaria => ${controllerViaFerroviaria.text}
-                          // controllerParaLlegar => ${controllerParaLlegar.text}
-                          // controllerTiempoLlegada => ${controllerTiempoLlegada.text}
-                          // controllerCondicionClimatica => ${controllerCondicionClimatica.text}
-                          // controllerMediosDeComunicacion => ${controllerMediosDeComunicacion.text}
-                          // controllerViviendasAfectadas => ${controllerViviendasAfectadas.text}
-                          // controllerFamiliasDamnificadas => ${controllerFamiliasDamnificadas.text}
-                          // controllerServivioDeAgua => ${controllerServivioDeAgua.text}
-                          // controllerServicioDeRecoleccion => ${controllerServicioDeRecoleccion.text}
-                          // controllerServicioDeAlcantarilla => ${controllerServicioDeAlcantarilla.text}
-                          // controllerServicioDeEnergia => ${controllerServicioDeEnergia.text}
-                          // controllerServicioDeTelecomunicaciones => ${controllerServicioDeTelecomunicaciones.text}
-                          // controllerServicioDeTransporte => ${controllerServicioDeTransporte.text}
-                          // controllerHeridos => ${controllerHeridos.text}
-                          // controllerFallecidos => ${controllerFallecidos.text}
-                          // controllerDesaparecidos => ${controllerDesaparecidos.text}
-                          // controllerLugarEDAN => ${controllerLugarEDAN.text}
-                          // controllerFechaEDAN => ${controllerFechaEDAN.text}
-                          // controllerHoraEDAN => ${controllerHoraEDAN.text}
-                          // controllerResponsableEDAN => ${controllerResponsableEDAN.text}
-                          // controllerCargoEDAN => ${controllerCargoEDAN.text}
-                          // controllerTelfFijoEDAN => ${controllerTelfFijoEDAN.text}
-                          // controllerTelfMovilEDAN => ${controllerTelfMovilEDAN.text}
-                          // controllerCorreoEDAN => ${controllerCorreoEDAN.text}
-                          // controllerFechaAuxEDAN => ${controllerFechaAuxEDAN.text}
-                          // ''');
-
                           if (controllerEvento.text ==
                               '- Seleccione una opción -') {
                             _showDialogMessage(
@@ -637,6 +596,7 @@ class _PageEdansState extends State<PageEdans> {
                             codEdan: controllercodEdan.text != ''
                                 ? int.parse(controllercodEdan.text)
                                 : 0,
+                            tipoEdan: controllerTipoEDAN.text,
                             evento: controllerEvento.text,
                             claseEvento: controllerOtroEvento.text,
                             fecha: controllerFecha.text,
@@ -1005,6 +965,16 @@ class _PageEdansState extends State<PageEdans> {
           title: const TitleExpansion(texto: '1.- DATOS GENERALES'),
           children: <Widget>[
             _subTitle('1.1 TIPO DE EVENTO'),
+            InputListOption(
+              title: 'Tipo de EDAN',
+              controller: controllerTipoEDAN,
+              onselect: () {},
+              isRequired: true,
+              options: const [
+                '8 horas',
+                '72 horas',
+              ],
+            ),
             InputListOption(
               title: 'Evento',
               controller: controllerEvento,

@@ -66,6 +66,7 @@ userlevelname TEXT NOT NULL
 )""",
   """CREATE TABLE IF NOT EXISTS edan (
 cod_edan INTEGER PRIMARY KEY AUTOINCREMENT ,
+tipo_edan TEXT DEFAULT NULL,
 evento TEXT DEFAULT NULL,
 clase_evento TEXT DEFAULT NULL,
 fecha date DEFAULT NULL,
