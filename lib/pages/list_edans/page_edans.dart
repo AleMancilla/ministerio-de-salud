@@ -2229,9 +2229,22 @@ class _PageEdansState extends State<PageEdans> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: InputTextFielfWidget(
+                      child: SubListInputListOption(
                         controller: demo.controllerRequerimiento,
-                        hint: 'Requerimiento',
+                        options: const [
+                          'Medicamentos e insumos médicos',
+                          'Agua y saneamiento ambiental',
+                          'Productos químicos (plaguicidas e insecticidas)',
+                          'Alimentos y bebidas',
+                          'Albergue vivienda electricidad construcción',
+                          'Necesidades personales',
+                          'Recursos humanos',
+                          'Equipamiento médico',
+                          'Carpa para consultorio ambulante',
+                          'Combustibles y lubricantes',
+                          'Material eléctrico',
+                          'Generadores eléctricos',
+                        ],
                       ),
                     ),
                   ),
