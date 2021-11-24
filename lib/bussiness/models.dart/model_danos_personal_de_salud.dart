@@ -4,8 +4,10 @@ class Danospersonaldesalud {
   String? personal;
   int? muertos;
   int? heridos;
+  int? enfermos;
   int? disponibles;
   int? desaparecidos;
+  String? observaciones;
 
   Danospersonaldesalud({
     this.codpersalud,
@@ -13,8 +15,10 @@ class Danospersonaldesalud {
     this.personal,
     this.muertos,
     this.heridos,
+    this.enfermos,
     this.disponibles,
     this.desaparecidos,
+    this.observaciones,
   });
 
   Map<String, dynamic> toMap() {
@@ -24,8 +28,10 @@ class Danospersonaldesalud {
       'personal': personal,
       'muertos': muertos,
       'heridos': heridos,
+      'enfermos': enfermos,
       'disponibles': disponibles,
       'desaparecidos': desaparecidos,
+      'observaciones': observaciones,
     };
   }
 
@@ -35,8 +41,10 @@ class Danospersonaldesalud {
     personal = map['personal'];
     muertos = map['muertos'];
     heridos = map['heridos'];
+    enfermos = map['enfermos'];
     disponibles = map['disponibles'];
     desaparecidos = map['desaparecidos'];
+    observaciones = map['observaciones'];
   }
 
   String insertSql() {
@@ -46,16 +54,20 @@ class Danospersonaldesalud {
   personal,
   muertos,
   heridos,
+  enfermos,
   disponibles,
-  desaparecidos
+  desaparecidos,
+  observaciones
 ) VALUES ( 
   '$codpersalud',
   '$codEdan',
   '$personal',
   '$muertos',
   '$heridos',
+  '$enfermos',
   '$disponibles',
-  '$desaparecidos'
+  '$desaparecidos',
+  '$observaciones'
   )""";
   }
 
@@ -67,8 +79,10 @@ cod_edan = '$codEdan',
 personal = '$personal',
 muertos = '$muertos',
 heridos = '$heridos',
+enfermos = '$enfermos',
 disponibles = '$disponibles',
-desaparecidos = '$desaparecidos'
+desaparecidos = '$desaparecidos',
+observaciones = '$observaciones'
 WHERE
     codpersalud = '$codpersalud'
 """;

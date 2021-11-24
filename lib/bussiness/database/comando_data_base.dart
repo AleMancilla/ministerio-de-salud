@@ -7,8 +7,10 @@ cod_edan INTEGER DEFAULT NULL,
 personal TEXT DEFAULT NULL,
 muertos INTEGER DEFAULT NULL,
 heridos INTEGER DEFAULT NULL,
+enfermos INTEGER DEFAULT NULL,
 disponibles INTEGER DEFAULT NULL,
-desaparecidos INTEGER DEFAULT NULL
+desaparecidos INTEGER DEFAULT NULL,
+observaciones TEXT DEFAULT NULL
 );""",
   """CREATE TABLE IF NOT EXISTS desastreacciones (
 cod_edan INTEGER DEFAULT NULL,

@@ -390,8 +390,10 @@ class _PageEdansState extends State<PageEdans> {
             controllerPersonalSalud: e.personal!,
             controllerFaleecidos: e.muertos!.toString(),
             controllerHeridos: e.heridos!.toString(),
+            controllerEnfermos: e.enfermos!.toString(),
             controllerDisp: e.disponibles!.toString(),
             controllerDesaparecidos: e.desaparecidos!.toString(),
+            controllerObservaciones: e.observaciones!.toString(),
           );
           return model;
         }).toList();
@@ -742,6 +744,10 @@ class _PageEdansState extends State<PageEdans> {
                                     element.controllerHeridos.text != ''
                                         ? element.controllerHeridos.text
                                         : '0'),
+                                enfermos: int.parse(
+                                    element.controllerEnfermos.text != ''
+                                        ? element.controllerEnfermos.text
+                                        : '0'),
                                 disponibles: int.parse(
                                     element.controllerDisp.text != ''
                                         ? element.controllerDisp.text
@@ -750,6 +756,8 @@ class _PageEdansState extends State<PageEdans> {
                                     element.controllerDesaparecidos.text != ''
                                         ? element.controllerDesaparecidos.text
                                         : '0'),
+                                observaciones:
+                                    element.controllerObservaciones.text,
                               );
 
                               if (element.controllercodpersalud.text != '') {
@@ -850,6 +858,10 @@ class _PageEdansState extends State<PageEdans> {
                                     element.controllerHeridos.text != ''
                                         ? element.controllerHeridos.text
                                         : '0'),
+                                enfermos: int.parse(
+                                    element.controllerEnfermos.text != ''
+                                        ? element.controllerEnfermos.text
+                                        : '0'),
                                 disponibles: int.parse(
                                     element.controllerDisp.text != ''
                                         ? element.controllerDisp.text
@@ -858,6 +870,8 @@ class _PageEdansState extends State<PageEdans> {
                                     element.controllerDesaparecidos.text != ''
                                         ? element.controllerDesaparecidos.text
                                         : '0'),
+                                observaciones:
+                                    element.controllerObservaciones.text,
                               );
 
                               await db.insertDaniosPersonalDeSalud(modelo);
@@ -1703,8 +1717,10 @@ class _PageEdansState extends State<PageEdans> {
             'Pers. de Salud',
             'Fallec.',
             'Heri.',
+            'Enfermos',
             'Disp.',
             'Desap.',
+            'Observaciones'
           ]),
         ),
       ),
@@ -1778,6 +1794,19 @@ class _PageEdansState extends State<PageEdans> {
                       border: Border.all(color: Colors.lightBlue.shade100),
                     ),
                     child: SublistInputExpanded(
+                      controller: demo.controllerEnfermos,
+                      isNumber: true,
+                      hint: '0',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: SublistInputExpanded(
                       controller: demo.controllerDisp,
                       isNumber: true,
                       hint: '0',
@@ -1794,6 +1823,21 @@ class _PageEdansState extends State<PageEdans> {
                       controller: demo.controllerDesaparecidos,
                       isNumber: true,
                       hint: '0',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue.shade100),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InputTextFielfDescriptionWidget(
+                        controller: demo.controllerObservaciones,
+                        hint: 'Observacion',
+                      ),
                     ),
                   ),
                 ),
@@ -2303,8 +2347,10 @@ class _DaniosAlPersonalDeSalud {
   TextEditingController controllerPersonalSalud = TextEditingController();
   TextEditingController controllerFaleecidos = TextEditingController();
   TextEditingController controllerHeridos = TextEditingController();
+  TextEditingController controllerEnfermos = TextEditingController();
   TextEditingController controllerDisp = TextEditingController();
   TextEditingController controllerDesaparecidos = TextEditingController();
+  TextEditingController controllerObservaciones = TextEditingController();
 
   _DaniosAlPersonalDeSalud();
   llenarDatos({
@@ -2313,16 +2359,20 @@ class _DaniosAlPersonalDeSalud {
     required String controllerPersonalSalud,
     required String controllerFaleecidos,
     required String controllerHeridos,
+    required String controllerEnfermos,
     required String controllerDisp,
     required String controllerDesaparecidos,
+    required String controllerObservaciones,
   }) {
     this.controllercodpersalud.text = controllercodpersalud;
     this.controllercodEdan.text = controllercodEdan;
     this.controllerPersonalSalud.text = controllerPersonalSalud;
     this.controllerFaleecidos.text = controllerFaleecidos;
     this.controllerHeridos.text = controllerHeridos;
+    this.controllerHeridos.text = controllerEnfermos;
     this.controllerDisp.text = controllerDisp;
     this.controllerDesaparecidos.text = controllerDesaparecidos;
+    this.controllerObservaciones.text = controllerObservaciones;
   }
 }
 

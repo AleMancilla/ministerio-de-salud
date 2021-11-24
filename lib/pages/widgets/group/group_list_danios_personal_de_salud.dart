@@ -94,6 +94,36 @@ class GroupDaniosPersonalDeSalud extends StatelessWidget {
                     ),
                   ),
                 ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue),
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Text(
+                      titles[5],
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.lightBlue),
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Text(
+                      titles[6],
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
                 const Expanded(
                   flex: 1,
                   child: Text(
