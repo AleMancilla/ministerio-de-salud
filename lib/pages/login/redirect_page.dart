@@ -55,7 +55,7 @@ class _RedirectPageState extends State<RedirectPage> {
             child: ButtonWidget(
                 text: 'Ir a la version Web',
                 ontap: () {
-                  launchURL('http://186.121.214.197/pncad_8/login.php');
+                  launchURL('http://47.243.63.127/pncad/login.php');
                 }),
           ),
           Padding(

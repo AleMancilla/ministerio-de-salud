@@ -69,6 +69,7 @@ class _PageNotSendState extends State<PageNotSend> {
         //     insertMethod(controllerid.text, controllertext.text);
         //   },
         // ),
+        // drawer: InkWellDrawer(),
         appBar: PreferredSize(
           child: AppBarWidget(
             size: size,

@@ -224,37 +224,37 @@ class _PageEdansState extends State<PageEdans> {
       controllerTelfContactoDeLaRadioEmisora.text =
           widget.edanModel!.telefonoEmisora.toString();
 
-      controllerViviendasAfectadas.text = widget.edanModel!.viviendas == null
+      controllerViviendasAfectadas.text = widget.edanModel!.viviendas != null
           ? widget.edanModel!.viviendas.toString()
           : '0';
-      controllerFamiliasDamnificadas.text = widget.edanModel!.familias == null
+      controllerFamiliasDamnificadas.text = widget.edanModel!.familias != null
           ? widget.edanModel!.familias.toString()
           : '0';
-      controllerNinosVulnerables.text = widget.edanModel!.ninios == null
+      controllerNinosVulnerables.text = widget.edanModel!.ninios != null
           ? widget.edanModel!.ninios.toString()
           : '0';
-      controllerNinasVulnerables.text = widget.edanModel!.ninias == null
+      controllerNinasVulnerables.text = widget.edanModel!.ninias != null
           ? widget.edanModel!.ninias.toString()
           : '0';
       controllerPersonasConDiscapacidadVaron.text =
-          widget.edanModel!.discapacidad == null
+          widget.edanModel!.discapacidad != null
               ? widget.edanModel!.discapacidad.toString()
               : '0';
       controllerPersonasConDiscapacidadMujer.text =
-          widget.edanModel!.discapacidadm == null
+          widget.edanModel!.discapacidadm != null
               ? widget.edanModel!.discapacidadm.toString()
               : '0';
-      controllerMujeresEmbarazadas.text = widget.edanModel!.embarazadas == null
+      controllerMujeresEmbarazadas.text = widget.edanModel!.embarazadas != null
           ? widget.edanModel!.embarazadas.toString()
           : '0';
-      controllerAdultosMayoresVaron.text = widget.edanModel!.adultoMayor == null
+      controllerAdultosMayoresVaron.text = widget.edanModel!.adultoMayor != null
           ? widget.edanModel!.adultoMayor.toString()
           : '0';
       controllerAdultosMayoresMujer.text =
-          widget.edanModel!.adultoMayorm == null
+          widget.edanModel!.adultoMayorm != null
               ? widget.edanModel!.adultoMayorm.toString()
               : '0';
-      controllerNroAlbergues.text = widget.edanModel!.numAlbergues == null
+      controllerNroAlbergues.text = widget.edanModel!.numAlbergues != null
           ? widget.edanModel!.numAlbergues.toString()
           : '0';
       controllerServicioDeAgua.text = widget.edanModel!.agua.toString();
@@ -272,16 +272,16 @@ class _PageEdansState extends State<PageEdans> {
       controllerEstablecimientosDeSalud.text =
           widget.edanModel!.establecimientossalud.toString();
 
-      controllerHeridos.text = widget.edanModel!.heridos == null
+      controllerHeridos.text = widget.edanModel!.heridos != null
           ? widget.edanModel!.heridos.toString()
           : '0';
-      controllerFallecidos.text = widget.edanModel!.muertos == null
+      controllerFallecidos.text = widget.edanModel!.muertos != null
           ? widget.edanModel!.muertos.toString()
           : '0';
-      controllerDesaparecidos.text = widget.edanModel!.desaparecidos == null
+      controllerDesaparecidos.text = widget.edanModel!.desaparecidos != null
           ? widget.edanModel!.desaparecidos.toString()
           : '0';
-      controllerLesionados.text = widget.edanModel!.lesionados == null
+      controllerLesionados.text = widget.edanModel!.lesionados != null
           ? widget.edanModel!.lesionados.toString()
           : '0';
 
@@ -334,6 +334,25 @@ class _PageEdansState extends State<PageEdans> {
     scrollControllergroupRequerimientosDeApoyo = ScrollController();
     scrollControllergroupDaniosEstablecimiendosDeSalud = ScrollController();
     scrollControllergroupDaniosAlPersonalDeSalud = ScrollController();
+
+    print("""
+          -------------------------------
+          viviendas = -> ${controllerViviendasAfectadas.text}
+          familias = -> ${controllerFamiliasDamnificadas.text}
+          ninios = -> ${controllerHeridos.text}
+          ninias = -> ${controllerFallecidos.text}
+          discapacidad = -> ${controllerDesaparecidos.text}
+          discapacidadm = -> ${controllerNinosVulnerables.text}
+          discapacidadm = -> ${controllerNinasVulnerables.text}
+          embarazadas = -> ${controllerPersonasConDiscapacidadVaron.text}
+          adultoMayor = -> ${controllerPersonasConDiscapacidadMujer.text}
+          adultoMayorm = -> ${controllerMujeresEmbarazadas.text}
+          numAlbergues = -> ${controllerAdultosMayoresVaron.text}
+          heridos = -> ${controllerAdultosMayoresMujer.text}
+          muertos = -> ${controllerNroAlbergues.text}
+          desaparecidos = -> ${controllerLesionados.text}
+          -------------------------------
+          """);
 
     super.initState();
   }
@@ -451,22 +470,22 @@ class _PageEdansState extends State<PageEdans> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            // List<Desastreestablecimiento> data =
-            //     await db.getAllDaniosEstablecimientosDeSalud(
-            //         int.parse(controllercodEdan.text));
-            List<Danospersonaldesalud> data = await db
-                .getAllDaniosPersonalDeSalud(int.parse(controllercodEdan.text));
-            // List<Desastreacciones> data =
-            //     await db.getAllAcciones(int.parse(controllercodEdan.text));
-            // List<Desastreacciones2> data =
-            //     await db.getAllAcciones2(int.parse(controllercodEdan.text));
-            // List<Desastrerequerimientos> data = await db
-            //     .getRequerimientoApoyo(int.parse(controllercodEdan.text));
-            print(data);
-          },
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () async {
+        //     // List<Desastreestablecimiento> data =
+        //     //     await db.getAllDaniosEstablecimientosDeSalud(
+        //     //         int.parse(controllercodEdan.text));
+        //     List<Danospersonaldesalud> data = await db
+        //         .getAllDaniosPersonalDeSalud(int.parse(controllercodEdan.text));
+        //     // List<Desastreacciones> data =
+        //     //     await db.getAllAcciones(int.parse(controllercodEdan.text));
+        //     // List<Desastreacciones2> data =
+        //     //     await db.getAllAcciones2(int.parse(controllercodEdan.text));
+        //     // List<Desastrerequerimientos> data = await db
+        //     //     .getRequerimientoApoyo(int.parse(controllercodEdan.text));
+        //     print(data);
+        //   },
+        // ),
         appBar: PreferredSize(
           child: AppBarWidget(size: size),
           preferredSize: const Size(double.infinity, 50),
@@ -680,6 +699,25 @@ class _PageEdansState extends State<PageEdans> {
                             fechap: '',
                             enviado: '',
                           );
+                          print("""
+                          -------------------------------
+                          viviendas = -> ${modelo.viviendas}
+                          familias = -> ${modelo.familias}
+                          ninios = -> ${modelo.ninios}
+                          ninias = -> ${modelo.ninias}
+                          discapacidad = -> ${modelo.discapacidad}
+                          discapacidadm = -> ${modelo.discapacidadm}
+                          discapacidadm = -> ${modelo.discapacidadm}
+                          embarazadas = -> ${modelo.embarazadas}
+                          adultoMayor = -> ${modelo.adultoMayor}
+                          adultoMayorm = -> ${modelo.adultoMayorm}
+                          numAlbergues = -> ${modelo.numAlbergues}
+                          heridos = -> ${modelo.heridos}
+                          muertos = -> ${modelo.muertos}
+                          desaparecidos = -> ${modelo.desaparecidos}
+                          lesionados = -> ${modelo.lesionados}
+                          -------------------------------
+                          """);
 
                           int idDesastre = int.parse(
                               await db.getLastdesastreestablecimiento());
@@ -980,7 +1018,6 @@ class _PageEdansState extends State<PageEdans> {
           initiallyExpanded: true,
           title: const TitleExpansion(texto: '1.- DATOS GENERALES'),
           children: <Widget>[
-            _subTitle('1.1 TIPO DE EVENTO'),
             InputListOption(
               title: 'Tipo de EDAN',
               controller: controllerTipoEDAN,
@@ -991,6 +1028,7 @@ class _PageEdansState extends State<PageEdans> {
                 '72 horas',
               ],
             ),
+            _subTitle('1.1 TIPO DE EVENTO'),
             InputListOption(
               title: 'Evento',
               controller: controllerEvento,
@@ -1002,8 +1040,8 @@ class _PageEdansState extends State<PageEdans> {
               isRequired: true,
               options: const [
                 'Accidentes por prod. y sust. peligrosas',
-                'Biológico',
                 'Convulsión social',
+                'Covid 20',
                 'Deslizamiento',
                 'Desporde de rio(inund. rapida)',
                 'Granizada',
@@ -1016,7 +1054,7 @@ class _PageEdansState extends State<PageEdans> {
                 'Plagas',
                 'Riada',
                 'Sequia',
-                'Terremoto',
+                'Sismo (temblor, terremoto)',
               ],
             ),
             if (controllerEvento.text == 'Otros')
@@ -1212,63 +1250,63 @@ class _PageEdansState extends State<PageEdans> {
               title: '2.1 Cant. viviendas afectadas',
               controller: controllerViviendasAfectadas,
               isRequired: true,
-              initValue: '0',
+              initValue: controllerViviendasAfectadas.text,
             ),
             InputExpanded(
               title: '2.2 Cant. Flias. damnificadas',
               controller: controllerFamiliasDamnificadas,
               isRequired: true,
-              initValue: '0',
+              initValue: controllerFamiliasDamnificadas.text,
             ),
 
             InputExpanded(
               title: '2.3 Cant. Niños vulnerables',
               controller: controllerNinosVulnerables,
               isRequired: true,
-              initValue: '0',
+              initValue: controllerNinosVulnerables.text,
             ),
             InputExpanded(
               title: 'Cant. Niñas vulnerables',
               controller: controllerNinasVulnerables,
               isRequired: true,
-              initValue: '0',
+              initValue: controllerNinasVulnerables.text,
             ),
 
             InputExpanded(
               title: '2.4 Cant. Personas con Discapacidad Varon',
               controller: controllerPersonasConDiscapacidadVaron,
               isRequired: true,
-              initValue: '0',
+              initValue: controllerPersonasConDiscapacidadVaron.text,
             ),
             InputExpanded(
               title: 'Cant. Personas con Discapacidad Mujer',
               controller: controllerPersonasConDiscapacidadMujer,
               isRequired: true,
-              initValue: '0',
+              initValue: controllerPersonasConDiscapacidadMujer.text,
             ),
             InputExpanded(
               title: '2.5 Cant. Mujeres Embarazadas',
               controller: controllerMujeresEmbarazadas,
               isRequired: true,
-              initValue: '0',
+              initValue: controllerMujeresEmbarazadas.text,
             ),
             InputExpanded(
               title: '2.6 Cant. Adultos Mayores Varon',
               controller: controllerAdultosMayoresVaron,
               isRequired: true,
-              initValue: '0',
+              initValue: controllerAdultosMayoresVaron.text,
             ),
             InputExpanded(
               title: 'Cant. Adultos Mayores Mujer',
               controller: controllerAdultosMayoresMujer,
               isRequired: true,
-              initValue: '0',
+              initValue: controllerAdultosMayoresMujer.text,
             ),
             InputExpanded(
               title: '2.7 Numero de Albergues',
               controller: controllerNroAlbergues,
               isRequired: true,
-              initValue: '0',
+              initValue: controllerNroAlbergues.text,
             ),
             _subTitle(
                 '2.8 SERVICIOS AFECTADOS DE LA ZONA AFECTADA Y/O POBLACIÓN'),
@@ -1342,36 +1380,36 @@ class _PageEdansState extends State<PageEdans> {
               title: '3.1 Cant. Heridos',
               controller: controllerHeridos,
               isRequired: true,
-              initValue: '0',
+              initValue: controllerHeridos.text,
             ),
             InputExpanded(
               title: '3.2 Cant. Fallecidos',
               controller: controllerFallecidos,
               isRequired: true,
-              initValue: '0',
+              initValue: controllerFallecidos.text,
             ),
             InputExpanded(
               title: '3.3 Cant. Desaparecidos',
               controller: controllerDesaparecidos,
-              initValue: '0',
+              initValue: controllerDesaparecidos.text,
               isRequired: true,
             ),
             InputExpanded(
               title: '3.4 Cant. Lesionados',
-              controller: controllerDesaparecidos,
-              initValue: '0',
+              controller: controllerLesionados,
+              initValue: controllerLesionados.text,
             ),
             ExpansionTile(
               initiallyExpanded: true,
               title: const TitleExpansion(
-                  texto: '3.4 Daños a establecimientos de salud'),
+                  texto: '3.5 Daños a establecimientos de salud'),
               children: [_groupDaniosEstablecimiendosDeSalud(size)],
             ),
             ExpansionTile(
               initiallyExpanded: true,
               title: const TitleExpansion(
                   texto:
-                      '3.5 Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),
+                      '3.6 Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),
               children: [_groupDaniosAlPersonalDeSalud(size)],
             )
           ],

@@ -26,8 +26,9 @@ class _InputExpandedState extends State<InputExpanded> {
   @override
   void initState() {
     super.initState();
-    if (widget.initValue != null) {
-      widget.controller.text = widget.initValue!;
+    if ((widget.initValue == null || widget.initValue != '') &&
+        widget.isNumber) {
+      widget.controller.text = '0';
     }
   }
 
