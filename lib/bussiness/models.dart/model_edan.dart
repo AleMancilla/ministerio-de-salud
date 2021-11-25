@@ -474,7 +474,7 @@ telf_cel_lle = '$telfCelLle',
 email = '$email',
 usuario = '$usuario',
 fechap = '$fechap',
-enviado = 'NO'
+enviado = '$enviado'
 WHERE
     cod_edan = '$codEdan'
 """;

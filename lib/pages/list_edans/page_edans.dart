@@ -697,7 +697,7 @@ class _PageEdansState extends State<PageEdans> {
                             email: controllerCorreoEDAN.text,
                             usuario: prefs.userCarnet,
                             fechap: '',
-                            enviado: '',
+                            enviado: 'NO',
                           );
                           print("""
                           -------------------------------

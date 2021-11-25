@@ -36,12 +36,12 @@ class _PageNotSendState extends State<PageNotSend> {
   late EdanProvider edanProvider;
   @override
   void initState() {
+    edanProvider = Provider.of<EdanProvider>(context, listen: false);
     super.initState();
     Future.delayed(Duration.zero, () {
       _internetConnectListener();
     });
     _cargandoDatos();
-    edanProvider = Provider.of<EdanProvider>(context, listen: false);
   }
 
   @override
@@ -189,7 +189,7 @@ class _PageNotSendState extends State<PageNotSend> {
   confirmDialog() {
     return showDialog(
       context: context,
-      builder: (context) {
+      builder: (ctx) {
         return AlertDialog(
           title: Text('Estas apunto de enviar los datos al servidor'),
           actions: [
@@ -199,7 +199,7 @@ class _PageNotSendState extends State<PageNotSend> {
                 style: TextStyle(color: Colors.red),
               ),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(ctx);
               },
             ),
             CupertinoButton(
@@ -208,15 +208,21 @@ class _PageNotSendState extends State<PageNotSend> {
                 style: TextStyle(color: Colors.blue),
               ),
               onPressed: () async {
+                Navigator.pop(ctx);
                 edanProvider.listEdansProvider.forEach((ModelEdan edan) async {
                   print(edan.controllerEnviar);
                   if (edan.controllerEnviar) {
                     bool resp = await insertEdan(edan);
                     print(' LA RESPUESTA ES $resp');
-                    Navigator.pop(context);
                     if (resp) {
                       edan.enviado = 'SI';
-                      db.updateEDAN(edan);
+                      edan.controllerEnviar = false;
+
+                      // db.updateEDAN(edan);
+                      await db.initDB();
+                      await db.updateEviadoEDAN(edan.codEdan.toString());
+                      await db.closeDB();
+                      print(' xxxxxxxxxS ${edan.enviado}');
                       CoolAlert.show(
                         context: context,
                         type: CoolAlertType.success,
@@ -266,11 +272,11 @@ class _PageNotSendState extends State<PageNotSend> {
           ),
           child: GroupEdansNoEnviados(listWidgets: [
             ...edanProvider.listEdansProvider.map((ModelEdan demo) {
-              // print(demo.enviado);
+              print('** ${demo.enviado}');
               // if (demo.enviado == 'no') {
               if (demo.enviado == 'NO') {
                 i++;
-                print(' --- ${demo.controllerEnviar} -- ${demo.enviado}');
+                // print(' --- ${demo.controllerEnviar} -- ${demo.enviado}');
                 return Container(
                   color: _colorItem(i, demo.controllerEnviar),
                   child: IntrinsicHeight(

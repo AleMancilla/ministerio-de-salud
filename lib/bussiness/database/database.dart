@@ -83,6 +83,13 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
     int response = await _db.rawInsert(edan.updateSql());
     print('###### $response');
   }
+
+  updateEviadoEDAN(String idedan) async {
+    print('###### entro a update');
+    int response = await _db.rawUpdate(
+        "UPDATE edan SET enviado = 'SI',evento = 'demomo' WHERE cod_edan = '$idedan'");
+    print('### y saluio con esto ### $response');
+  }
   //INSERT INTO evento VALUES ('1', 'Sequia', 'Otros', '22')
 
   Future<List<ModelEdan>> getAllEdans() async {
