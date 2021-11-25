@@ -223,6 +223,8 @@ class _PageNotSendState extends State<PageNotSend> {
                       await db.updateEviadoEDAN(edan.codEdan.toString());
                       await db.closeDB();
                       print(' xxxxxxxxxS ${edan.enviado}');
+                      setState(() {});
+
                       CoolAlert.show(
                         context: context,
                         type: CoolAlertType.success,
