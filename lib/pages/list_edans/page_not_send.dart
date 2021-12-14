@@ -6,6 +6,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
 import 'package:ministerio_de_salud/bussiness/database/mysqlphp/mysql_data.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_danos_personal_de_salud.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_acciones.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_acciones2.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_establecimiento.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_requerimientos.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 import 'package:ministerio_de_salud/bussiness/providers/edan_provider.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_edans.dart';
@@ -64,11 +69,16 @@ class _PageNotSendState extends State<PageNotSend> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () async {
-        //     insertMethod(controllerid.text, controllertext.text);
-        //   },
-        // ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            // insertMethod(controllerid.text, controllertext.text);
+
+            // await db.initDB();
+            // await db.getLastIDEDAN();
+            // await db.closeDB();
+            // getMethod();
+          },
+        ),
         // drawer: InkWellDrawer(),
         appBar: PreferredSize(
           child: AppBarWidget(
@@ -172,7 +182,7 @@ class _PageNotSendState extends State<PageNotSend> {
                           }
                         },
                         color: Colors.grey[200],
-                        text: 'Enviar al PNCAD',
+                        text: 'Enviar a la UGRED',
                         textcolor: Colors.red,
                       ),
                     ],
@@ -209,10 +219,53 @@ class _PageNotSendState extends State<PageNotSend> {
               ),
               onPressed: () async {
                 Navigator.pop(ctx);
+                await db.initDB();
                 edanProvider.listEdansProvider.forEach((ModelEdan edan) async {
                   print(edan.controllerEnviar);
                   if (edan.controllerEnviar) {
+                    int webEdanId = await getLastIdEdan();
+                    print('======== $webEdanId');
                     bool resp = await insertEdan(edan);
+
+                    List<Desastreestablecimiento> listDesastreestablecimiento =
+                        await db.getAllDaniosEstablecimientosDeSalud(
+                            int.parse(edan.codEdan.toString()));
+                    listDesastreestablecimiento.forEach((element) async {
+                      element.codEdan = webEdanId;
+
+                      bool resp = await insertdesastreestablecimiento(element);
+                    });
+
+                    List<Danospersonaldesalud> listDanospersonaldesalud =
+                        await db.getAllDaniosPersonalDeSalud(
+                            int.parse(edan.codEdan.toString()));
+                    listDanospersonaldesalud.forEach((element) async {
+                      element.codEdan = webEdanId;
+
+                      bool resp = await insertDaniosPersonalDeSalud(element);
+                    });
+                    List<Desastreacciones> listDesastreacciones = await db
+                        .getAllAcciones(int.parse(edan.codEdan.toString()));
+                    listDesastreacciones.forEach((element) async {
+                      element.codEdan = webEdanId;
+
+                      bool resp = await insertDesastreacciones(element);
+                    });
+                    List<Desastreacciones2> listDesastreacciones2 = await db
+                        .getAllAcciones2(int.parse(edan.codEdan.toString()));
+                    listDesastreacciones2.forEach((element) async {
+                      element.codEdan = webEdanId;
+
+                      bool resp = await insertDesastreacciones2(element);
+                    });
+                    List<Desastrerequerimientos> listDesastrerequerimientos =
+                        await db.getRequerimientoApoyo(
+                            int.parse(edan.codEdan.toString()));
+                    listDesastrerequerimientos.forEach((element) async {
+                      element.codEdan = webEdanId;
+
+                      bool resp = await insertDesastrerequerimientos(element);
+                    });
                     print(' LA RESPUESTA ES $resp');
                     if (resp) {
                       edan.enviado = 'SI';

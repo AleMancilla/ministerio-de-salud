@@ -1,10 +1,15 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:ministerio_de_salud/bussiness/models.dart/model_danos_personal_de_salud.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_acciones.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_acciones2.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_establecimiento.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_requerimientos.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 
-// String apiBase = "https://edan-demo.000webhostapp.com";
-String apiBase = "http://47.243.63.127/pncad"; //http://47.243.63.127/pncad/
+String apiBase = "https://edan-demo.000webhostapp.com";
+// String apiBase = "http://47.243.63.127/pncad"; //http://47.243.63.127/pncad/
 
 getMethod() async {
   String theUrl = "$apiBase/getData.php";
@@ -15,6 +20,19 @@ getMethod() async {
   print("#######################################");
   print(responseBody);
   print("#######################################");
+}
+
+Future<int> getLastIdEdan() async {
+  String theUrl = "$apiBase/getLastIdEdan.php";
+  var res = await http
+      .get(Uri.parse(theUrl), headers: {"Accept": "application/json"});
+  var responseBody = json.decode(res.body);
+  int lastId = int.parse(responseBody[0]['cod_edan'].toString()) + 1;
+  return lastId;
+
+  // print("####################################### $lastId");
+  // print(responseBody[0]['cod_edan']);
+  // print("#######################################");
 }
 
 insertMethod(String codpersonal, String tipopersonal) async {
@@ -84,7 +102,7 @@ Future<bool> insertEdan(ModelEdan edan) async {
     "desaparecidos": edan.desaparecidos.toString(),
     "lesionados": edan.lesionados.toString(),
     "otra_organizacion": edan.otraOrganizacion,
-    "sci": edan.sci,
+    "sci": edan.sci == null ? edan.sci.toString().substring(0, 1) : 'L',
     "sci_donde": edan.sciDonde,
     "lugar_lle": edan.lugarLle,
     "fecha_lle": edan.fechaLle,
@@ -96,6 +114,126 @@ Future<bool> insertEdan(ModelEdan edan) async {
     "email": edan.email,
     "usuario": edan.usuario,
     "fechap": edan.fechap,
+  });
+  print('=====');
+  print(res.body.toString());
+  print('=====');
+  print('===== ${res.body.toString().contains('Invalid')}');
+  if (res.body.toString().contains('Invalid')) {
+    print('- entro a true false');
+    return false;
+  } else {
+    print('- entro a false true');
+    return true;
+  }
+}
+
+Future<bool> insertdesastreestablecimiento(Desastreestablecimiento data) async {
+  String theUrl = "$apiBase/insertdesastreestablecimiento.php";
+  var res = await http.post(Uri.parse(theUrl), headers: {
+    "Accept": "application/json"
+  }, body: {
+    "coddesastreestablecimiento": data.coddesastreestablecimiento.toString(),
+    "cod_edan": data.codEdan.toString(),
+    "nomestablecimiento": data.nomestablecimiento,
+    "funciona": data.funciona,
+    "tieneagua": data.tieneagua,
+    "area_afectada": data.areaAfectada,
+  });
+  print('=====');
+  print(res.body.toString());
+  print('=====');
+  print('===== ${res.body.toString().contains('Invalid')}');
+  if (res.body.toString().contains('Invalid')) {
+    print('- entro a true false');
+    return false;
+  } else {
+    print('- entro a false true');
+    return true;
+  }
+}
+
+Future<bool> insertDaniosPersonalDeSalud(Danospersonaldesalud data) async {
+  String theUrl = "$apiBase/insertdanospersonaldesalud.php";
+  var res = await http.post(Uri.parse(theUrl), headers: {
+    "Accept": "application/json"
+  }, body: {
+    "codpersalud": data.codpersalud.toString(),
+    "cod_edan": data.codEdan.toString(),
+    "personal": data.personal.toString(),
+    "muertos": data.muertos.toString(),
+    "heridos": data.heridos.toString(),
+    "enfermos": data.enfermos.toString(),
+    "disponibles": data.disponibles.toString(),
+    "desaparecidos": data.desaparecidos.toString(),
+    "observaciones": data.observaciones.toString(),
+  });
+  print('=====');
+  print(res.body.toString());
+  print('=====');
+  print('===== ${res.body.toString().contains('Invalid')}');
+  if (res.body.toString().contains('Invalid')) {
+    print('- entro a true false');
+    return false;
+  } else {
+    print('- entro a false true');
+    return true;
+  }
+}
+
+Future<bool> insertDesastreacciones(Desastreacciones data) async {
+  String theUrl = "$apiBase/insertDesastreacciones.php";
+  var res = await http.post(Uri.parse(theUrl), headers: {
+    "Accept": "application/json"
+  }, body: {
+    "cod_edan": data.codEdan.toString(),
+    "accion": data.accion.toString(),
+  });
+  print('=====');
+  print(res.body.toString());
+  print('=====');
+  print('===== ${res.body.toString().contains('Invalid')}');
+  if (res.body.toString().contains('Invalid')) {
+    print('- entro a true false');
+    return false;
+  } else {
+    print('- entro a false true');
+    return true;
+  }
+}
+
+Future<bool> insertDesastreacciones2(Desastreacciones2 data) async {
+  String theUrl = "$apiBase/insertDesastreacciones2.php";
+  var res = await http.post(Uri.parse(theUrl), headers: {
+    "Accept": "application/json"
+  }, body: {
+    "cod_edan": data.codEdan.toString(),
+    "accion": data.accion.toString(),
+  });
+  print('=====');
+  print(res.body.toString());
+  print('=====');
+  print('===== ${res.body.toString().contains('Invalid')}');
+  if (res.body.toString().contains('Invalid')) {
+    print('- entro a true false');
+    return false;
+  } else {
+    print('- entro a false true');
+    return true;
+  }
+}
+
+Future<bool> insertDesastrerequerimientos(Desastrerequerimientos data) async {
+  String theUrl = "$apiBase/insertDesastrerequerimientos.php";
+  var res = await http.post(Uri.parse(theUrl), headers: {
+    "Accept": "application/json"
+  }, body: {
+    "codrequerimientos": data.codrequerimientos.toString(),
+    "cod_edan": data.codEdan.toString(),
+    "requerimiento": data.requerimiento.toString(),
+    "cantidad": data.cantidad.toString(),
+    "prioridad": data.prioridad.toString(),
+    "observaciones": data.observaciones.toString(),
   });
   print('=====');
   print(res.body.toString());
