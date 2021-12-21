@@ -470,24 +470,11 @@ class _PageEdansState extends State<PageEdans> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () async {
-        //     // List<Desastreestablecimiento> data =
-        //     //     await db.getAllDaniosEstablecimientosDeSalud(
-        //     //         int.parse(controllercodEdan.text));
-        //     List<Danospersonaldesalud> data = await db
-        //         .getAllDaniosPersonalDeSalud(int.parse(controllercodEdan.text));
-        //     // List<Desastreacciones> data =
-        //     //     await db.getAllAcciones(int.parse(controllercodEdan.text));
-        //     // List<Desastreacciones2> data =
-        //     //     await db.getAllAcciones2(int.parse(controllercodEdan.text));
-        //     // List<Desastrerequerimientos> data = await db
-        //     //     .getRequerimientoApoyo(int.parse(controllercodEdan.text));
-        //     print(data);
-        //   },
-        // ),
         appBar: PreferredSize(
-          child: AppBarWidget(size: size),
+          child: AppBarWidget(
+            size: size,
+            backActivate: true,
+          ),
           preferredSize: const Size(double.infinity, 50),
         ),
         body: Container(
@@ -699,25 +686,6 @@ class _PageEdansState extends State<PageEdans> {
                             fechap: '',
                             enviado: 'NO',
                           );
-                          print("""
-                          -------------------------------
-                          viviendas = -> ${modelo.viviendas}
-                          familias = -> ${modelo.familias}
-                          ninios = -> ${modelo.ninios}
-                          ninias = -> ${modelo.ninias}
-                          discapacidad = -> ${modelo.discapacidad}
-                          discapacidadm = -> ${modelo.discapacidadm}
-                          discapacidadm = -> ${modelo.discapacidadm}
-                          embarazadas = -> ${modelo.embarazadas}
-                          adultoMayor = -> ${modelo.adultoMayor}
-                          adultoMayorm = -> ${modelo.adultoMayorm}
-                          numAlbergues = -> ${modelo.numAlbergues}
-                          heridos = -> ${modelo.heridos}
-                          muertos = -> ${modelo.muertos}
-                          desaparecidos = -> ${modelo.desaparecidos}
-                          lesionados = -> ${modelo.lesionados}
-                          -------------------------------
-                          """);
 
                           int idDesastre = int.parse(
                               await db.getLastdesastreestablecimiento());

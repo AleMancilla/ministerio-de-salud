@@ -79,7 +79,7 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
     print('###### $response');
   }
 
-  updateEDAN(ModelEdan edan) async {
+  Future<void> updateEDAN(ModelEdan edan) async {
     int response = await _db.rawInsert(edan.updateSql());
     print('###### $response');
   }

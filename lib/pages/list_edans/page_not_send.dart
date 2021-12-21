@@ -19,7 +19,6 @@ import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/group_edans_no_enviados.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/button_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/check_box_demo.dart';
-import 'package:ministerio_de_salud/pages/widgets/unit/input_text_field.dart';
 import 'package:ministerio_de_salud/utils/navigator_route.dart';
 import 'package:provider/provider.dart';
 
@@ -69,20 +68,17 @@ class _PageNotSendState extends State<PageNotSend> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            // insertMethod(controllerid.text, controllertext.text);
-
-            // await db.initDB();
-            // await db.getLastIDEDAN();
-            // await db.closeDB();
-            // getMethod();
-          },
-        ),
-        // drawer: InkWellDrawer(),
+        drawer: const InkWellDrawer(),
         appBar: PreferredSize(
           child: AppBarWidget(
             size: size,
+            ontap: () {
+              showDialog(
+                context: context,
+                builder: (context) => InkWellDrawer(),
+              );
+              // InkWellDrawer();
+            },
           ),
           preferredSize: const Size(double.infinity, 50),
         ),
@@ -93,8 +89,6 @@ class _PageNotSendState extends State<PageNotSend> {
               connectionInternet,
               const BodyAppBar(text: 'Lista EDANs NO enviados'),
               _boddy(size),
-              // InputTextFielfWidget(controller: controllerid),
-              // InputTextFielfWidget(controller: controllertext),
             ],
           ),
         ),
@@ -443,5 +437,85 @@ class _PageNotSendState extends State<PageNotSend> {
         return Colors.white;
       }
     }
+  }
+}
+
+class InkWellDrawer extends StatelessWidget {
+  const InkWellDrawer({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext ctxt) {
+    Size size = MediaQuery.of(ctxt).size;
+    return Material(
+      color: Colors.transparent,
+      child: Row(
+        children: [
+          Container(
+            height: size.height,
+            width: 250,
+            color: Colors.orange,
+            child: Column(
+              children: <Widget>[
+                Text(
+                  'Flutter',
+                  style: TextStyle(color: Colors.white, fontSize: 25.0),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+              child: GestureDetector(
+            onTap: () {
+              Navigator.pop(ctxt);
+            },
+            child: Container(
+              color: Colors.transparent,
+            ),
+          ))
+        ],
+      ),
+    );
+  }
+}
+
+class CustomListTile extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final Function onTap;
+
+  CustomListTile(this.icon, this.text, this.onTap);
+  @override
+  Widget build(BuildContext context) {
+    //ToDO
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.grey.shade400))),
+        child: InkWell(
+            splashColor: Colors.orangeAccent,
+            onTap: () => onTap,
+            child: Container(
+                height: 40,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Icon(icon),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                        ),
+                        Text(
+                          text,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                    Icon(Icons.arrow_right)
+                  ],
+                ))),
+      ),
+    );
   }
 }

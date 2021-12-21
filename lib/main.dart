@@ -57,12 +57,12 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blueGrey,
         ),
-        home: _pageHome(context),
+        home: _pageHome(),
       ),
     );
   }
 
-  Widget _pageHome(BuildContext context) {
+  Widget _pageHome() {
     if (!prefs.userIsRegister) {
       if (prefs.userNivel == '0' || prefs.userNivel == '') {
         return const RedirectPage();

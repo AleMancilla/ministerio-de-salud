@@ -51,6 +51,7 @@ Future<bool> insertEdan(ModelEdan edan) async {
   var res = await http.post(Uri.parse(theUrl), headers: {
     "Accept": "application/json"
   }, body: {
+    "tipo_edan": edan.tipoEdan,
     "evento": edan.evento,
     "clase_evento": edan.claseEvento,
     // "fecha": DateFormat("dd-MM-yyyy").parse(edan.fecha!.replaceAll('/', '-')),
