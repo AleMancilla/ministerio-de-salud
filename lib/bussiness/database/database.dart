@@ -18,7 +18,7 @@ class DataBaseEdans {
 
   initDB() async {
     _db = await openDatabase(
-      'my_database14.db',
+      'my_database16.db',
       version: 1,
       onCreate: (Database db, int newVersion) async {
         Batch batch = db.batch();
@@ -110,6 +110,7 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
 
   Future<List<ModelPlanillaDeAtencion>> getAllPlanillaDeAtencion() async {
     List<Map<String, dynamic>> result = await _db.query('planilla_atencion');
+    print(result);
     return result.map((map) => ModelPlanillaDeAtencion.fromMap(map)).toList();
   }
 

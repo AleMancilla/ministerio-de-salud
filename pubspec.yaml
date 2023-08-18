@@ -56,11 +56,15 @@ dependencies:
   # format
   intl: ^0.17.0
 
+  # UBICACION
+  geolocator: ^9.0.2
+  permission_handler: ^10.4.3
+
   
-  window_size:
-    git:
-      url: git://github.com/google/flutter-desktop-embedding.git
-      path: plugins/window_size
+  # window_size:
+  #   git:
+  #     url: git://github.com/google/flutter-desktop-embedding.git
+  #     path: plugins/window_size
   url_launcher: ^6.0.13
 
 

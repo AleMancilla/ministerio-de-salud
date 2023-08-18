@@ -181,9 +181,9 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
             ...planillasProvider.listPlanillasProvider
                 .map((ModelPlanillaDeAtencion demo) {
               print(
-                  ' == ${demo.enviado} == ${demo.evento} == ${demo.depto} == ${demo.municipio} == ${demo.comunidad} == ${demo.nomestablecimiento} == ${demo.fecha}');
+                  '>>>>> == ${demo.enviado} == ${demo.evento} == ${demo.depto} == ${demo.municipio} == ${demo.comunidad} == ${demo.nomestablecimiento} == ${demo.fecha}');
               // if (demo.enviado == 'no') {
-              if (demo.enviado == 'SI') {
+              if (demo.enviado == 'SI' || demo.enviado == 'null') {
                 i++;
                 return Container(
                   color: _colorItem(i, demo.controllerEnviar!),

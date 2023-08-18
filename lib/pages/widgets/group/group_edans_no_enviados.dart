@@ -19,7 +19,7 @@ class GroupEdansNoEnviados extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -34,7 +34,7 @@ class GroupEdansNoEnviados extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -49,7 +49,7 @@ class GroupEdansNoEnviados extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 4,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue),
@@ -64,7 +64,7 @@ class GroupEdansNoEnviados extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 4,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue),

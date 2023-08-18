@@ -16,6 +16,7 @@ class PlanillasNoEnviadasProvider with ChangeNotifier {
     DataBaseEdans db = DataBaseEdans();
     await db.initDB();
     _listPlanillasProvider = await db.getAllPlanillaDeAtencion();
+    print(_listPlanillasProvider);
     db.closeDB();
     notifyListeners();
   }

@@ -8,18 +8,24 @@ import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_estable
 import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_requerimientos.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 
-String apiBase = "https://edan-demo.000webhostapp.com";
+String apiBase = "http://186.121.214.199";
 // String apiBase = "http://47.243.63.127/pncad"; //http://47.243.63.127/pncad/
 
 getMethod() async {
-  String theUrl = "$apiBase/getData.php";
-  var res = await http
-      .get(Uri.parse(theUrl), headers: {"Accept": "application/json"});
-  var responseBody = json.decode(res.body);
+  try {
+    String theUrl = "$apiBase/getData.php";
+    var res = await http
+        .get(Uri.parse(theUrl), headers: {"Accept": "application/json"});
+    var responseBody = json.decode(res.body);
 
-  print("#######################################");
-  print(responseBody);
-  print("#######################################");
+    print("#######################################");
+    print(responseBody);
+    print("#######################################");
+  } catch (e) {
+    print("#######################################");
+    print(e);
+    print("#######################################");
+  }
 }
 
 Future<int> getLastIdEdan() async {

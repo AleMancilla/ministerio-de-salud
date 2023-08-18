@@ -78,7 +78,8 @@ class ModelPlanillaDeAtencion {
   }
 
   String insertSql() {
-    return """INSERT INTO planilla_atencion (evento,
+    return """INSERT INTO planilla_atencion (
+      evento,
 usuario,
 cod_edan,
 depto,
@@ -95,6 +96,7 @@ cargo_responsable,
 telf_responsable,
 enviado
 ) VALUES ( 
+  '$evento',
  '$usuario',
  '$codEdan',
  '$depto',

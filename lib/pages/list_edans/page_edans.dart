@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:cool_alert/cool_alert.dart';
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_danos_personal_de_salud.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_acciones.dart';
@@ -30,6 +32,7 @@ import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_list_boolea
 import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_list_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/title_expansion.dart';
 import 'package:ministerio_de_salud/utils/user_preferens.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class PageEdans extends StatefulWidget {
@@ -1061,7 +1064,8 @@ class _PageEdansState extends State<PageEdans> {
                 controller: controllerDireccionDeContacto),
             InputExpanded(
                 title: 'Telefono fijo de contacto',
-                controller: controllerTelefonoFijo),
+                controller: controllerTelefonoFijo,
+                isNumber: true),
             InputExpanded(
               title: 'Telefono movil de contacto',
               controller: controllerTelefonoMovil,
@@ -1112,15 +1116,7 @@ class _PageEdansState extends State<PageEdans> {
               },
             ),
             if (controllerTieneCoordenadas.text == 'Si')
-              InputExpanded(
-                title: 'Coordenada UTM X',
-                controller: controllerCoordenadaX,
-              ),
-            if (controllerTieneCoordenadas.text == 'Si')
-              InputExpanded(
-                title: 'Coordenada UTM Y',
-                controller: controllerCoordenadaY,
-              ),
+              ..._getCoordinatesWidget(),
             _subTitle('1.5 VIAS DE ACCESO DISPONIBLES A LA ZONA AFECTADA'),
             InputListBoolean(
               title: 'Via aerea disponible',
@@ -1201,6 +1197,52 @@ class _PageEdansState extends State<PageEdans> {
     );
   }
 
+  List<Widget> _getCoordinatesWidget() {
+    return [
+      Material(
+        child: InkWell(
+          onTap: () async {
+            Position? position = await _getMyLocation();
+            if (position != null) {
+              controllerCoordenadaX.text = position.latitude.toString();
+              controllerCoordenadaY.text = position.longitude.toString();
+              setState(() {});
+            } else {
+              CoolAlert.show(
+                  context: context,
+                  type: CoolAlertType.error,
+                  text:
+                      'No pudimos obtener las coordenadas de tu dispositivo, por favor revisa los permisos de la aplicacion');
+            }
+          },
+          child: Ink(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            decoration: BoxDecoration(
+              color: Colors.blue[50],
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(),
+            ),
+            child: Text('Obtener las coordenadas del dispositivo'),
+          ),
+        ),
+      ),
+      InputExpanded(
+        title: 'Coordenada UTM X',
+        controller: controllerCoordenadaX,
+      ),
+      InputExpanded(
+        title: 'Coordenada UTM Y',
+        controller: controllerCoordenadaY,
+      ),
+      const SizedBox(height: 15),
+    ];
+  }
+
+  Future<Position?> _getMyLocation() async {
+    Position? localPosition = await getLocationCoordinates();
+    return localPosition;
+  }
+
   Widget _daniosGenerales(Size size) {
     return Column(
       children: [
@@ -1219,11 +1261,13 @@ class _PageEdansState extends State<PageEdans> {
               controller: controllerViviendasAfectadas,
               isRequired: true,
               initValue: controllerViviendasAfectadas.text,
+              isNumber: true,
             ),
             InputExpanded(
               title: '2.2 Cant. Flias. damnificadas',
               controller: controllerFamiliasDamnificadas,
               isRequired: true,
+              isNumber: true,
               initValue: controllerFamiliasDamnificadas.text,
             ),
 
@@ -1231,12 +1275,14 @@ class _PageEdansState extends State<PageEdans> {
               title: '2.3 Cant. Niños vulnerables',
               controller: controllerNinosVulnerables,
               isRequired: true,
+              isNumber: true,
               initValue: controllerNinosVulnerables.text,
             ),
             InputExpanded(
               title: 'Cant. Niñas vulnerables',
               controller: controllerNinasVulnerables,
               isRequired: true,
+              isNumber: true,
               initValue: controllerNinasVulnerables.text,
             ),
 
@@ -1244,16 +1290,19 @@ class _PageEdansState extends State<PageEdans> {
               title: '2.4 Cant. Personas con Discapacidad Varon',
               controller: controllerPersonasConDiscapacidadVaron,
               isRequired: true,
+              isNumber: true,
               initValue: controllerPersonasConDiscapacidadVaron.text,
             ),
             InputExpanded(
               title: 'Cant. Personas con Discapacidad Mujer',
               controller: controllerPersonasConDiscapacidadMujer,
               isRequired: true,
+              isNumber: true,
               initValue: controllerPersonasConDiscapacidadMujer.text,
             ),
             InputExpanded(
               title: '2.5 Cant. Mujeres Embarazadas',
+              isNumber: true,
               controller: controllerMujeresEmbarazadas,
               isRequired: true,
               initValue: controllerMujeresEmbarazadas.text,
@@ -1262,11 +1311,13 @@ class _PageEdansState extends State<PageEdans> {
               title: '2.6 Cant. Adultos Mayores Varon',
               controller: controllerAdultosMayoresVaron,
               isRequired: true,
+              isNumber: true,
               initValue: controllerAdultosMayoresVaron.text,
             ),
             InputExpanded(
               title: 'Cant. Adultos Mayores Mujer',
               controller: controllerAdultosMayoresMujer,
+              isNumber: true,
               isRequired: true,
               initValue: controllerAdultosMayoresMujer.text,
             ),
@@ -1274,6 +1325,7 @@ class _PageEdansState extends State<PageEdans> {
               title: '2.7 Numero de Albergues',
               controller: controllerNroAlbergues,
               isRequired: true,
+              isNumber: true,
               initValue: controllerNroAlbergues.text,
             ),
             _subTitle(
@@ -1348,23 +1400,27 @@ class _PageEdansState extends State<PageEdans> {
               title: '3.1 Cant. Heridos',
               controller: controllerHeridos,
               isRequired: true,
+              isNumber: true,
               initValue: controllerHeridos.text,
             ),
             InputExpanded(
               title: '3.2 Cant. Fallecidos',
               controller: controllerFallecidos,
+              isNumber: true,
               isRequired: true,
               initValue: controllerFallecidos.text,
             ),
             InputExpanded(
               title: '3.3 Cant. Desaparecidos',
               controller: controllerDesaparecidos,
+              isNumber: true,
               initValue: controllerDesaparecidos.text,
               isRequired: true,
             ),
             InputExpanded(
               title: '3.4 Cant. Lesionados',
               controller: controllerLesionados,
+              isNumber: true,
               initValue: controllerLesionados.text,
             ),
             ExpansionTile(
@@ -2324,6 +2380,45 @@ class _PageEdansState extends State<PageEdans> {
       }).toList();
       setState(() {});
     });
+  }
+}
+
+Future<Position?> getLocationCoordinates() async {
+  // Verificar si tienes permiso de ubicación
+  PermissionStatus permissionStatus = await Permission.location.status;
+  if (permissionStatus.isGranted) {
+    // Ya tienes permiso para acceder a la ubicación, obtén las coordenadas
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.medium,
+        forceAndroidLocationManager: true,
+      );
+      return position;
+    } catch (e) {
+      // Error al obtener las coordenadas
+      print('Error al obtener las coordenadas: $e');
+      return null;
+    }
+  } else {
+    // No tienes permiso de ubicación, solicita permiso al usuario
+    await Permission.location.request();
+    // Verifica si el usuario otorgó permiso después de la solicitud
+    if (await Permission.location.isGranted) {
+      // El usuario otorgó permiso, obtén las coordenadas
+      try {
+        Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+        );
+        return position;
+      } catch (e) {
+        // Error al obtener las coordenadas
+        print('Error al obtener las coordenadas: $e');
+        return null;
+      }
+    } else {
+      // El usuario denegó el permiso, devuelve null
+      return null;
+    }
   }
 }
 

@@ -49,7 +49,13 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
     controllerHora.text = '${DateTime.now().hour}:${DateTime.now().minute}';
     planillasNoEnviadasProvider =
         Provider.of<PlanillasNoEnviadasProvider>(context, listen: false);
+
+    initDB();
     super.initState();
+  }
+
+  void initDB() async {
+    await db.initDB();
   }
 
   @override
@@ -109,7 +115,7 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                     children: [
                       ButtonWidget(
                         text: 'Guardar',
-                        ontap: () {
+                        ontap: () async {
                           if (controllerEvento.text ==
                               '- Seleccione una opción -') {
                             _showDialogMessage(
@@ -202,7 +208,12 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                           // } else {
                           //   db.insertEDAN(modelo);
                           // }
+                          print(modelo);
+
+                          DataBaseEdans db = DataBaseEdans();
+                          await db.initDB();
                           db.insertPLANILLA(modelo);
+                          db.closeDB();
                           planillasNoEnviadasProvider
                               .readDataBaseListPlanillas();
                           Navigator.pop(context);
@@ -247,7 +258,10 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
           title: 'Evento',
           controller: controllerEvento,
           isRequired: true,
-          options: const [],
+          options: const [
+            'Evento 1',
+            'Evento 2',
+          ],
           onselect: () {},
         ),
         InputListOption(
@@ -272,7 +286,10 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
           controller: controllerMunicipio,
           isRequired: true,
           onselect: () {},
-          options: const [],
+          options: const [
+            'Municipio 1',
+            'Municipio 2',
+          ],
         ),
         InputExpanded(
           title: 'Comunidad',
@@ -291,6 +308,7 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
         InputExpanded(
           title: 'Poblacion',
           controller: controllerPoblacion,
+          isNumber: true,
         ),
         InputDateOption(
           title: 'Fecha',

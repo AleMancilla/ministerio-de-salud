@@ -333,7 +333,7 @@ class _PageNotSendState extends State<PageNotSend> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Expanded(
-                          flex: 1,
+                          flex: 2,
                           child: Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
@@ -351,7 +351,7 @@ class _PageNotSendState extends State<PageNotSend> {
                           ),
                         ),
                         Expanded(
-                          flex: 2,
+                          flex: 3,
                           child: Container(
                             alignment: Alignment.centerLeft,
                             padding: const EdgeInsets.all(5),
@@ -363,7 +363,7 @@ class _PageNotSendState extends State<PageNotSend> {
                           ),
                         ),
                         Expanded(
-                          flex: 3,
+                          flex: 4,
                           child: Container(
                             padding: const EdgeInsets.all(5),
                             alignment: Alignment.centerLeft,
@@ -375,7 +375,7 @@ class _PageNotSendState extends State<PageNotSend> {
                           ),
                         ),
                         Expanded(
-                          flex: 3,
+                          flex: 4,
                           child: Container(
                             padding: const EdgeInsets.all(5),
                             alignment: Alignment.centerLeft,
