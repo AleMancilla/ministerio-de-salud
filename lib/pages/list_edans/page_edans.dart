@@ -424,6 +424,7 @@ class _PageEdansState extends State<PageEdans> {
           );
           return model;
         }).toList();
+        print(listDaniosPersonalDeSalud);
         _actualizarListaAlPersonalDeSalud();
 
         listAcciones = listDesastreacciones.map((e) {
@@ -461,7 +462,11 @@ class _PageEdansState extends State<PageEdans> {
         _actualizarListaRequerimientoApoyo();
       } else {
         String data = await db.getLastIDEDAN();
+
         int id = int.parse(data);
+        print(id);
+        print(id);
+
         id = id + 1;
         controllercodEdan.text = id.toString();
       }
@@ -672,7 +677,8 @@ class _PageEdansState extends State<PageEdans> {
                             telecom:
                                 controllerServicioDeTelecomunicaciones.text,
                             transporte: controllerServicioDeTransporte.text,
-                            establecimientossalud: '',
+                            establecimientossalud:
+                                controllerEstablecimientosDeSalud.text,
                             heridos: int.parse(controllerHeridos.text),
                             muertos: int.parse(controllerFallecidos.text),
                             desaparecidos:
@@ -1815,7 +1821,6 @@ class _PageEdansState extends State<PageEdans> {
     listDaniosPersonalDeSaludWidget = [];
     int i = 0;
     Future.delayed(Duration.zero, () {
-      print(listDaniosPersonalDeSalud);
       listDaniosPersonalDeSaludWidget = listDaniosPersonalDeSalud.map((demo) {
         i++;
         return Container(

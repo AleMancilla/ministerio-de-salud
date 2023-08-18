@@ -18,7 +18,7 @@ class DataBaseEdans {
 
   initDB() async {
     _db = await openDatabase(
-      'my_database16.db',
+      'my_database22.db',
       version: 1,
       onCreate: (Database db, int newVersion) async {
         Batch batch = db.batch();
@@ -119,7 +119,7 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
     print('$result ---****');
     return result[0]['newID'].toString() != 'null'
         ? result[0]['newID'].toString()
-        : '1';
+        : '0';
   }
 
   Future<List<String>> getListDepartamento() async {
@@ -258,12 +258,13 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
   }
 
   Future<List<Danospersonaldesalud>> getAllDaniosPersonalDeSalud(int id) async {
-    print('lectura sql');
+    print('lectura sql --- id $id');
     List<Map<String, dynamic>> result = await _db.query(
       'danospersonaldesalud',
       where: 'cod_edan = $id',
       // whereArgs: [id]
     );
+    print(result);
     return result.map((map) => Danospersonaldesalud.fromMap(map)).toList();
   }
 
