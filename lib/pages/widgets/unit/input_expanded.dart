@@ -26,9 +26,19 @@ class _InputExpandedState extends State<InputExpanded> {
   @override
   void initState() {
     super.initState();
-    if ((widget.initValue == null || widget.initValue != '') &&
-        widget.isNumber) {
-      widget.controller.text = '0';
+    print(
+        ' _______ ${widget.title}_______ ${widget.initValue} >>>>>>>>>>>>>>> ${widget.isNumber}>> ${widget.initValue}');
+    // if ((widget.initValue == null || widget.initValue != '') &&
+    //     widget.isNumber) {
+    //   widget.controller.text = '0';
+    // }
+    if (widget.isNumber) {
+      if (widget.initValue != null && widget.initValue != '') {
+        print(' ---- entro aca');
+        widget.controller.text == widget.initValue;
+      } else {
+        widget.controller.text = '0';
+      }
     }
   }
 
@@ -100,6 +110,8 @@ class _InputExpandedState extends State<InputExpanded> {
   }
 
   Widget _itemInput() {
+    print(
+        ' ============>>> ${widget.controller.text} ================ ${widget.title}');
     return Container(
       alignment: Alignment.centerRight,
       padding: EdgeInsets.symmetric(horizontal: 15),

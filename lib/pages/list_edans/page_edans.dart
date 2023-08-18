@@ -203,6 +203,8 @@ class _PageEdansState extends State<PageEdans> {
       controllerDireccionDeContacto.text =
           widget.edanModel!.dreccion.toString();
       controllerTelefonoFijo.text = widget.edanModel!.telFc.toString();
+      print(
+          '########## 1 CAMBIO #### >>>> ${controllerTelefonoFijo.text} <<<<<');
       controllerTelefonoMovil.text = widget.edanModel!.telCc.toString();
       controllerDepartamento.text = widget.edanModel!.depto.toString();
       controllerMunicipio.text = widget.edanModel!.municipio.toString();
@@ -315,6 +317,8 @@ class _PageEdansState extends State<PageEdans> {
       controllerPersonasConDiscapacidadVaron.text = '0';
       controllerPersonasConDiscapacidadMujer.text = '0';
       controllerMujeresEmbarazadas.text = '0';
+      print(
+          '########## 2 CAMBIO #### >>>> ${controllerMujeresEmbarazadas.text} <<<<<');
       controllerAdultosMayoresVaron.text = '0';
       controllerAdultosMayoresMujer.text = '0';
       controllerNroAlbergues.text = '0';
@@ -356,6 +360,7 @@ class _PageEdansState extends State<PageEdans> {
           desaparecidos = -> ${controllerLesionados.text}
           -------------------------------
           """);
+    print(widget.edanModel);
 
     super.initState();
   }
@@ -690,6 +695,8 @@ class _PageEdansState extends State<PageEdans> {
                             enviado: 'NO',
                           );
 
+                          print(modelo);
+
                           int idDesastre = int.parse(
                               await db.getLastdesastreestablecimiento());
                           int idDaniosPersonalDeSalud =
@@ -778,6 +785,7 @@ class _PageEdansState extends State<PageEdans> {
                                 await db.insertDaniosPersonalDeSalud(modelo);
                               }
                             });
+                            print(listDaniosPersonalDeSalud);
 
                             ///////////////////////////////
                             // listAcciones.forEach((_Acciones element) async {
@@ -885,6 +893,8 @@ class _PageEdansState extends State<PageEdans> {
 
                               await db.insertDaniosPersonalDeSalud(modelo);
                             });
+                            print(listDaniosPersonalDeSalud);
+
                             listAcciones.forEach((_Acciones element) async {
                               Desastreacciones modelo = Desastreacciones(
                                 codEdan: int.parse(controllercodEdan.text),
@@ -917,6 +927,7 @@ class _PageEdansState extends State<PageEdans> {
                               );
                               await db.insertDesastrerequerimientos(modelo);
                             });
+                            print(listRequerimientoApoyo);
                           }
 
                           edanProvider.readDataBaseListEdans();
@@ -976,6 +987,7 @@ class _PageEdansState extends State<PageEdans> {
   }
 
   Widget _datosGenerales(Size size) {
+    print(' ________ _datosGenerales _________ ${controllerTelefonoFijo.text}');
     return Column(
       children: [
         Container(
@@ -1065,11 +1077,13 @@ class _PageEdansState extends State<PageEdans> {
             InputExpanded(
                 title: 'Telefono fijo de contacto',
                 controller: controllerTelefonoFijo,
+                initValue: controllerTelefonoFijo.text,
                 isNumber: true),
             InputExpanded(
               title: 'Telefono movil de contacto',
               controller: controllerTelefonoMovil,
               isNumber: true,
+              initValue: controllerTelefonoMovil.text,
               isRequired: true,
             ),
             _subTitle('1.4 UBICACIÓN GEOGRÁFICA DE LA ZONA AFECTADA'),
@@ -1181,6 +1195,8 @@ class _PageEdansState extends State<PageEdans> {
             InputExpanded(
               title: 'Telefono de Contacto de la Radio Emisora:',
               controller: controllerTelfContactoDeLaRadioEmisora,
+              initValue: controllerTelfContactoDeLaRadioEmisora.text,
+              isNumber: true,
             ),
             // ExpansionTile(
             //   title: const TitleExpansion(texto: '1.- DEMO 1'),
@@ -1244,6 +1260,9 @@ class _PageEdansState extends State<PageEdans> {
   }
 
   Widget _daniosGenerales(Size size) {
+    print(
+        '########## MUESTRAO #### >>>> ${controllerMujeresEmbarazadas.text} <<<<<');
+
     return Column(
       children: [
         Container(
@@ -1573,6 +1592,7 @@ class _PageEdansState extends State<PageEdans> {
             InputExpanded(
               title: 'Responsable',
               controller: controllerResponsableEDAN,
+              initValue: controllerResponsableEDAN.text,
             ),
             InputExpanded(
               title: 'Cargo',
@@ -1582,10 +1602,12 @@ class _PageEdansState extends State<PageEdans> {
               title: 'Telf. fijo',
               controller: controllerTelfFijoEDAN,
               isNumber: true,
+              initValue: controllerTelfFijoEDAN.text,
             ),
             InputExpanded(
               title: 'Telf. movil',
               controller: controllerTelfMovilEDAN,
+              initValue: controllerTelfMovilEDAN.text,
               isNumber: true,
             ),
             InputExpanded(
@@ -1750,7 +1772,7 @@ class _PageEdansState extends State<PageEdans> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(
-          width: size.width > 600 ? size.width - 20 : 600,
+          width: size.width > 700 ? size.width - 20 : 700,
           // constraints: BoxConstraints(minWidth: 600),
           margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
@@ -1793,6 +1815,7 @@ class _PageEdansState extends State<PageEdans> {
     listDaniosPersonalDeSaludWidget = [];
     int i = 0;
     Future.delayed(Duration.zero, () {
+      print(listDaniosPersonalDeSalud);
       listDaniosPersonalDeSaludWidget = listDaniosPersonalDeSalud.map((demo) {
         i++;
         return Container(
@@ -1802,7 +1825,7 @@ class _PageEdansState extends State<PageEdans> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
-                  flex: 4,
+                  flex: 8,
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     alignment: Alignment.center,
@@ -1824,7 +1847,7 @@ class _PageEdansState extends State<PageEdans> {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 4,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue.shade100),
@@ -1837,7 +1860,7 @@ class _PageEdansState extends State<PageEdans> {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 4,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue.shade100),
@@ -1850,7 +1873,7 @@ class _PageEdansState extends State<PageEdans> {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 4,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue.shade100),
@@ -1863,7 +1886,7 @@ class _PageEdansState extends State<PageEdans> {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 4,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue.shade100),
@@ -1876,7 +1899,7 @@ class _PageEdansState extends State<PageEdans> {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 4,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue.shade100),
@@ -1889,7 +1912,7 @@ class _PageEdansState extends State<PageEdans> {
                   ),
                 ),
                 Expanded(
-                  flex: 4,
+                  flex: 8,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue.shade100),
@@ -1904,7 +1927,7 @@ class _PageEdansState extends State<PageEdans> {
                   ),
                 ),
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue.shade100),
@@ -2483,7 +2506,7 @@ class _DaniosAlPersonalDeSalud {
     this.controllerPersonalSalud.text = controllerPersonalSalud;
     this.controllerFaleecidos.text = controllerFaleecidos;
     this.controllerHeridos.text = controllerHeridos;
-    this.controllerHeridos.text = controllerEnfermos;
+    this.controllerEnfermos.text = controllerEnfermos;
     this.controllerDisp.text = controllerDisp;
     this.controllerDesaparecidos.text = controllerDesaparecidos;
     this.controllerObservaciones.text = controllerObservaciones;

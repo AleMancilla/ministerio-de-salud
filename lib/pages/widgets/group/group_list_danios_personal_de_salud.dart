@@ -20,7 +20,7 @@ class GroupDaniosPersonalDeSalud extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
-                  flex: 4,
+                  flex: 8,
                   child: Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -35,7 +35,7 @@ class GroupDaniosPersonalDeSalud extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 4,
                   child: Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -50,7 +50,7 @@ class GroupDaniosPersonalDeSalud extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 4,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue),
@@ -65,7 +65,7 @@ class GroupDaniosPersonalDeSalud extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 4,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue),
@@ -80,7 +80,7 @@ class GroupDaniosPersonalDeSalud extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 4,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue),
@@ -95,7 +95,7 @@ class GroupDaniosPersonalDeSalud extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 4,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue),
@@ -110,7 +110,7 @@ class GroupDaniosPersonalDeSalud extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 4,
+                  flex: 8,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.lightBlue),
@@ -125,7 +125,7 @@ class GroupDaniosPersonalDeSalud extends StatelessWidget {
                   ),
                 ),
                 const Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Text(
                     ' ',
                     style: TextStyle(

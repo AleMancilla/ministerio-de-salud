@@ -26,7 +26,7 @@ class _SublistInputExpandedState extends State<SublistInputExpanded> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       // margin: const EdgeInsets.only(bottom: 10, top: 10),
       width: double.infinity,
       child: _itemInput(),
