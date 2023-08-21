@@ -104,6 +104,7 @@ class _InputHourOptionState extends State<InputHourOption> {
                   ]),
             ),
           ),
+          SizedBox(height: 5),
           _itemInput(),
         ],
       );

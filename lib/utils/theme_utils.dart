@@ -1,4 +1,4 @@
 import 'package:flutter/material.dart';
 
-Color? primaryColor = Colors.blue[400];
-Color? backgroundPrimaryColor = Colors.blue[500];
+Color? primaryColor = Color.fromRGBO(60, 141, 188, 1.0);
+Color? backgroundPrimaryColor = Color.fromRGBO(60, 141, 188, 1.0);

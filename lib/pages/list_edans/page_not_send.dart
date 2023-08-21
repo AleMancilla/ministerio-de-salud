@@ -135,51 +135,73 @@ class _PageNotSendState extends State<PageNotSend> {
           children: [
             const SizedBox(width: double.infinity),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  color: Colors.grey[50],
-                  child: _groupDaniosEdansNotSend(size),
-                ),
+                edanProvider.listEdansProvider.length > 0
+                    ? Container(
+                        color: Colors.grey[50],
+                        child: _groupDaniosEdansNotSend(size),
+                      )
+                    : Container(
+                        decoration: BoxDecoration(
+                          color: Colors.orange,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        margin: EdgeInsets.only(top: 15),
+                        child: Text(
+                          'No se encontraron registros',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ButtonWidget(
-                        ontap: () {
-                          navigatorPush(context, const PageEdans());
-                        },
-                        color: Colors.grey[200],
-                        text: 'Registrar Nuevo',
-                        textcolor: Colors.black,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      ButtonWidget(
-                        ontap: () async {
-                          // navigatorPush(context, const PageEdans());
-                          bool st = false;
-                          edanProvider.listEdansProvider
-                              .forEach((ModelEdan edan) {
-                            if (edan.controllerEnviar) {
-                              st = true;
-                            }
-                          });
-                          if (st) {
-                            confirmDialog();
-                          } else {
-                            CoolAlert.show(
-                                context: context,
-                                type: CoolAlertType.error,
-                                text: 'No selecionaste ningun edan a enviar');
-                          }
-                        },
-                        color: Colors.grey[200],
-                        text: 'Enviar a la UGRED',
-                        textcolor: Colors.red,
-                      ),
-                    ],
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ButtonWidget(
+                          paddingHorizontal: 10,
+                          ontap: () {
+                            navigatorPush(context, const PageEdans());
+                          },
+                          color: Colors.grey[200],
+                          text: 'Registrar Nuevo',
+                          textcolor: Colors.black,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        if (edanProvider.listEdansProvider.length > 0)
+                          ButtonWidget(
+                            ontap: () async {
+                              // navigatorPush(context, const PageEdans());
+                              bool st = false;
+                              edanProvider.listEdansProvider
+                                  .forEach((ModelEdan edan) {
+                                if (edan.controllerEnviar) {
+                                  st = true;
+                                }
+                              });
+                              if (st) {
+                                confirmDialog();
+                              } else {
+                                CoolAlert.show(
+                                    context: context,
+                                    type: CoolAlertType.error,
+                                    text:
+                                        'No selecionaste ningun edan a enviar');
+                              }
+                            },
+                            color: Colors.grey[200],
+                            text: 'Enviar a la UGRED',
+                            textcolor: Colors.red,
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -306,9 +328,10 @@ class _PageNotSendState extends State<PageNotSend> {
   // ScrollController controllerScroll = ScrollController();
 
   Widget _groupDaniosEdansNotSend(Size size) {
+    print(edanProvider);
     int i = 0;
     return Scrollbar(
-      isAlwaysShown: true,
+      // isAlwaysShown: true,
       showTrackOnHover: true,
       controller: scrollControllerEdansNoEnviados,
       child: SingleChildScrollView(

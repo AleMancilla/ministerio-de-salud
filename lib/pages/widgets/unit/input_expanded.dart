@@ -103,6 +103,7 @@ class _InputExpandedState extends State<InputExpanded> {
                   ]),
             ),
           ),
+          SizedBox(height: 5),
           _itemInput(),
         ],
       );
@@ -114,7 +115,7 @@ class _InputExpandedState extends State<InputExpanded> {
         ' ============>>> ${widget.controller.text} ================ ${widget.title}');
     return Container(
       alignment: Alignment.centerRight,
-      padding: EdgeInsets.symmetric(horizontal: 15),
+      // padding: EdgeInsets.symmetric(horizontal: 0),
       height: 35,
       child: TextField(
         // minLines: (widget.descrip) ? 3 : 1,

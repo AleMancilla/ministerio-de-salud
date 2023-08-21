@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
           constraints: const BoxConstraints(maxWidth: 450),
           child: InputTextFielfWidget(
             controller: controllerCarnet,
-            hint: 'Usuario',
+            hint: 'Usuario (carnet)',
           ),
         ),
         Container(

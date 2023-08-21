@@ -107,6 +107,7 @@ class _InputDateOptionState extends State<InputDateOption> {
                   ]),
             ),
           ),
+          SizedBox(height: 5),
           _itemInput(),
         ],
       );

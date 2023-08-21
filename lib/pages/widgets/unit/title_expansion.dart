@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ministerio_de_salud/utils/theme_utils.dart';
 
 class TitleExpansion extends StatelessWidget {
   final String texto;
@@ -9,7 +10,7 @@ class TitleExpansion extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       texto,
-      style: const TextStyle(color: Colors.blue),
+      style: TextStyle(color: primaryColor),
     );
   }
 }

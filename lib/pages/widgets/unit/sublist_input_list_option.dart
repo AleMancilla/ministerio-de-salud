@@ -82,6 +82,9 @@ class _SubListInputListOptionState extends State<SubListInputListOption> {
       return DropdownButton<String>(
         focusColor: Colors.white,
         value: _chosenValue,
+        // itemHeight: 100,
+        // menuMaxHeight: 100,
+
         isDense: true,
         isExpanded: true,
         //elevation: 5,

@@ -53,17 +53,19 @@ class _RedirectPageState extends State<RedirectPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ButtonWidget(
-                text: 'Ir a la version Web',
+                text: 'Ir a la version offline',
+                fontSize: 16,
                 ontap: () {
-                  launchURL('http://186.121.214.199/ugred/login.php');
+                  navigatorPush(context, const LoginPage());
                 }),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ButtonWidget(
-                text: 'Ir a la version offline',
+                text: 'Ir a la version Web',
+                fontSize: 16,
                 ontap: () {
-                  navigatorPush(context, const LoginPage());
+                  launchURL('http://186.121.214.199/ugred/login.php');
                 }),
           ),
         ],

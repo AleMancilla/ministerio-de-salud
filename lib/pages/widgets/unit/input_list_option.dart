@@ -120,6 +120,7 @@ class _InputListOptionState extends State<InputListOption> {
                   ]),
             ),
           ),
+          SizedBox(height: 5),
           _itemInput(),
         ],
       );
@@ -128,34 +129,44 @@ class _InputListOptionState extends State<InputListOption> {
 
   Widget _itemInput() {
     try {
-      return DropdownButton<String>(
-        focusColor: Colors.white,
-
-        value: _chosenValue,
-        //elevation: 5,
-        style: const TextStyle(color: Colors.white),
-        iconEnabledColor: Colors.black,
-        items: widget.options.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(
-              value,
-              style: const TextStyle(color: Colors.black),
-            ),
-          );
-        }).toList(),
-        hint: Text(
-          widget.title,
-          style: const TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(color: Colors.grey),
         ),
-        onChanged: (value) {
-          setState(() {
-            _chosenValue = value!;
-            widget.controller.text = _chosenValue;
-          });
-          widget.onselect();
-        },
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        width: double.infinity,
+        child: DropdownButton<String>(
+          focusColor: Colors.white,
+          isExpanded: true,
+          value: _chosenValue,
+          //elevation: 5,
+          style: const TextStyle(color: Colors.white),
+          iconEnabledColor: Colors.black,
+
+          items: widget.options.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(
+                value,
+                style: const TextStyle(color: Colors.black),
+              ),
+            );
+          }).toList(),
+          hint: Text(
+            widget.title,
+            style: const TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+          ),
+          onChanged: (value) {
+            setState(() {
+              _chosenValue = value!;
+              widget.controller.text = _chosenValue;
+            });
+            widget.onselect();
+          },
+        ),
       );
     } catch (e) {
       print('error ==== $e');

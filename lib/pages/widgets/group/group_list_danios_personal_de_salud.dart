@@ -11,6 +11,7 @@ class GroupDaniosPersonalDeSalud extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           // constraints: BoxConstraints(minWidth: 550),

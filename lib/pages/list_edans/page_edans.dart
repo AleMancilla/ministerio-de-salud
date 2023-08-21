@@ -32,6 +32,7 @@ import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_list_boolea
 import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_list_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/title_expansion.dart';
 import 'package:ministerio_de_salud/utils/user_preferens.dart';
+import 'package:ministerio_de_salud/utils/utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
@@ -1141,22 +1142,42 @@ class _PageEdansState extends State<PageEdans> {
             InputListBoolean(
               title: 'Via aerea disponible',
               controller: controllerViaAerea,
-              options: const ['Sin Daño', 'Afectado', 'Destruido'],
+              options: const [
+                'Sin Daño',
+                'Afectado',
+                'Destruido',
+                'Es Transitable',
+              ],
             ),
             InputListBoolean(
               title: 'Via terrestre disponible',
               controller: controllerViaTerrestre,
-              options: const ['Sin Daño', 'Afectado', 'Destruido'],
+              options: const [
+                'Sin Daño',
+                'Afectado',
+                'Destruido',
+                'Es Transitable',
+              ],
             ),
             InputListBoolean(
               title: 'Via fluvial disponible',
               controller: controllerViaFluvial,
-              options: const ['Sin Daño', 'Afectado', 'Destruido'],
+              options: const [
+                'Sin Daño',
+                'Afectado',
+                'Destruido',
+                'Es Transitable',
+              ],
             ),
             InputListBoolean(
               title: 'Via ferroviaria disponible',
               controller: controllerViaFerroviaria,
-              options: const ['Sin Daño', 'Afectado', 'Destruido'],
+              options: const [
+                'Sin Daño',
+                'Afectado',
+                'Destruido',
+                'Es Transitable',
+              ],
             ),
 
             InputExpanded(
@@ -1170,7 +1191,12 @@ class _PageEdansState extends State<PageEdans> {
             InputListSelectedCheck(
               title: 'Condicion climatica actual',
               controller: controllerCondicionClimatica,
-              options: const ['Lluvioso', 'Nublado', 'Con viento'],
+              options: const [
+                'Lluvioso',
+                'Nublado',
+                'Con viento',
+                'Despejado',
+              ],
             ),
 
             _subTitle('1.6 MEDIOS DE COMUNICACIÓN'),
@@ -1642,28 +1668,17 @@ class _PageEdansState extends State<PageEdans> {
           ),
           child: GroupDaniosEstablecimientosDeSalud(listWidgets: [
             ...listDaniosEstablecimientosDeSaludWidget,
-            Material(
-              color: Colors.grey.shade100,
-              child: InkWell(
-                onTap: () async {
-                  _DaniosEstablecimientosDeSalud _demo =
-                      _DaniosEstablecimientosDeSalud();
-                  _demo.actualizarListaHospitales(listHospitales);
+            buttonPlus(
+              onTap: () async {
+                _DaniosEstablecimientosDeSalud _demo =
+                    _DaniosEstablecimientosDeSalud();
+                _demo.actualizarListaHospitales(listHospitales);
 
-                  print(_demo.listaHospitales);
+                print(_demo.listaHospitales);
 
-                  listDaniosEstablecimientosDeSalud.add(_demo);
-                  await _actualizarListaEstableciemientosDeSalud();
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blueGrey.shade200),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  padding: const EdgeInsets.all(10),
-                  child: const Icon(Icons.add),
-                ),
-              ),
+                listDaniosEstablecimientosDeSalud.add(_demo);
+                await _actualizarListaEstableciemientosDeSalud();
+              },
             ),
           ], titles: const [
             'Estab. de Salud',
@@ -1786,22 +1801,11 @@ class _PageEdansState extends State<PageEdans> {
           ),
           child: GroupDaniosPersonalDeSalud(listWidgets: [
             ...listDaniosPersonalDeSaludWidget,
-            Material(
-              color: Colors.grey.shade100,
-              child: InkWell(
-                onTap: () async {
-                  listDaniosPersonalDeSalud.add(_DaniosAlPersonalDeSalud());
-                  await _actualizarListaAlPersonalDeSalud();
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blueGrey.shade200),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  padding: const EdgeInsets.all(10),
-                  child: const Icon(Icons.add),
-                ),
-              ),
+            buttonPlus(
+              onTap: () async {
+                listDaniosPersonalDeSalud.add(_DaniosAlPersonalDeSalud());
+                await _actualizarListaAlPersonalDeSalud();
+              },
             ),
           ], titles: const [
             'Pers. de Salud',
@@ -2011,30 +2015,17 @@ class _PageEdansState extends State<PageEdans> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(
-          width: size.width > 600 ? size.width - 20 : 600,
+          width: size.width - 20,
           margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.lightBlue),
           ),
           child: GroupAcciones(listWidgets: [
             ...listAccionesWidget,
-            Material(
-              color: Colors.grey.shade100,
-              child: InkWell(
-                onTap: () async {
-                  listAcciones.add(_Acciones());
-                  await _actualizarListaAcciones();
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blueGrey.shade200),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  padding: const EdgeInsets.all(10),
-                  child: const Icon(Icons.add),
-                ),
-              ),
-            ),
+            buttonPlus(onTap: () async {
+              listAcciones.add(_Acciones());
+              await _actualizarListaAcciones();
+            })
           ], titles: const [
             'Acción',
           ]),
@@ -2054,30 +2045,17 @@ class _PageEdansState extends State<PageEdans> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(
-          width: size.width > 600 ? size.width - 20 : 600,
+          width: size.width - 20,
           margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.lightBlue),
           ),
           child: GroupAcciones(listWidgets: [
             ...listAccionesPrioritariasWidget,
-            Material(
-              color: Colors.grey.shade100,
-              child: InkWell(
-                onTap: () async {
-                  listAccionesPrioritarias.add(_AccionesPrioritarias());
-                  await _actualizarListaAccionesPrioritarias();
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blueGrey.shade200),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  padding: const EdgeInsets.all(10),
-                  child: const Icon(Icons.add),
-                ),
-              ),
-            ),
+            buttonPlus(onTap: () async {
+              listAccionesPrioritarias.add(_AccionesPrioritarias());
+              await _actualizarListaAccionesPrioritarias();
+            })
           ], titles: const [
             'Acción',
           ]),
@@ -2104,23 +2082,10 @@ class _PageEdansState extends State<PageEdans> {
           ),
           child: GroupRequerimientosApoyo(listWidgets: [
             ...listRequerimientoApoyoWidget,
-            Material(
-              color: Colors.grey.shade100,
-              child: InkWell(
-                onTap: () async {
-                  listRequerimientoApoyo.add(_RequerimientoApoyo());
-                  await _actualizarListaRequerimientoApoyo();
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blueGrey.shade200),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  padding: const EdgeInsets.all(10),
-                  child: const Icon(Icons.add),
-                ),
-              ),
-            ),
+            buttonPlus(onTap: () async {
+              listRequerimientoApoyo.add(_RequerimientoApoyo());
+              await _actualizarListaRequerimientoApoyo();
+            })
           ], titles: const [
             'Requerimiento',
             'Cant.',

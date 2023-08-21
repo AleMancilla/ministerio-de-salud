@@ -119,3 +119,23 @@ Future<void> progresLoadingAction(
     return null;
   });
 }
+
+Widget buttonPlus({required Function()? onTap}) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Material(
+      color: Colors.grey.shade100,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.blueGrey.shade200),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          padding: const EdgeInsets.all(10),
+          child: const Icon(Icons.add),
+        ),
+      ),
+    ),
+  );
+}
