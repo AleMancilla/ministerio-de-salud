@@ -2,6 +2,7 @@ import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_detalle_de_planilla.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_lista_sintomas.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencion.dart';
 import 'package:ministerio_de_salud/bussiness/providers/planillas_no_enviadas_provider.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
@@ -42,6 +43,10 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
   UserPreferences prefs = UserPreferences();
   late PlanillasNoEnviadasProvider planillasNoEnviadasProvider;
 
+  List<String> listDepartamentos = [];
+  List<String> listMunicipio = [];
+  List<String> listHospitales = [];
+
   @override
   void initState() {
     controllerFecha.text =
@@ -56,6 +61,13 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
 
   void initDB() async {
     await db.initDB();
+    Future.delayed(Duration.zero, () async {
+      listDepartamentos = await db.getListDepartamento();
+      listMunicipio = await db.getListMunicipio(controllerDepartamento.text);
+      listHospitales = await db.getListEstablecimientoDeSalud(
+          controllerDepartamento.text, controllerMunicipio.text);
+      setState(() {});
+    });
   }
 
   @override
@@ -268,38 +280,45 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
           title: 'Departamento',
           controller: controllerDepartamento,
           isRequired: true,
-          onselect: () {},
-          options: const [
-            'BENI',
-            'CHUQUISACA',
-            'COCHABAMBA',
-            'LA PAZ',
-            'ORURO',
-            'PANDO',
-            'POTOSI',
-            'SANTA CRUZ',
-            'TARIJA'
-          ],
+          onselect: () async {
+            print(' ====> ${controllerDepartamento.text}');
+            listMunicipio =
+                await db.getListMunicipio(controllerDepartamento.text);
+            // controllerMunicipio.text = listMunicipio[0];
+            print('## ${controllerMunicipio.text}');
+
+            setState(() {});
+          },
+          options: listDepartamentos,
         ),
         InputListOption(
           title: 'Municipio',
           controller: controllerMunicipio,
           isRequired: true,
-          onselect: () {},
-          options: const [
-            'Municipio 1',
-            'Municipio 2',
-          ],
+          onselect: () async {
+            print('# ${controllerMunicipio.text}');
+            listHospitales = await db.getListEstablecimientoDeSalud(
+                controllerDepartamento.text, controllerMunicipio.text);
+            setState(() {});
+          },
+          options: listMunicipio,
         ),
         InputExpanded(
           title: 'Comunidad',
           controller: controllerComunidad,
           isRequired: true,
         ),
-        InputExpanded(
+        InputListOption(
           title: 'Establecimiento',
           controller: controllerEstablecimiento,
           isRequired: true,
+          onselect: () async {
+            // print('# ${controllerMunicipio.text}');
+            // listHospitales = await db.getListEstablecimientoDeSalud(
+            //     controllerDepartamento.text, controllerMunicipio.text);
+            // setState(() {});
+          },
+          options: listHospitales,
         ),
         InputExpanded(
           title: 'Gerencia de Red',
@@ -360,103 +379,113 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
 
   Widget _groupDetallesDePlanilla(Size size) {
     int i = 0;
-    return Scrollbar(
-      isAlwaysShown: true,
-      showTrackOnHover: true,
-      controller: scrollControllerEdansNoEnviados,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Container(
-          alignment: Alignment.center,
-          width: size.width > 600 ? size.width - 40 : 600,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.lightBlue),
-          ),
-          child: GroupDetallePlanilla(listWidgets: [
-            ...planillasNoEnviadasProvider.listDetalleDePlanilla
-                .map((ModelDetalleDePlanilla demo) {
-              // print(demo.enviado);
-              // if (demo.enviado == 'no') {
-              i++;
-              return Container(
-                color: _colorItem(i),
-                child: IntrinsicHeight(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Colors.lightBlue.shade100),
-                          ),
-                          child: _itemInput(demo),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Colors.lightBlue.shade100),
-                          ),
-                          child: Row(
-                            children: [
-                              _selected('Hombre', demo),
-                              Text('Hombre'),
-                              _selected('Mujer', demo),
-                              Text('Mujer'),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Container(
-                          padding: const EdgeInsets.all(5),
-                          alignment: Alignment.centerLeft,
-                          decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Colors.lightBlue.shade100),
-                          ),
-                          child: _itemSelectedInputText(demo),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Colors.lightBlue.shade100),
-                          ),
-                          child: IconButton(
-                            padding: const EdgeInsets.all(0),
-                            icon: const Icon(Icons.remove_circle),
-                            onPressed: () {
-                              // print(demo.nombre);
-                              planillasNoEnviadasProvider
-                                  .removeModelDetalleDePlanilla(demo);
-                            },
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              );
-            }).toList(),
-          ], titles: const [
-            'Edad',
-            'Sexo',
-            'Diagnostico',
-          ]),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Detalle de Planilla',
+          style: TextStyle(fontSize: 16),
         ),
-      ),
+        SizedBox(height: 5),
+        Scrollbar(
+          isAlwaysShown: true,
+          showTrackOnHover: true,
+          controller: scrollControllerEdansNoEnviados,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Container(
+              alignment: Alignment.center,
+              width: size.width > 600 ? size.width - 40 : 600,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.lightBlue),
+              ),
+              child: GroupDetallePlanilla(listWidgets: [
+                ...planillasNoEnviadasProvider.listDetalleDePlanilla
+                    .map((ModelDetalleDePlanilla demo) {
+                  // print(demo.enviado);
+                  // if (demo.enviado == 'no') {
+                  i++;
+                  return Container(
+                    color: _colorItem(i),
+                    child: IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.lightBlue.shade100),
+                              ),
+                              child: _itemInput(demo),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              padding: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.lightBlue.shade100),
+                              ),
+                              child: Row(
+                                children: [
+                                  _selected('Hombre', demo),
+                                  Text('Hombre'),
+                                  _selected('Mujer', demo),
+                                  Text('Mujer'),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              padding: const EdgeInsets.all(5),
+                              alignment: Alignment.centerLeft,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.lightBlue.shade100),
+                              ),
+                              child: _itemSelectedInputText(demo),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.lightBlue.shade100),
+                              ),
+                              child: IconButton(
+                                padding: const EdgeInsets.all(0),
+                                icon: const Icon(Icons.remove_circle),
+                                onPressed: () {
+                                  // print(demo.nombre);
+                                  planillasNoEnviadasProvider
+                                      .removeModelDetalleDePlanilla(demo);
+                                },
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ], titles: const [
+                'Edad',
+                'Sexo',
+                'Diagnostico',
+              ]),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -493,76 +522,36 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
     );
   }
 
+  final FocusNode _textFieldFocusNode = FocusNode();
   Widget _itemSelectedInputText(ModelDetalleDePlanilla demo) {
     return InkWell(
-      // onTap: () {
-      //   showDialog(
-      //     context: context,
-      //     builder: (context) {
-      //       return AlertDialog(
-      //         title: const Text('Seleccione Sexo'),
-      //         content: Text('data'),
-      //       );
-      //     },
-      //   );
-      // },
       child: SizedBox(
         height: 35,
         child: TextField(
+          focusNode: _textFieldFocusNode,
           onTap: () {
+            _textFieldFocusNode.unfocus();
             showDialog(
               context: context,
               builder: (context) {
                 return AlertDialog(
-                  title: const Text('Seleccione Sexo'),
+                  titlePadding:
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  title: const Text('Buscar - Diagnóstico'),
                   content: Container(
-                    color: Colors.blue,
-                    width: 600,
-                    height: 400,
-                    child: Column(
-                      children: [
-                        // Text(planillasNoEnviadasProvider
-                        //     .listModelListaSintomas.length
-                        //     .toString()),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: planillasNoEnviadasProvider
-                                .listModelListaSintomas.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Text(planillasNoEnviadasProvider
-                                        .listModelListaSintomas[index]
-                                        .sintoma ??
-                                    'Date Null.'),
-                                // onTap: () {
-                                //   demo.sexo.text = 'Hombre';
-                                //   Navigator.pop(context);
-                                // },
-                              );
-                            },
-                          ),
-                        ),
-                        // Expanded(
-                        //   child: ListView.builder(
-                        //     itemCount: 2,
-                        //     itemBuilder: (context, index) {
-                        //       return ListTile(
-                        //         title: Text('Mujer'),
-                        //         onTap: () {
-                        //           demo.sexo.text = 'Mujer';
-                        //           Navigator.pop(context);
-                        //         },
-                        //       );
-                        //     },
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                  ),
+                      width: 600,
+                      height: 400,
+                      child: CustomSearchBar(
+                        items:
+                            planillasNoEnviadasProvider.listModelListaSintomas,
+                        edadController: demo.diagnostico,
+                      )),
                 );
               },
             );
           },
+
           // minLines: (widget.descrip) ? 3 : 1,
           // maxLines: (widget.descrip) ? 10 : 1,
           decoration: const InputDecoration(
@@ -572,14 +561,10 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
             // helperText: widget.helptext,
           ),
           keyboardType: TextInputType.phone,
-          controller: demo.edad,
+          controller: demo.diagnostico,
           onChanged: (value) {
             setState(() {});
           },
-          // onChanged: (n) {
-          //   print("completo########");
-          //   if(!ordenData.flagEdit){ordenData.flagEdit = true;}
-          // },
         ),
       ),
     );
@@ -597,3 +582,119 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
     );
   }
 }
+
+class CustomSearchBar extends StatefulWidget {
+  final List<ModelListaSintomas> items;
+  final TextEditingController edadController;
+
+  CustomSearchBar({required this.items, required this.edadController});
+
+  @override
+  _CustomSearchBarState createState() => _CustomSearchBarState();
+}
+
+class _CustomSearchBarState extends State<CustomSearchBar> {
+  late List<ModelListaSintomas> filteredItems;
+
+  @override
+  void initState() {
+    super.initState();
+    filteredItems = widget.items;
+  }
+
+  void _filterItems(String query) {
+    setState(() {
+      filteredItems = widget.items
+          .where((item) =>
+              (item.sintoma ?? '').toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
+
+  TextEditingController? controllerBuscador = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextField(
+          controller: controllerBuscador,
+          onChanged: _filterItems,
+          decoration: InputDecoration(
+            hintText: 'Buscar...',
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: filteredItems.length,
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {
+                  widget.edadController.text =
+                      (filteredItems[index].sintoma ?? '_');
+                  Navigator.pop(context);
+                },
+                child: ListTile(
+                  title: Row(
+                    children: [
+                      // Icon(Icons.search),
+                      // SizedBox(width: 20),
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                            children: highlightOccurrences(
+                                controllerBuscador!.text,
+                                (filteredItems[index].sintoma ?? '_')),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // Text(filteredItems[index].nombre),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<TextSpan> highlightOccurrences(String query, String text) {
+    List<TextSpan> spans = [];
+    final pattern = RegExp(query, caseSensitive: false);
+    final matches = pattern.allMatches(text);
+    int previousMatchEnd = 0;
+    for (Match match in matches) {
+      spans.add(TextSpan(
+        text: text.substring(previousMatchEnd, match.start),
+      ));
+      spans.add(TextSpan(
+        text: text.substring(match.start, match.end),
+        style: TextStyle(
+          color: Colors.blue,
+          fontWeight: FontWeight.bold,
+        ),
+      ));
+      previousMatchEnd = match.end;
+    }
+    spans.add(TextSpan(
+      text: text.substring(previousMatchEnd),
+    ));
+    return spans;
+  }
+}
+
+// void main() {
+//   runApp(MaterialApp(
+//     home: Scaffold(
+//       appBar: AppBar(title: Text('Custom Search Bar')),
+//       body: CustomSearchBar(
+//         items: List.generate(100, (index) => 'Item $index'),
+//       ),
+//     ),
+//   ));
+// }

@@ -121,39 +121,57 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
             const SizedBox(width: double.infinity),
             Column(
               children: [
-                Container(
-                  color: Colors.grey[50],
-                  child: _groupDaniosEdansNotSend(size),
-                ),
+                planillasProvider.listPlanillasProvider.length > 0
+                    ? Container(
+                        color: Colors.grey[50],
+                        child: _groupDaniosEdansNotSend(size),
+                      )
+                    : Container(
+                        decoration: BoxDecoration(
+                          color: Colors.orange,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        margin: EdgeInsets.only(top: 15),
+                        child: Text(
+                          'No se encontraron registros',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ButtonWidget(
-                        ontap: () {
-                          navigatorPush(context, const PagePlanillaAtencion());
-                        },
-                        color: Colors.grey[200],
-                        text: 'Registrar Nuevo',
-                        textcolor: Colors.black,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      ButtonWidget(
-                        ontap: () {
-                          // navigatorPush(context, const PageEdans());
-                          planillasProvider.listPlanillasProvider
-                              .forEach((ModelPlanillaDeAtencion planillas) {
-                            print(planillas.controllerEnviar);
-                          });
-                        },
-                        color: Colors.grey[200],
-                        text: 'Enviar al PNCAD',
-                        textcolor: Colors.red,
-                      ),
-                    ],
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ButtonWidget(
+                          ontap: () {
+                            navigatorPush(
+                                context, const PagePlanillaAtencion());
+                          },
+                          color: Colors.grey[200],
+                          text: 'Registrar Nuevo',
+                          textcolor: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        ButtonWidget(
+                          ontap: () {
+                            // navigatorPush(context, const PageEdans());
+                            planillasProvider.listPlanillasProvider
+                                .forEach((ModelPlanillaDeAtencion planillas) {
+                              print(planillas.controllerEnviar);
+                            });
+                          },
+                          color: Colors.grey[200],
+                          text: 'Enviar al PNCAD',
+                          textcolor: Colors.red,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -173,7 +191,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(
-          width: size.width > 900 ? size.width - 40 : 900,
+          width: size.width > 1200 ? size.width - 40 : 1200,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.lightBlue),
           ),
@@ -192,7 +210,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Expanded(
-                          flex: 2,
+                          flex: 1,
                           child: Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
@@ -209,7 +227,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                           ),
                         ),
                         Expanded(
-                          flex: 2,
+                          flex: 1,
                           child: Container(
                             alignment: Alignment.centerLeft,
                             padding: const EdgeInsets.all(5),
