@@ -7,10 +7,12 @@ import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_accione
 import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_acciones2.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_establecimiento.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_requerimientos.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_detalle_de_planilla.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_evento.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_lista_sintomas.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencion.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/modelo_planilla_detalle.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DataBaseEdans {
@@ -48,6 +50,18 @@ class DataBaseEdans {
 
   insertPLANILLA(ModelPlanillaDeAtencion planilla) async {
     int response = await _db.rawInsert(planilla.insertSql());
+    print('###### $response');
+  }
+
+  insertPlanillaDetalle(ModeloDetallePlanilla planilla) async {
+    print(
+        'planilla detalle ============= >>> ${planilla.codDetalle} ===>> ${planilla.insertSql()}');
+    int response = await _db.rawInsert(planilla.insertSql());
+    print('###### $response');
+  }
+
+  updatePlanillaDetalle(ModeloDetallePlanilla planilla) async {
+    int response = await _db.rawInsert(planilla.updateSql());
     print('###### $response');
   }
 
@@ -120,6 +134,26 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
     return result[0]['newID'].toString() != 'null'
         ? result[0]['newID'].toString()
         : '0';
+  }
+
+  Future<String> getLastIDPlanillaDetalle() async {
+    var result = await _db
+        .rawQuery('SELECT Max(cod_detalle) as newID from planilla_detalle');
+    print('$result ---****');
+    return result[0]['newID'].toString() != 'null'
+        ? result[0]['newID'].toString()
+        : '0';
+  }
+
+  Future<List<ModeloDetallePlanilla>> getAllDetallesDePlanilla(int id) async {
+    print('lectura sql');
+    List<Map<String, dynamic>> result = await _db.query(
+      'planilla_detalle',
+      where: 'cod_planilla = $id',
+      // whereArgs: [id]
+    );
+    print(result);
+    return result.map((map) => ModeloDetallePlanilla.fromMap(map)).toList();
   }
 
   Future<List<String>> getListDepartamento() async {

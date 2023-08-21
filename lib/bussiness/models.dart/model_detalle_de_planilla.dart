@@ -13,4 +13,10 @@ class ModelDetalleDePlanilla {
   TextEditingController edad = TextEditingController();
   TextEditingController sexo = TextEditingController();
   TextEditingController diagnostico = TextEditingController();
+  int? codDetalle;
+  // ModelDetalleDePlanilla({
+  //   this.edad,
+  //   this.sexo,
+  //   this.diagnostico,
+  // });
 }

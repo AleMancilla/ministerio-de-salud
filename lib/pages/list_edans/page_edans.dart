@@ -847,6 +847,7 @@ class _PageEdansState extends State<PageEdans> {
                           } else {
                             print('------- insert ');
                             db.insertEDAN(modelo);
+
                             listDaniosEstablecimientosDeSalud.forEach(
                                 (_DaniosEstablecimientosDeSalud element) async {
                               idDesastre = idDesastre + 1;

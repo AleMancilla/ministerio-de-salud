@@ -113,6 +113,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
   }
 
   Widget _boddy(Size size) {
+    print(planillasProvider);
     return Expanded(
       child: SingleChildScrollView(
         child: Column(
@@ -148,8 +149,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                       children: [
                         ButtonWidget(
                           ontap: () {
-                            navigatorPush(
-                                context, const PagePlanillaAtencion());
+                            navigatorPush(context, PagePlanillaAtencion());
                           },
                           color: Colors.grey[200],
                           text: 'Registrar Nuevo',
@@ -197,14 +197,15 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
           ),
           child: GroupPlanillasNoEnviados(listWidgets: [
             ...planillasProvider.listPlanillasProvider
-                .map((ModelPlanillaDeAtencion demo) {
+                .map((ModelPlanillaDeAtencion planillaModelo) {
               print(
-                  '>>>>> == ${demo.enviado} == ${demo.evento} == ${demo.depto} == ${demo.municipio} == ${demo.comunidad} == ${demo.nomestablecimiento} == ${demo.fecha}');
+                  '>>>>> == ${planillaModelo.enviado} == ${planillaModelo.evento} == ${planillaModelo.depto} == ${planillaModelo.municipio} == ${planillaModelo.comunidad} == ${planillaModelo.nomestablecimiento} == ${planillaModelo.fecha}');
               // if (demo.enviado == 'no') {
-              if (demo.enviado == 'SI' || demo.enviado == 'null') {
+              if (planillaModelo.enviado == 'SI' ||
+                  planillaModelo.enviado == 'null') {
                 i++;
                 return Container(
-                  color: _colorItem(i, demo.controllerEnviar!),
+                  color: _colorItem(i, planillaModelo.controllerEnviar!),
                   child: IntrinsicHeight(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -218,9 +219,10 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                                   Border.all(color: Colors.lightBlue.shade100),
                             ),
                             child: CheckBoxDemo(
-                              controller: demo.controllerEnviar!,
+                              controller: planillaModelo.controllerEnviar!,
                               onchange: () {
-                                demo.controllerEnviar = !demo.controllerEnviar!;
+                                planillaModelo.controllerEnviar =
+                                    !planillaModelo.controllerEnviar!;
                                 setState(() {});
                               },
                             ),
@@ -235,7 +237,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                               border:
                                   Border.all(color: Colors.lightBlue.shade100),
                             ),
-                            child: Text(demo.codPlanilla!.toString()),
+                            child: Text(planillaModelo.codPlanilla!.toString()),
                           ),
                         ),
                         Expanded(
@@ -247,7 +249,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                               border:
                                   Border.all(color: Colors.lightBlue.shade100),
                             ),
-                            child: Text(demo.evento!),
+                            child: Text(planillaModelo.evento!),
                           ),
                         ),
                         Expanded(
@@ -259,7 +261,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                               border:
                                   Border.all(color: Colors.lightBlue.shade100),
                             ),
-                            child: Text(demo.depto!),
+                            child: Text(planillaModelo.depto!),
                           ),
                         ),
                         Expanded(
@@ -271,7 +273,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                               border:
                                   Border.all(color: Colors.lightBlue.shade100),
                             ),
-                            child: Text(demo.municipio!),
+                            child: Text(planillaModelo.municipio!),
                           ),
                         ),
                         Expanded(
@@ -283,7 +285,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                               border:
                                   Border.all(color: Colors.lightBlue.shade100),
                             ),
-                            child: Text(demo.comunidad!),
+                            child: Text(planillaModelo.comunidad!),
                           ),
                         ),
                         Expanded(
@@ -295,7 +297,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                               border:
                                   Border.all(color: Colors.lightBlue.shade100),
                             ),
-                            child: Text(demo.nomestablecimiento!),
+                            child: Text(planillaModelo.nomestablecimiento!),
                           ),
                         ),
                         Expanded(
@@ -307,7 +309,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                               border:
                                   Border.all(color: Colors.lightBlue.shade100),
                             ),
-                            child: Text(demo.fecha!),
+                            child: Text(planillaModelo.fecha!),
                           ),
                         ),
                         Expanded(
@@ -323,11 +325,11 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                               icon: const Icon(Icons.edit),
                               onPressed: () {
                                 // print(demo.nombre);
-                                // navigatorPush(
-                                //     context,
-                                //     PageEdans(
-                                //       edanModel: demo,
-                                //     ));
+                                navigatorPush(
+                                    context,
+                                    PagePlanillaAtencion(
+                                      planillaDeAtencionFather: planillaModelo,
+                                    ));
                               },
                             ),
                           ),

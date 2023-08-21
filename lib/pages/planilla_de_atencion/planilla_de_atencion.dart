@@ -1,9 +1,11 @@
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_establecimiento.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_detalle_de_planilla.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_lista_sintomas.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencion.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/modelo_planilla_detalle.dart';
 import 'package:ministerio_de_salud/bussiness/providers/planillas_no_enviadas_provider.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
@@ -17,7 +19,9 @@ import 'package:ministerio_de_salud/utils/user_preferens.dart';
 import 'package:provider/provider.dart';
 
 class PagePlanillaAtencion extends StatefulWidget {
-  const PagePlanillaAtencion({Key? key}) : super(key: key);
+  PagePlanillaAtencion({Key? key, this.planillaDeAtencionFather})
+      : super(key: key);
+  ModelPlanillaDeAtencion? planillaDeAtencionFather;
 
   @override
   State<PagePlanillaAtencion> createState() => _PagePlanillaAtencionState();
@@ -37,6 +41,7 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
   TextEditingController controllerNombreResponsable = TextEditingController();
   TextEditingController controllerCargoResponsable = TextEditingController();
   TextEditingController controllerTelfResponsable = TextEditingController();
+  TextEditingController controllerCodPlanilla = TextEditingController();
 
   int number = 0;
   DataBaseEdans db = DataBaseEdans();
@@ -49,23 +54,78 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
 
   @override
   void initState() {
-    controllerFecha.text =
-        '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
-    controllerHora.text = '${DateTime.now().hour}:${DateTime.now().minute}';
-    planillasNoEnviadasProvider =
-        Provider.of<PlanillasNoEnviadasProvider>(context, listen: false);
-
+    listOfDetallesDePlanilla = [];
     initDB();
+    if (widget.planillaDeAtencionFather == null) {
+      controllerFecha.text =
+          '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
+      controllerHora.text = '${DateTime.now().hour}:${DateTime.now().minute}';
+      planillasNoEnviadasProvider =
+          Provider.of<PlanillasNoEnviadasProvider>(context, listen: false);
+    } else {
+      controllerCodPlanilla.text =
+          (widget.planillaDeAtencionFather?.codPlanilla.toString() ?? '');
+      controllerEvento.text = (widget.planillaDeAtencionFather?.evento ?? '');
+      controllerDepartamento.text =
+          (widget.planillaDeAtencionFather?.depto ?? '');
+      controllerMunicipio.text =
+          (widget.planillaDeAtencionFather?.municipio ?? '');
+      controllerComunidad.text =
+          (widget.planillaDeAtencionFather?.comunidad ?? '');
+      controllerEstablecimiento.text =
+          (widget.planillaDeAtencionFather?.nomestablecimiento ?? '');
+      controllerGerenciaDeRed.text =
+          (widget.planillaDeAtencionFather?.gerenciaRed ?? '');
+      controllerPoblacion.text =
+          (widget.planillaDeAtencionFather?.poblacion.toString() ?? '');
+      controllerFecha.text = (widget.planillaDeAtencionFather?.fecha ?? '');
+      controllerHora.text = (widget.planillaDeAtencionFather?.hora ?? '');
+      controllerNombreResponsable.text =
+          (widget.planillaDeAtencionFather?.nombreResponsable ?? '');
+      controllerCargoResponsable.text =
+          (widget.planillaDeAtencionFather?.cargoResponsable ?? '');
+      controllerTelfResponsable.text =
+          (widget.planillaDeAtencionFather?.telfResponsable ?? '');
+    }
     super.initState();
   }
 
-  void initDB() async {
+  List<ModeloDetallePlanilla> listOfDetallesDePlanilla = [];
+  Future<void> initDB() async {
     await db.initDB();
     Future.delayed(Duration.zero, () async {
       listDepartamentos = await db.getListDepartamento();
       listMunicipio = await db.getListMunicipio(controllerDepartamento.text);
       listHospitales = await db.getListEstablecimientoDeSalud(
           controllerDepartamento.text, controllerMunicipio.text);
+
+      if (widget.planillaDeAtencionFather != null) {
+        print('''
+
+  ENTRO AQUIIIIIIIIII
+
+
+''');
+        controllerCodPlanilla.text =
+            widget.planillaDeAtencionFather!.codPlanilla!.toString();
+        listOfDetallesDePlanilla = await db
+            .getAllDetallesDePlanilla(int.parse(controllerCodPlanilla.text));
+        print(listOfDetallesDePlanilla);
+        planillasNoEnviadasProvider.listDetalleDePlanilla =
+            listOfDetallesDePlanilla
+                .map((e) => ModelDetalleDePlanilla()
+                  ..sexo.text = e.sexo ?? ''
+                  ..edad.text = e.edad.toString()
+                  ..diagnostico.text = e.diagnostico ?? ''
+                  ..codDetalle = e.codDetalle)
+                .toList();
+      } else {
+        String data = await db.getLastIDPlanillaDetalle();
+
+        int id = int.parse(data);
+        id = id + 1;
+        controllerCodPlanilla.text = id.toString();
+      }
       setState(() {});
     });
   }
@@ -197,7 +257,7 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                           ModelPlanillaDeAtencion modelo =
                               ModelPlanillaDeAtencion(
                             usuario: prefs.userCarnet,
-                            codPlanilla: 0,
+                            codPlanilla: int.parse(controllerCodPlanilla.text),
                             codEdan: 0,
                             depto: controllerDepartamento.text,
                             municipio: controllerMunicipio.text,
@@ -220,14 +280,67 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                           // } else {
                           //   db.insertEDAN(modelo);
                           // }
-                          print(modelo);
+                          print(planillasNoEnviadasProvider
+                              .listDetalleDePlanilla);
 
                           DataBaseEdans db = DataBaseEdans();
+
                           await db.initDB();
-                          db.insertPLANILLA(modelo);
-                          db.closeDB();
+                          int _codDetalle =
+                              int.parse(await db.getLastIDPlanillaDetalle());
+                          if (widget.planillaDeAtencionFather != null) {
+                            db.updatePLANILLA(modelo);
+
+                            planillasNoEnviadasProvider.listDetalleDePlanilla
+                                .forEach(
+                                    (ModelDetalleDePlanilla element) async {
+                              ModeloDetallePlanilla modelo =
+                                  ModeloDetallePlanilla(
+                                      codDetalle: element.codDetalle,
+                                      edad: int.parse(element.edad.text),
+                                      sexo: element.sexo.text,
+                                      diagnostico: element.diagnostico.text,
+                                      codPlanilla:
+                                          int.parse(controllerCodPlanilla.text),
+                                      cantidad: 1);
+                              if (element.codDetalle != null) {
+                                await db.updatePlanillaDetalle(modelo);
+                              } else {
+                                _codDetalle = _codDetalle + 1;
+                                modelo.codDetalle = _codDetalle;
+                                await db.insertPlanillaDetalle(modelo);
+                              }
+                            });
+
+                            ///////////////////////////////
+                          } else {
+                            print(modelo);
+                            db.insertPLANILLA(modelo);
+                            planillasNoEnviadasProvider.listDetalleDePlanilla
+                                .forEach((ModelDetalleDePlanilla
+                                    modelDetalleDePlanilla) async {
+                              _codDetalle = _codDetalle + 1;
+                              ModeloDetallePlanilla modeloToSql =
+                                  ModeloDetallePlanilla(
+                                      codDetalle: _codDetalle,
+                                      edad:
+                                          int.parse(
+                                              modelDetalleDePlanilla.edad.text),
+                                      sexo: modelDetalleDePlanilla.sexo.text,
+                                      diagnostico: modelDetalleDePlanilla
+                                          .diagnostico.text,
+                                      codPlanilla:
+                                          int.parse(controllerCodPlanilla.text),
+                                      cantidad: 1);
+
+                              await db.insertPlanillaDetalle(modeloToSql);
+                            });
+                          }
                           planillasNoEnviadasProvider
                               .readDataBaseListPlanillas();
+                          Future.delayed(Duration(seconds: 1), () {
+                            db.closeDB();
+                          });
                           Navigator.pop(context);
                           // db.insertEVENTO();
                         },
@@ -328,6 +441,7 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
           title: 'Poblacion',
           controller: controllerPoblacion,
           isNumber: true,
+          initValue: controllerPoblacion.text,
         ),
         InputDateOption(
           title: 'Fecha',
@@ -353,6 +467,8 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
           title: 'Telf. de contacto Responsable',
           controller: controllerTelfResponsable,
           isRequired: true,
+          initValue: controllerTelfResponsable.text,
+          isNumber: true,
         ),
         const Divider()
       ],
