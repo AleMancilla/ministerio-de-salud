@@ -173,7 +173,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(
-          width: size.width > 600 ? size.width - 40 : 600,
+          width: size.width > 900 ? size.width - 40 : 900,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.lightBlue),
           ),

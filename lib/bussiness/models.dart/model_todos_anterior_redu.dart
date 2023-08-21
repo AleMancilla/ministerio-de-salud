@@ -5,6 +5,8 @@ class TodosAnterioresRedu {
   String? municipio;
   String? comunidad;
   String? establecimiento;
+  String? coordenadaX;
+  String? coordenadaY;
 
   TodosAnterioresRedu({
     this.codTable,
@@ -13,6 +15,8 @@ class TodosAnterioresRedu {
     this.municipio,
     this.comunidad,
     this.establecimiento,
+    this.coordenadaX,
+    this.coordenadaY,
   });
 
   Map<String, dynamic> toMap() {
@@ -23,6 +27,8 @@ class TodosAnterioresRedu {
       'Municipio': municipio,
       'Comunidad': comunidad,
       'Establecimiento': establecimiento,
+      'coordenada_x': coordenadaX,
+      'coordenada_y': coordenadaY,
     };
   }
 
@@ -33,6 +39,8 @@ class TodosAnterioresRedu {
     municipio = map['Municipio'];
     comunidad = map['Comunidad'];
     establecimiento = map['Establecimiento'];
+    coordenadaX = map['coordenada_x'];
+    coordenadaY = map['coordenada_y'];
   }
 
   String insertSql() {
@@ -42,14 +50,18 @@ class TodosAnterioresRedu {
   Departamento,
   Municipio,
   Comunidad,
-  Establecimiento
+  Establecimiento,
+  coordenada_x,
+  coordenada_y
 ) VALUES ( 
   '$codTable',
   '$codigo',
   '$departamento',
   '$municipio',
   '$comunidad',
-  '$establecimiento'
+  '$establecimiento',
+  '$coordenadaX',
+  '$coordenadaY'
   )""";
   }
 
@@ -61,7 +73,9 @@ Codigo = '$codigo',
 Departamento = '$departamento',
 Municipio = '$municipio',
 Comunidad = '$comunidad',
-Establecimiento = '$establecimiento'
+Establecimiento = '$establecimiento',
+coordenada_x = '$coordenadaX',
+coordenada_y = '$coordenadaY'
 WHERE
     cod_table = '$codTable'
 """;

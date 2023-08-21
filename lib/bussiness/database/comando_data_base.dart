@@ -153,8 +153,11 @@ Codigo TEXT DEFAULT NULL,
 Departamento TEXT DEFAULT NULL,
 Municipio TEXT DEFAULT NULL,
 Comunidad TEXT DEFAULT NULL,
-Establecimiento TEXT DEFAULT NULL
+Establecimiento TEXT DEFAULT NULL,
+coordenada_x TEXT NULL,
+coordenada_y TEXT NULL
 )""",
+
   """
 CREATE TABLE IF NOT EXISTS planilla_atencion (
 usuario TEXT DEFAULT NULL,
