@@ -81,6 +81,7 @@ class ModelPlanillaDeAtencion {
     return """INSERT INTO planilla_atencion (
       evento,
 usuario,
+cod_planilla,
 cod_edan,
 depto,
 municipio,
@@ -98,6 +99,7 @@ enviado
 ) VALUES ( 
   '$evento',
  '$usuario',
+ '$codPlanilla',
  '$codEdan',
  '$depto',
  '$municipio',

@@ -20,7 +20,7 @@ class DataBaseEdans {
 
   initDB() async {
     _db = await openDatabase(
-      'my_database23.db',
+      'my_database24.db',
       version: 1,
       onCreate: (Database db, int newVersion) async {
         Batch batch = db.batch();
@@ -66,6 +66,8 @@ class DataBaseEdans {
   }
 
   updatePLANILLA(ModelPlanillaDeAtencion planilla) async {
+    print(
+        'planilla updatePLANILLA ============= >>> ${planilla.codPlanilla} ===>> ${planilla.updateSql()}');
     int response = await _db.rawInsert(planilla.updateSql());
     print('###### $response');
   }
@@ -139,6 +141,15 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
   Future<String> getLastIDPlanillaDetalle() async {
     var result = await _db
         .rawQuery('SELECT Max(cod_detalle) as newID from planilla_detalle');
+    print('$result ---****');
+    return result[0]['newID'].toString() != 'null'
+        ? result[0]['newID'].toString()
+        : '0';
+  }
+
+  Future<String> getLastIDPlanillaAtencion() async {
+    var result = await _db
+        .rawQuery('SELECT Max(cod_planilla) as newID from planilla_atencion');
     print('$result ---****');
     return result[0]['newID'].toString() != 'null'
         ? result[0]['newID'].toString()

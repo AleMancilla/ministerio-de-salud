@@ -120,7 +120,7 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                   ..codDetalle = e.codDetalle)
                 .toList();
       } else {
-        String data = await db.getLastIDPlanillaDetalle();
+        String data = await db.getLastIDPlanillaAtencion();
 
         int id = int.parse(data);
         id = id + 1;
@@ -286,8 +286,6 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                           DataBaseEdans db = DataBaseEdans();
 
                           await db.initDB();
-                          int _codDetalle =
-                              int.parse(await db.getLastIDPlanillaDetalle());
                           if (widget.planillaDeAtencionFather != null) {
                             db.updatePLANILLA(modelo);
 
@@ -304,8 +302,15 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                                           int.parse(controllerCodPlanilla.text),
                                       cantidad: 1);
                               if (element.codDetalle != null) {
+                                print(
+                                    ' ======= UPDATE  updatePlanillaDetalle ======= ');
+                                print(modelo);
                                 await db.updatePlanillaDetalle(modelo);
                               } else {
+                                int _codDetalle = int.parse(
+                                    await db.getLastIDPlanillaDetalle());
+                                print(
+                                    ' ======= insert  updatePlanillaDetalle ======= ');
                                 _codDetalle = _codDetalle + 1;
                                 modelo.codDetalle = _codDetalle;
                                 await db.insertPlanillaDetalle(modelo);
@@ -314,6 +319,8 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
 
                             ///////////////////////////////
                           } else {
+                            int _codDetalle =
+                                int.parse(await db.getLastIDPlanillaDetalle());
                             print(modelo);
                             db.insertPLANILLA(modelo);
                             planillasNoEnviadasProvider.listDetalleDePlanilla
@@ -342,6 +349,9 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                             db.closeDB();
                           });
                           Navigator.pop(context);
+
+                          planillasNoEnviadasProvider.listDetalleDePlanilla
+                              .clear();
                           // db.insertEVENTO();
                         },
                       ),

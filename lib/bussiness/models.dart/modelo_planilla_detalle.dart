@@ -30,7 +30,7 @@ class ModeloDetallePlanilla {
     codDetalle = map['cod_detalle'];
     codPlanilla = map['cod_planilla'];
     edad = map['edad'];
-    sexo = map['sexo'];
+    sexo = (map['sexo'] == 'h' ? 'Hombre' : 'Mujer');
     diagnostico = map['diagnostico'];
     cantidad = map['cantidad'];
   }
@@ -54,11 +54,11 @@ cantidad
 
   String updateSql() {
     return """
-UPDATE planilla_atencion SET  
+UPDATE planilla_detalle SET  
 cod_detalle = '$codDetalle',
 cod_planilla = '$codPlanilla',
 edad = '$edad',
-sexo = '$sexo',
+sexo = '${sexo == 'Hombre' ? 'h' : 'm'}',
 diagnostico = '$diagnostico',
 cantidad = '$cantidad'
 WHERE
