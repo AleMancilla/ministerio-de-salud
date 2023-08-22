@@ -17,6 +17,9 @@ import 'package:ministerio_de_salud/pages/widgets/unit/input_hour_option.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_list_option.dart';
 import 'package:ministerio_de_salud/utils/user_preferens.dart';
 import 'package:provider/provider.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 
 class PagePlanillaAtencion extends StatefulWidget {
   PagePlanillaAtencion({Key? key, this.planillaDeAtencionFather})
@@ -181,6 +184,55 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      Text('Fotos de planilla'),
+                      Material(
+                        child: InkWell(
+                          onTap: () async {
+                            await pickFile();
+                            if (selectedFile != null) {
+                              final savedFilePath =
+                                  await saveImageOrPdfLocally(selectedFile!);
+                              print(
+                                  '_____ $savedFilePath ______ savedFilePath');
+                              // Guarda la ruta `savedFilePath` en la base de datos Sqflite
+                            }
+                          },
+                          child: Ink(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: Colors.grey),
+                            ),
+                            child: Text('Examinar...'),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (selectedFile != null)
+                  Row(
+                    children: [
+                      if (selectedFile != null &&
+                          selectedFile!.path.endsWith('.jpg'))
+                        Image.file(
+                          selectedFile!,
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                        ),
+                      SizedBox(width: 10),
+                      Text(selectedFile != null
+                          ? selectedFile!.path.split('/').last
+                          : 'No file selected'),
+                    ],
+                  ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Row(
@@ -814,13 +866,24 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   }
 }
 
-// void main() {
-//   runApp(MaterialApp(
-//     home: Scaffold(
-//       appBar: AppBar(title: Text('Custom Search Bar')),
-//       body: CustomSearchBar(
-//         items: List.generate(100, (index) => 'Item $index'),
-//       ),
-//     ),
-//   ));
-// }
+File? selectedFile;
+
+Future<void> pickFile() async {
+  final result = await FilePicker.platform.pickFiles(
+    type: FileType
+        .custom, // Puedes ajustar el tipo de archivo según tus necesidades
+    allowedExtensions: ['jpg', 'pdf'], // Extensiones permitidas
+  );
+
+  if (result != null) {
+    selectedFile = File(result.files.single.path ?? 'no_info');
+  }
+}
+
+Future<String> saveImageOrPdfLocally(File file) async {
+  final directory = await getApplicationDocumentsDirectory();
+  final filePath = '${directory.path}/${file.path.split('/').last}';
+
+  final newFile = await file.copy(filePath);
+  return newFile.path;
+}
