@@ -16,6 +16,7 @@ class ModelPlanillaDeAtencion {
   String? telfResponsable;
   String? enviado;
   bool? controllerEnviar = false;
+  String? foto;
 
   ModelPlanillaDeAtencion({
     this.usuario,
@@ -35,6 +36,7 @@ class ModelPlanillaDeAtencion {
     this.telfResponsable,
     this.enviado,
     this.controllerEnviar = false,
+    this.foto,
   });
 
   Map<String, dynamic> toMap() {
@@ -54,7 +56,8 @@ class ModelPlanillaDeAtencion {
       'nombre_responsable': nombreResponsable,
       'cargo_responsable': cargoResponsable,
       'telf_responsable': telfResponsable,
-      'enviado': enviado
+      'enviado': enviado,
+      'foto': foto
     };
   }
 
@@ -75,6 +78,7 @@ class ModelPlanillaDeAtencion {
     cargoResponsable = map['cargo_responsable'];
     telfResponsable = map['telf_responsable'];
     enviado = map['enviado'];
+    foto = map['foto'];
   }
 
   String insertSql() {
@@ -95,7 +99,8 @@ evento,
 nombre_responsable,
 cargo_responsable,
 telf_responsable,
-enviado
+enviado,
+foto
 ) VALUES ( 
   '$evento',
  '$usuario',
@@ -113,7 +118,8 @@ enviado
  '$nombreResponsable',
  '$cargoResponsable',
  '$telfResponsable',
- '$enviado')""";
+ '$enviado',
+ '$foto')""";
   }
 
   String updateSql() {
@@ -134,10 +140,37 @@ evento = '$evento',
 nombre_responsable = '$nombreResponsable',
 cargo_responsable = '$cargoResponsable',
 telf_responsable = '$telfResponsable',
-enviado = '$enviado'
+enviado = '$enviado',
+foto = '$foto'
 WHERE
     cod_planilla = '$codPlanilla' 
 """;
     // return "INSERT INTO `edan` VALUES (DEFAULT', '$evento', '$claseEvento', '$fecha', '$hora', '$continua', '$nombre', '$cargo', '$dreccion', '$telFc', '$telCc', '$depto', '$municipio', '$comunidad', '$tieneCoord', '$coordenadaX', '$coordenadaY', '$aereo', '$terrestre', '$fluvial', '$ferroviario', '$partida', '$horaLlegada', '$clima', '$medioComunicacion', $viviendas, $familias, '$agua', '$basura', '$alcantarillado', '$electricidad', '$telecom', '$transporte', $heridos, $muertos, $desaparecidos, '$accionesPrioritarias', '$lugarLle', '$fechaLle', '$horaLle', '$responsableLle', '$cargoLle', '$telfFijoLle', '$telfCelLle', '$email', '$usuario', '$fechap', 'NO')";
   }
+
+//   String deleteSql() {
+//     return """
+// UPDATE planilla_atencion SET
+// usuario = '$usuario',
+// cod_planilla = '$codPlanilla',
+// cod_edan = '$codEdan',
+// depto = '$depto',
+// municipio = '$municipio',
+// comunidad = '$comunidad',
+// nomestablecimiento = '$nomestablecimiento',
+// gerencia_red = '$gerenciaRed',
+// poblacion = '$poblacion',
+// fecha = '$fecha',
+// hora = '$hora',
+// evento = '$evento',
+// nombre_responsable = '$nombreResponsable',
+// cargo_responsable = '$cargoResponsable',
+// telf_responsable = '$telfResponsable',
+// enviado = '$enviado',
+// foto = '$foto'
+// WHERE
+//     cod_planilla = '$codPlanilla'
+// """;
+//     // return "INSERT INTO `edan` VALUES (DEFAULT', '$evento', '$claseEvento', '$fecha', '$hora', '$continua', '$nombre', '$cargo', '$dreccion', '$telFc', '$telCc', '$depto', '$municipio', '$comunidad', '$tieneCoord', '$coordenadaX', '$coordenadaY', '$aereo', '$terrestre', '$fluvial', '$ferroviario', '$partida', '$horaLlegada', '$clima', '$medioComunicacion', $viviendas, $familias, '$agua', '$basura', '$alcantarillado', '$electricidad', '$telecom', '$transporte', $heridos, $muertos, $desaparecidos, '$accionesPrioritarias', '$lugarLle', '$fechaLle', '$horaLle', '$responsableLle', '$cargoLle', '$telfFijoLle', '$telfCelLle', '$email', '$usuario', '$fechap', 'NO')";
+//   }
 }

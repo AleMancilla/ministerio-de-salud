@@ -202,7 +202,8 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                   '>>>>> == ${planillaModelo.enviado} == ${planillaModelo.evento} == ${planillaModelo.depto} == ${planillaModelo.municipio} == ${planillaModelo.comunidad} == ${planillaModelo.nomestablecimiento} == ${planillaModelo.fecha}');
               // if (demo.enviado == 'no') {
               if (planillaModelo.enviado == 'SI' ||
-                  planillaModelo.enviado == 'null') {
+                  planillaModelo.enviado == 'null' ||
+                  planillaModelo.enviado == 'NO') {
                 i++;
                 return Container(
                   color: _colorItem(i, planillaModelo.controllerEnviar!),
@@ -335,31 +336,71 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                           ),
                         ),
                         Expanded(
-                          flex: 2,
+                          flex: 1,
                           child: Container(
-                            padding: const EdgeInsets.all(5),
                             alignment: Alignment.centerLeft,
                             decoration: BoxDecoration(
                               border:
                                   Border.all(color: Colors.lightBlue.shade100),
                             ),
-                            child: ButtonWidget(
-                                text: 'Detalles de la planilla', ontap: () {}),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            alignment: Alignment.centerLeft,
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.lightBlue.shade100),
+                            child: IconButton(
+                              padding: const EdgeInsets.all(0),
+                              icon: const Icon(Icons.close),
+                              onPressed: () async {
+                                print(planillaModelo);
+
+                                DataBaseEdans db = DataBaseEdans();
+
+                                await db.initDB();
+                                await db.deletePLANILLA(planillaModelo);
+
+                                PlanillasNoEnviadasProvider
+                                    planillasNoEnviadasProvider =
+                                    Provider.of<PlanillasNoEnviadasProvider>(
+                                        context,
+                                        listen: false);
+
+                                planillasNoEnviadasProvider
+                                    .readDataBaseListPlanillas();
+                                Future.delayed(Duration(seconds: 1), () {
+                                  db.closeDB();
+                                });
+                                setState(() {});
+                                // navigatorPush(
+                                //     context,
+                                //     PagePlanillaAtencion(
+                                //       planillaDeAtencionFather: planillaModelo,
+                                //     ));
+                              },
                             ),
-                            child:
-                                ButtonWidget(text: 'Ver Informe', ontap: () {}),
                           ),
                         ),
+                        // Expanded(
+                        //   flex: 2,
+                        //   child: Container(
+                        //     padding: const EdgeInsets.all(5),
+                        //     alignment: Alignment.centerLeft,
+                        //     decoration: BoxDecoration(
+                        //       border:
+                        //           Border.all(color: Colors.lightBlue.shade100),
+                        //     ),
+                        //     child: ButtonWidget(
+                        //         text: 'Detalles de la planilla', ontap: () {}),
+                        //   ),
+                        // ),
+                        // Expanded(
+                        //   flex: 2,
+                        //   child: Container(
+                        //     padding: const EdgeInsets.all(5),
+                        //     alignment: Alignment.centerLeft,
+                        //     decoration: BoxDecoration(
+                        //       border:
+                        //           Border.all(color: Colors.lightBlue.shade100),
+                        //     ),
+                        //     child:
+                        //         ButtonWidget(text: 'Ver Informe', ontap: () {}),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -377,8 +418,8 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
             'Comunidad',
             'Establecimiento',
             'Fecha',
-            ' ',
-            'Detalle de planilla',
+            'Editar',
+            'Eliminar',
             'Ver Informe'
           ]),
         ),

@@ -7,6 +7,7 @@ class InputListOption extends StatefulWidget {
   final TextEditingController controller;
   final Function onselect;
   List<String> options;
+  String? optionalchosenValue;
 
   InputListOption({
     Key? key,
@@ -22,20 +23,21 @@ class InputListOption extends StatefulWidget {
 }
 
 class _InputListOptionState extends State<InputListOption> {
-  late String _chosenValue;
+  late String chosenValue;
   @override
   void initState() {
+    print('######################################################');
     super.initState();
 
     if (widget.controller.text == '- Seleccione una opción -' ||
         widget.controller.text == '' ||
         widget.controller.text.isEmpty) {
       widget.options = ['- Seleccione una opción -', ...widget.options];
-      _chosenValue = widget.options[0];
+      chosenValue = widget.options[0];
     } else {
-      _chosenValue = widget.controller.text;
+      chosenValue = widget.controller.text;
     }
-    widget.controller.text = _chosenValue;
+    widget.controller.text = chosenValue;
   }
 
   // _actualizarDato() {
@@ -140,7 +142,7 @@ class _InputListOptionState extends State<InputListOption> {
         child: DropdownButton<String>(
           focusColor: Colors.white,
           isExpanded: true,
-          value: _chosenValue,
+          value: chosenValue,
           //elevation: 5,
           style: const TextStyle(color: Colors.white),
           iconEnabledColor: Colors.black,
@@ -161,15 +163,14 @@ class _InputListOptionState extends State<InputListOption> {
           ),
           onChanged: (value) {
             setState(() {
-              _chosenValue = value!;
-              widget.controller.text = _chosenValue;
+              chosenValue = value!;
+              widget.controller.text = chosenValue;
             });
             widget.onselect();
           },
         ),
       );
     } catch (e) {
-      print('error ==== $e');
       return const CircularProgressIndicator();
     }
   }

@@ -20,7 +20,7 @@ class DataBaseEdans {
 
   initDB() async {
     _db = await openDatabase(
-      'my_database24.db',
+      'my_database26.db',
       version: 1,
       onCreate: (Database db, int newVersion) async {
         Batch batch = db.batch();
@@ -50,6 +50,15 @@ class DataBaseEdans {
 
   insertPLANILLA(ModelPlanillaDeAtencion planilla) async {
     int response = await _db.rawInsert(planilla.insertSql());
+    print('###### $response');
+  }
+
+  Future deletePLANILLA(ModelPlanillaDeAtencion planilla) async {
+    int response = await _db.delete(
+      'planilla_atencion',
+      where: 'cod_planilla = ?',
+      whereArgs: [planilla.codPlanilla],
+    );
     print('###### $response');
   }
 

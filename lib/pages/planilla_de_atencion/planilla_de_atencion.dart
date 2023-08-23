@@ -65,6 +65,7 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
       controllerHora.text = '${DateTime.now().hour}:${DateTime.now().minute}';
       planillasNoEnviadasProvider =
           Provider.of<PlanillasNoEnviadasProvider>(context, listen: false);
+      planillasNoEnviadasProvider.listDetalleDePlanilla.clear();
     } else {
       controllerCodPlanilla.text =
           (widget.planillaDeAtencionFather?.codPlanilla.toString() ?? '');
@@ -93,15 +94,51 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
     super.initState();
   }
 
+  List<FileAndDirection> listOfSelectedFile = [];
+
+  Future<File?> pickFile() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType
+          .custom, // Puedes ajustar el tipo de archivo según tus necesidades
+      allowedExtensions: ['jpg', 'pdf'], // Extensiones permitidas
+    );
+
+    if (result != null) {
+      // listOfSelectedFile.add(File(result.files.single.path ?? 'no_info'));
+      return File(result.files.single.path ?? 'no_info');
+      // selectedFile = File(result.files.single.path ?? 'no_info');
+    }
+    return null;
+  }
+
+  Future<String> saveImageOrPdfLocally(File file) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath = '${directory.path}/${file.path.split('/').last}';
+
+    final newFile = await file.copy(filePath);
+    return newFile.path;
+  }
+
+  Future _reloadListOfDepartamento() async {
+    listDepartamentos = await db.getListDepartamento();
+    await _reloadListOfMunicipios();
+  }
+
+  Future _reloadListOfMunicipios() async {
+    listMunicipio = await db.getListMunicipio(controllerDepartamento.text);
+    await _reloadListEstablecimientos();
+  }
+
+  Future _reloadListEstablecimientos() async {
+    listHospitales = await db.getListEstablecimientoDeSalud(
+        controllerDepartamento.text, controllerMunicipio.text);
+  }
+
   List<ModeloDetallePlanilla> listOfDetallesDePlanilla = [];
   Future<void> initDB() async {
     await db.initDB();
     Future.delayed(Duration.zero, () async {
-      listDepartamentos = await db.getListDepartamento();
-      listMunicipio = await db.getListMunicipio(controllerDepartamento.text);
-      listHospitales = await db.getListEstablecimientoDeSalud(
-          controllerDepartamento.text, controllerMunicipio.text);
-
+      await _reloadListOfDepartamento();
       if (widget.planillaDeAtencionFather != null) {
         print('''
 
@@ -122,6 +159,12 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                   ..diagnostico.text = e.diagnostico ?? ''
                   ..codDetalle = e.codDetalle)
                 .toList();
+        List<String> listPath =
+            (widget.planillaDeAtencionFather!.foto ?? '').split(',');
+        listPath.forEach((element) {
+          listOfSelectedFile
+              .add(FileAndDirection(file: File(element), direction: element));
+        });
       } else {
         String data = await db.getLastIDPlanillaAtencion();
 
@@ -142,6 +185,7 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.planillaDeAtencionFather);
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -188,16 +232,25 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
-                      Text('Fotos de planilla'),
+                      Text(
+                        'Fotos de planilla',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                        ),
+                      ),
                       Material(
                         child: InkWell(
                           onTap: () async {
-                            await pickFile();
-                            if (selectedFile != null) {
+                            File? _tempFile = await pickFile();
+                            if (_tempFile != null) {
                               final savedFilePath =
-                                  await saveImageOrPdfLocally(selectedFile!);
+                                  await saveImageOrPdfLocally(_tempFile);
                               print(
                                   '_____ $savedFilePath ______ savedFilePath');
+                              listOfSelectedFile.add(FileAndDirection(
+                                  file: _tempFile, direction: savedFilePath));
+                              setState(() {});
                               // Guarda la ruta `savedFilePath` en la base de datos Sqflite
                             }
                           },
@@ -216,23 +269,51 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                     ],
                   ),
                 ),
-                if (selectedFile != null)
-                  Row(
-                    children: [
-                      if (selectedFile != null &&
-                          selectedFile!.path.endsWith('.jpg'))
-                        Image.file(
-                          selectedFile!,
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
-                        ),
-                      SizedBox(width: 10),
-                      Text(selectedFile != null
-                          ? selectedFile!.path.split('/').last
-                          : 'No file selected'),
-                    ],
-                  ),
+                ...listOfSelectedFile
+                    .map((e) => Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: Row(
+                            children: [
+                              if (e.file.path.endsWith('.jpg') ||
+                                  e.file.path.endsWith('.jpeg') ||
+                                  e.file.path.endsWith('.png'))
+                                Image.file(
+                                  e.file,
+                                  width: 70,
+                                  height: 70,
+                                  fit: BoxFit.cover,
+                                ),
+                              if (e.file.path.endsWith('.pdf'))
+                                Container(
+                                  width: 70,
+                                  height: 70,
+                                  child: Icon(Icons.picture_as_pdf),
+                                ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(e.file.path.split('/').last),
+                                  Text(
+                                      '${double.parse((e.file.lengthSync() / 1024).toStringAsFixed(2))} Kb.',
+                                      style: TextStyle(color: Colors.grey)),
+                                ],
+                              )),
+                              SizedBox(width: 10),
+                              // Text('${(e.file.lengthSync() / 1024)} Kb.'),
+                              IconButton(
+                                onPressed: () {
+                                  listOfSelectedFile.remove(e);
+                                  setState(() {});
+                                },
+                                icon: Icon(Icons.close),
+                              )
+                            ],
+                          ),
+                        ))
+                    .toList(),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Row(
@@ -306,34 +387,51 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                             return;
                           }
 
+                          String _listOfFotos = '';
+                          listOfSelectedFile.forEach((element) {
+                            if (_listOfFotos != '') {
+                              _listOfFotos =
+                                  _listOfFotos + ',${element.file.path}';
+                            } else {
+                              _listOfFotos =
+                                  _listOfFotos + '${element.file.path}';
+                            }
+                          });
+                          print('vvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
+                          print(_listOfFotos);
+
                           ModelPlanillaDeAtencion modelo =
                               ModelPlanillaDeAtencion(
-                            usuario: prefs.userCarnet,
-                            codPlanilla: int.parse(controllerCodPlanilla.text),
-                            codEdan: 0,
-                            depto: controllerDepartamento.text,
-                            municipio: controllerMunicipio.text,
-                            comunidad: controllerComunidad.text,
-                            nomestablecimiento: controllerEstablecimiento.text,
-                            gerenciaRed: controllerGerenciaDeRed.text,
-                            poblacion: controllerPoblacion.text != ''
-                                ? int.parse(controllerPoblacion.text)
-                                : 0,
-                            fecha: controllerFecha.text,
-                            hora: controllerHora.text,
-                            evento: controllerEvento.text,
-                            nombreResponsable: controllerNombreResponsable.text,
-                            cargoResponsable: controllerCargoResponsable.text,
-                            telfResponsable: controllerTelfResponsable.text,
-                          );
+                                  usuario: prefs.userCarnet,
+                                  codPlanilla:
+                                      int.parse(controllerCodPlanilla.text),
+                                  codEdan: 0,
+                                  depto: controllerDepartamento.text,
+                                  municipio: controllerMunicipio.text,
+                                  comunidad: controllerComunidad.text,
+                                  nomestablecimiento:
+                                      controllerEstablecimiento.text,
+                                  gerenciaRed: controllerGerenciaDeRed.text,
+                                  poblacion: controllerPoblacion.text != ''
+                                      ? int.parse(controllerPoblacion.text)
+                                      : 0,
+                                  fecha: controllerFecha.text,
+                                  hora: controllerHora.text,
+                                  evento: controllerEvento.text,
+                                  nombreResponsable:
+                                      controllerNombreResponsable.text,
+                                  cargoResponsable:
+                                      controllerCargoResponsable.text,
+                                  telfResponsable:
+                                      controllerTelfResponsable.text,
+                                  foto: _listOfFotos,
+                                  enviado: 'NO');
 
                           // if (widget.edanModel != null) {
                           //   db.updateEDAN(modelo);
                           // } else {
                           //   db.insertEDAN(modelo);
                           // }
-                          print(planillasNoEnviadasProvider
-                              .listDetalleDePlanilla);
 
                           DataBaseEdans db = DataBaseEdans();
 
@@ -441,24 +539,18 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
               color: Colors.blueGrey.withOpacity(0.2),
               borderRadius: BorderRadius.circular(100)),
         ),
-        InputListOption(
+        InputExpanded(
           title: 'Evento',
           controller: controllerEvento,
           isRequired: true,
-          options: const [
-            'Evento 1',
-            'Evento 2',
-          ],
-          onselect: () {},
         ),
         InputListOption(
           title: 'Departamento',
           controller: controllerDepartamento,
           isRequired: true,
           onselect: () async {
-            print(' ====> ${controllerDepartamento.text}');
-            listMunicipio =
-                await db.getListMunicipio(controllerDepartamento.text);
+            // if()
+            await _reloadListOfMunicipios();
             // controllerMunicipio.text = listMunicipio[0];
             print('## ${controllerMunicipio.text}');
 
@@ -472,8 +564,9 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
           isRequired: true,
           onselect: () async {
             print('# ${controllerMunicipio.text}');
-            listHospitales = await db.getListEstablecimientoDeSalud(
-                controllerDepartamento.text, controllerMunicipio.text);
+            await _reloadListEstablecimientos();
+            // listHospitales = await db.getListEstablecimientoDeSalud(
+            //     controllerDepartamento.text, controllerMunicipio.text);
             setState(() {});
           },
           options: listMunicipio,
@@ -866,24 +959,12 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   }
 }
 
-File? selectedFile;
+class FileAndDirection {
+  File file;
+  String direction;
 
-Future<void> pickFile() async {
-  final result = await FilePicker.platform.pickFiles(
-    type: FileType
-        .custom, // Puedes ajustar el tipo de archivo según tus necesidades
-    allowedExtensions: ['jpg', 'pdf'], // Extensiones permitidas
-  );
-
-  if (result != null) {
-    selectedFile = File(result.files.single.path ?? 'no_info');
-  }
-}
-
-Future<String> saveImageOrPdfLocally(File file) async {
-  final directory = await getApplicationDocumentsDirectory();
-  final filePath = '${directory.path}/${file.path.split('/').last}';
-
-  final newFile = await file.copy(filePath);
-  return newFile.path;
+  FileAndDirection({
+    required this.file,
+    required this.direction,
+  });
 }

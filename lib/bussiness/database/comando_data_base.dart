@@ -157,7 +157,6 @@ Establecimiento TEXT DEFAULT NULL,
 coordenada_x TEXT NULL,
 coordenada_y TEXT NULL
 )""",
-
   """
 CREATE TABLE IF NOT EXISTS planilla_atencion (
 usuario TEXT DEFAULT NULL,
@@ -175,7 +174,8 @@ evento TEXT DEFAULT NULL,
 nombre_responsable TEXT DEFAULT NULL,
 cargo_responsable TEXT DEFAULT NULL,
 telf_responsable TEXT DEFAULT NULL,
-enviado TEXT DEFAULT NULL
+enviado TEXT DEFAULT NULL,
+foto TEXT DEFAULT NULL
 );
 """,
   """
