@@ -1,10 +1,13 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
+import 'package:ministerio_de_salud/bussiness/database/mysqlphp/mysql_data.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencion.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/modelo_planilla_detalle.dart';
 import 'package:ministerio_de_salud/bussiness/providers/planillas_no_enviadas_provider.dart';
 import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_de_atencion.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
@@ -160,11 +163,22 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                         ),
                         ButtonWidget(
                           ontap: () {
-                            // navigatorPush(context, const PageEdans());
+                            bool st = false;
                             planillasProvider.listPlanillasProvider
                                 .forEach((ModelPlanillaDeAtencion planillas) {
-                              print(planillas.controllerEnviar);
+                              if (planillas.controllerEnviar ?? false) {
+                                st = true;
+                              }
                             });
+
+                            if (st) {
+                              confirmDialog();
+                            } else {
+                              CoolAlert.show(
+                                  context: context,
+                                  type: CoolAlertType.error,
+                                  text: 'No selecionaste ningun edan a enviar');
+                            }
                           },
                           color: Colors.grey[200],
                           text: 'Enviar al PNCAD',
@@ -179,6 +193,198 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
           ],
         ),
       ),
+    );
+  }
+
+  confirmDialog() {
+    return showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          title: Text('Estas apunto de enviar los datos al servidor'),
+          actions: [
+            CupertinoButton(
+              child: Text(
+                'Cancelar',
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+            ),
+            CupertinoButton(
+              child: Text(
+                'Confirmar',
+                style: TextStyle(color: Colors.blue),
+              ),
+              onPressed: () async {
+                Navigator.pop(ctx);
+                await db.initDB();
+                planillasProvider.listPlanillasProvider
+                    .forEach((ModelPlanillaDeAtencion modelo) async {
+                  if (modelo.controllerEnviar ?? false) {
+                    int webPlanillaId = await getLastIdPlanilla();
+                    print(webPlanillaId);
+
+                    bool resp = await insertPlanilla(modelo);
+
+                    List<ModeloDetallePlanilla> _listOfDetallesDePlanilla =
+                        await db.getAllDetallesDePlanilla(
+                            int.parse(modelo.codPlanilla.toString()));
+                    print(_listOfDetallesDePlanilla);
+
+                    _listOfDetallesDePlanilla.forEach((element) async {
+                      element.codPlanilla = webPlanillaId;
+
+                      bool resp = await insertDetallePlanilla(element);
+                    });
+
+                    // #############################
+
+                    print(' LA RESPUESTA ES $resp');
+                    if (resp) {
+                      modelo.enviado = 'SI';
+                      modelo.controllerEnviar = false;
+
+                      // db.updateEDAN(edan);
+                      await db.initDB();
+                      await db.updatePlanilla(modelo.codPlanilla.toString());
+                      await db.closeDB();
+                      print(' xxxxxxxxxS ${modelo.enviado}');
+                      setState(() {});
+
+                      CoolAlert.show(
+                        context: context,
+                        type: CoolAlertType.success,
+                        text: 'Los datos se cargaron correctamente',
+                        // autoCloseDuration: Duration(seconds: 2),
+                        onConfirmBtnTap: () {
+                          setState(() {});
+                          // Future.delayed(Duration(seconds: 1), () {
+                          //   setState(() {});
+                          // });
+                          Navigator.of(context, rootNavigator: true).pop();
+                        },
+                      );
+                    } else {
+                      CoolAlert.show(
+                          context: context,
+                          type: CoolAlertType.error,
+                          text: 'Hubo un error al cargar los datos');
+                    }
+
+                    // List<Desastreestablecimiento> listDesastreestablecimiento =
+                    //     await db.getAllDaniosEstablecimientosDeSalud(
+                    //         int.parse(edan.codEdan.toString()));
+                    // print(listDesastreestablecimiento);
+                    // listDesastreestablecimiento.forEach((element) async {
+                    //   element.codEdan = webEdanId;
+
+                    //   bool resp = await insertdesastreestablecimiento(element);
+                    // });
+
+                  }
+                });
+
+                planillasProvider.setstate();
+                // edanProvider.listEdansProvider.forEach((ModelEdan edan) async {
+                //   print(edan.controllerEnviar);
+                //   if (edan.controllerEnviar) {
+                //     int webEdanId = await getLastIdEdan();
+                //     print('======== $webEdanId');
+                //     print(edan);
+                //     bool resp = await insertEdan(edan);
+
+                //     List<Desastreestablecimiento> listDesastreestablecimiento =
+                //         await db.getAllDaniosEstablecimientosDeSalud(
+                //             int.parse(edan.codEdan.toString()));
+                //     print(listDesastreestablecimiento);
+                //     listDesastreestablecimiento.forEach((element) async {
+                //       element.codEdan = webEdanId;
+
+                //       bool resp = await insertdesastreestablecimiento(element);
+                //     });
+
+                //     List<Danospersonaldesalud> listDanospersonaldesalud =
+                //         await db.getAllDaniosPersonalDeSalud(
+                //             int.parse(edan.codEdan.toString()));
+                //     listDanospersonaldesalud.forEach((element) async {
+                //       element.codEdan = webEdanId;
+
+                //       bool resp = await insertDaniosPersonalDeSalud(element);
+                //     });
+
+                //     // acciones realizadas hasta el momento
+                //     List<Desastreacciones> listDesastreacciones = await db
+                //         .getAllAcciones(int.parse(edan.codEdan.toString()));
+                //     listDesastreacciones.forEach((element) async {
+                //       element.codEdan = webEdanId;
+
+                //       bool resp = await insertDesastreacciones(element);
+                //     });
+
+                //     // acciones prioritarias para el control de la situacion
+                //     List<Desastreacciones2> listDesastreacciones2 = await db
+                //         .getAllAcciones2(int.parse(edan.codEdan.toString()));
+                //     listDesastreacciones2.forEach((element) async {
+                //       element.codEdan = webEdanId;
+
+                //       bool resp = await insertDesastreacciones2(element);
+                //     });
+
+                //     List<Desastrerequerimientos> listDesastrerequerimientos =
+                //         await db.getRequerimientoApoyo(
+                //             int.parse(edan.codEdan.toString()));
+                //     listDesastrerequerimientos.forEach((element) async {
+                //       element.codEdan = webEdanId;
+
+                //       bool resp = await insertDesastrerequerimientos(element);
+                //     });
+
+                //     // ######################################################
+                //     // ######################################################
+                //     // ######################################################
+
+                //     print(' LA RESPUESTA ES $resp');
+                //     if (resp) {
+                //       edan.enviado = 'SI';
+                //       edan.controllerEnviar = false;
+
+                //       // db.updateEDAN(edan);
+                //       await db.initDB();
+                //       await db.updateEviadoEDAN(edan.codEdan.toString());
+                //       await db.closeDB();
+                //       print(' xxxxxxxxxS ${edan.enviado}');
+                //       setState(() {});
+
+                //       CoolAlert.show(
+                //         context: context,
+                //         type: CoolAlertType.success,
+                //         text: 'Los datos se cargaron correctamente',
+                //         // autoCloseDuration: Duration(seconds: 2),
+                //         onConfirmBtnTap: () {
+                //           setState(() {});
+                //           print('DAMOS ASDASDASDAD');
+                //           // Future.delayed(Duration(seconds: 1), () {
+                //           //   setState(() {});
+                //           // });
+                //           Navigator.of(context, rootNavigator: true).pop();
+                //         },
+                //       );
+                //     } else {
+                //       CoolAlert.show(
+                //           context: context,
+                //           type: CoolAlertType.error,
+                //           text: 'Hubo un error al cargar los datos');
+                //     }
+                //   }
+                // });
+                // edanProvider.setstate();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -201,8 +407,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
               print(
                   '>>>>> == ${planillaModelo.enviado} == ${planillaModelo.evento} == ${planillaModelo.depto} == ${planillaModelo.municipio} == ${planillaModelo.comunidad} == ${planillaModelo.nomestablecimiento} == ${planillaModelo.fecha}');
               // if (demo.enviado == 'no') {
-              if (planillaModelo.enviado == 'SI' ||
-                  planillaModelo.enviado == 'null' ||
+              if (planillaModelo.enviado == 'null' ||
                   planillaModelo.enviado == 'NO') {
                 i++;
                 return Container(

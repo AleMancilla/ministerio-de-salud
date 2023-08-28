@@ -7,26 +7,28 @@ import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_accione
 import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_establecimiento.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_requerimientos.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencion.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/modelo_planilla_detalle.dart';
 
-String apiBase = "http://186.121.214.199";
-// String apiBase = "http://47.243.63.127/pncad"; //http://47.243.63.127/pncad/
+String apiBase = "http://186.121.214.199/ugred";
+// String apiBase = "http://192.168.1.200/ugred";
 
-getMethod() async {
-  try {
-    String theUrl = "$apiBase/getData.php";
-    var res = await http
-        .get(Uri.parse(theUrl), headers: {"Accept": "application/json"});
-    var responseBody = json.decode(res.body);
+// getMethod() async {
+//   try {
+//     String theUrl = "$apiBase/getData.php";
+//     var res = await http
+//         .get(Uri.parse(theUrl), headers: {"Accept": "application/json"});
+//     var responseBody = json.decode(res.body);
 
-    print("#######################################");
-    print(responseBody);
-    print("#######################################");
-  } catch (e) {
-    print("#######################################");
-    print(e);
-    print("#######################################");
-  }
-}
+//     print("#######################################");
+//     print(responseBody);
+//     print("#######################################");
+//   } catch (e) {
+//     print("#######################################");
+//     print(e);
+//     print("#######################################");
+//   }
+// }
 
 Future<int> getLastIdEdan() async {
   String theUrl = "$apiBase/getLastIdEdan.php";
@@ -35,10 +37,15 @@ Future<int> getLastIdEdan() async {
   var responseBody = json.decode(res.body);
   int lastId = int.parse(responseBody[0]['cod_edan'].toString()) + 1;
   return lastId;
+}
 
-  // print("####################################### $lastId");
-  // print(responseBody[0]['cod_edan']);
-  // print("#######################################");
+Future<int> getLastIdPlanilla() async {
+  String theUrl = "$apiBase/getLastIdPlanilla.php";
+  var res = await http
+      .get(Uri.parse(theUrl), headers: {"Accept": "application/json"});
+  var responseBody = json.decode(res.body);
+  int lastId = int.parse(responseBody[0]['cod_planilla'].toString()) + 1;
+  return lastId;
 }
 
 insertMethod(String codpersonal, String tipopersonal) async {
@@ -121,6 +128,45 @@ Future<bool> insertEdan(ModelEdan edan) async {
     "email": edan.email,
     "usuario": edan.usuario,
     "fechap": edan.fechap,
+
+// enviado
+// enfermedades
+// pacientes
+  });
+  print('=====');
+  print(res.body.toString());
+  print('=====');
+  print('===== ${res.body.toString().contains('Invalid')}');
+  if (res.body.toString().contains('Invalid')) {
+    print('- entro a true false');
+    return false;
+  } else {
+    print('- entro a false true');
+    return true;
+  }
+}
+
+Future<bool> insertPlanilla(ModelPlanillaDeAtencion modelo) async {
+  String theUrl = "$apiBase/insertPlanilla.php";
+  var res = await http.post(Uri.parse(theUrl), headers: {
+    "Accept": "application/json"
+  }, body: {
+    "usuario": modelo.usuario,
+    "cod_edan": modelo.codEdan.toString(),
+    "depto": modelo.depto,
+    "municipio": modelo.municipio,
+    "comunidad": modelo.comunidad,
+    "nomestablecimiento": modelo.nomestablecimiento,
+    "gerencia_red": modelo.gerenciaRed,
+    "poblacion": modelo.poblacion.toString(),
+    "fecha": modelo.fecha,
+    "hora": modelo.hora,
+    "evento": modelo.evento,
+    "nombre_responsable": modelo.nombreResponsable,
+    "cargo_responsable": modelo.cargoResponsable,
+    "telf_responsable": modelo.telfResponsable,
+    "enviado": modelo.enviado,
+    "foto": modelo.foto,
   });
   print('=====');
   print(res.body.toString());
@@ -151,6 +197,30 @@ Future<bool> insertdesastreestablecimiento(Desastreestablecimiento data) async {
   print(res.body.toString());
   print('=====');
   print('===== ${res.body.toString().contains('Invalid')}');
+  if (res.body.toString().contains('Invalid')) {
+    print('- entro a true false');
+    return false;
+  } else {
+    print('- entro a false true');
+    return true;
+  }
+}
+
+Future<bool> insertDetallePlanilla(ModeloDetallePlanilla element) async {
+  String theUrl = "$apiBase/insertDetallePlanilla.php";
+  var res = await http.post(Uri.parse(theUrl), headers: {
+    "Accept": "application/json"
+  }, body: {
+    "cod_planilla": element.codPlanilla.toString(),
+    "edad": element.edad.toString(),
+    "sexo": element.sexo,
+    "diagnostico": element.diagnostico,
+    "cantidad": element.cantidad.toString(),
+  });
+  print('1111=====');
+  print(res.body.toString());
+  print('1111=====');
+  print('1111===== ${res.body.toString().contains('Invalid')}');
   if (res.body.toString().contains('Invalid')) {
     print('- entro a true false');
     return false;

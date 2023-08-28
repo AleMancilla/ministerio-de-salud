@@ -236,16 +236,19 @@ class _PageNotSendState extends State<PageNotSend> {
               onPressed: () async {
                 Navigator.pop(ctx);
                 await db.initDB();
+
                 edanProvider.listEdansProvider.forEach((ModelEdan edan) async {
                   print(edan.controllerEnviar);
                   if (edan.controllerEnviar) {
                     int webEdanId = await getLastIdEdan();
                     print('======== $webEdanId');
+                    print(edan);
                     bool resp = await insertEdan(edan);
 
                     List<Desastreestablecimiento> listDesastreestablecimiento =
                         await db.getAllDaniosEstablecimientosDeSalud(
                             int.parse(edan.codEdan.toString()));
+                    print(listDesastreestablecimiento);
                     listDesastreestablecimiento.forEach((element) async {
                       element.codEdan = webEdanId;
 
@@ -260,6 +263,8 @@ class _PageNotSendState extends State<PageNotSend> {
 
                       bool resp = await insertDaniosPersonalDeSalud(element);
                     });
+
+                    // acciones realizadas hasta el momento
                     List<Desastreacciones> listDesastreacciones = await db
                         .getAllAcciones(int.parse(edan.codEdan.toString()));
                     listDesastreacciones.forEach((element) async {
@@ -267,6 +272,8 @@ class _PageNotSendState extends State<PageNotSend> {
 
                       bool resp = await insertDesastreacciones(element);
                     });
+
+                    // acciones prioritarias para el control de la situacion
                     List<Desastreacciones2> listDesastreacciones2 = await db
                         .getAllAcciones2(int.parse(edan.codEdan.toString()));
                     listDesastreacciones2.forEach((element) async {
@@ -274,6 +281,7 @@ class _PageNotSendState extends State<PageNotSend> {
 
                       bool resp = await insertDesastreacciones2(element);
                     });
+
                     List<Desastrerequerimientos> listDesastrerequerimientos =
                         await db.getRequerimientoApoyo(
                             int.parse(edan.codEdan.toString()));
@@ -282,6 +290,11 @@ class _PageNotSendState extends State<PageNotSend> {
 
                       bool resp = await insertDesastrerequerimientos(element);
                     });
+
+                    // ######################################################
+                    // ######################################################
+                    // ######################################################
+
                     print(' LA RESPUESTA ES $resp');
                     if (resp) {
                       edan.enviado = 'SI';

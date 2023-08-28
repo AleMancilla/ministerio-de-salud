@@ -162,8 +162,10 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
         List<String> listPath =
             (widget.planillaDeAtencionFather!.foto ?? '').split(',');
         listPath.forEach((element) {
-          listOfSelectedFile
-              .add(FileAndDirection(file: File(element), direction: element));
+          File _tempFile = File(element);
+          FileAndDirection fileAndDirection =
+              FileAndDirection(file: _tempFile, direction: element);
+          listOfSelectedFile.add(fileAndDirection);
         });
       } else {
         String data = await db.getLastIDPlanillaAtencion();
@@ -269,51 +271,55 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                     ],
                   ),
                 ),
-                ...listOfSelectedFile
-                    .map((e) => Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: Row(
+                ...listOfSelectedFile.map((e) {
+                  try {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: Row(
+                        children: [
+                          if (e.file.path.endsWith('.jpg') ||
+                              e.file.path.endsWith('.jpeg') ||
+                              e.file.path.endsWith('.png'))
+                            Image.file(
+                              e.file,
+                              width: 70,
+                              height: 70,
+                              fit: BoxFit.cover,
+                            ),
+                          if (e.file.path.endsWith('.pdf'))
+                            Container(
+                              width: 70,
+                              height: 70,
+                              child: Icon(Icons.picture_as_pdf),
+                            ),
+                          SizedBox(width: 10),
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              if (e.file.path.endsWith('.jpg') ||
-                                  e.file.path.endsWith('.jpeg') ||
-                                  e.file.path.endsWith('.png'))
-                                Image.file(
-                                  e.file,
-                                  width: 70,
-                                  height: 70,
-                                  fit: BoxFit.cover,
-                                ),
-                              if (e.file.path.endsWith('.pdf'))
-                                Container(
-                                  width: 70,
-                                  height: 70,
-                                  child: Icon(Icons.picture_as_pdf),
-                                ),
-                              SizedBox(width: 10),
-                              Expanded(
-                                  child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(e.file.path.split('/').last),
-                                  Text(
-                                      '${double.parse((e.file.lengthSync() / 1024).toStringAsFixed(2))} Kb.',
-                                      style: TextStyle(color: Colors.grey)),
-                                ],
-                              )),
-                              SizedBox(width: 10),
-                              // Text('${(e.file.lengthSync() / 1024)} Kb.'),
-                              IconButton(
-                                onPressed: () {
-                                  listOfSelectedFile.remove(e);
-                                  setState(() {});
-                                },
-                                icon: Icon(Icons.close),
-                              )
+                              Text(e.file.path.split('/').last),
+                              Text(
+                                  '${double.parse((e.file.lengthSync() / 1024).toStringAsFixed(2))} Kb.',
+                                  style: TextStyle(color: Colors.grey)),
                             ],
-                          ),
-                        ))
-                    .toList(),
+                          )),
+                          SizedBox(width: 10),
+                          // Text('${(e.file.lengthSync() / 1024)} Kb.'),
+                          IconButton(
+                            onPressed: () {
+                              listOfSelectedFile.remove(e);
+                              setState(() {});
+                            },
+                            icon: Icon(Icons.close),
+                          )
+                        ],
+                      ),
+                    );
+                  } catch (e) {
+                    return Container();
+                  }
+                }).toList(),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Row(

@@ -111,8 +111,15 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
 
   updateEviadoEDAN(String idedan) async {
     print('###### entro a update');
+    int response = await _db
+        .rawUpdate("UPDATE edan SET enviado = 'SI' WHERE cod_edan = '$idedan'");
+    print('### y saluio con esto ### $response');
+  }
+
+  updatePlanilla(String idPlanilla) async {
+    print('###### entro a update');
     int response = await _db.rawUpdate(
-        "UPDATE edan SET enviado = 'SI',evento = 'demomo' WHERE cod_edan = '$idedan'");
+        "UPDATE planilla_atencion SET enviado = 'SI' WHERE cod_planilla = '$idPlanilla'");
     print('### y saluio con esto ### $response');
   }
   //INSERT INTO evento VALUES ('1', 'Sequia', 'Otros', '22')

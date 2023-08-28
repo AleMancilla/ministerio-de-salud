@@ -22,7 +22,7 @@ void main() async {
   await prefs.initPreferences();
   // final mysql = MySqlConnect();
   // await mysql.initDataBaseMySql();
-  getMethod();
+  // getMethod();
   if (Platform.isWindows || Platform.isLinux) {
     // Initialize FFI
     sqfliteFfiInit();
