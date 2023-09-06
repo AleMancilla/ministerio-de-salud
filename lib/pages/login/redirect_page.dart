@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ministerio_de_salud/bussiness/database/database.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_usuarios.dart';
 import 'package:ministerio_de_salud/pages/login/login_page.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
@@ -64,7 +66,7 @@ class _RedirectPageState extends State<RedirectPage> {
             child: ButtonWidget(
                 text: 'Ir a la version Web',
                 fontSize: 16,
-                ontap: () {
+                ontap: () async {
                   launchURL('http://186.121.214.199/ugred/login.php');
                 }),
           ),

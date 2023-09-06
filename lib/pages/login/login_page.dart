@@ -1,5 +1,6 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
+import 'package:ministerio_de_salud/bussiness/database/database.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_not_send.dart';
 import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_de_atencion.dart';
 import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_no_enviada.dart';
@@ -53,6 +54,7 @@ class _LoginPageState extends State<LoginPage> {
 
   TextEditingController controllerCarnet = TextEditingController();
   TextEditingController controllerNivel = TextEditingController();
+  TextEditingController controllerPass = TextEditingController();
 
   Widget _bodyLogin() {
     return Column(
@@ -64,27 +66,37 @@ class _LoginPageState extends State<LoginPage> {
           constraints: const BoxConstraints(maxWidth: 450),
           child: InputTextFielfWidget(
             controller: controllerCarnet,
-            hint: 'Usuario (carnet)',
+            hint: 'Usuario',
           ),
         ),
         Container(
           padding: const EdgeInsets.all(8.0),
           height: 45,
           constraints: const BoxConstraints(maxWidth: 450),
-          // decoration: BoxDecoration(
-          //   borderRadius: BorderRadius.circular(1),
-          //   border: Border.all(color: Colors.grey),
-          // ),
-          child: SubListInputListOption(
-            controller: controllerNivel,
-            options: const ['Reportero Edan', 'Planilla de atencion'],
+          child: InputTextFielfWidget(
+            controller: controllerPass,
+            hint: 'Contraseña',
           ),
         ),
+        SizedBox(height: 20),
+        // Container(
+        //   padding: const EdgeInsets.all(8.0),
+        //   height: 45,
+        //   constraints: const BoxConstraints(maxWidth: 450),
+        //   // decoration: BoxDecoration(
+        //   //   borderRadius: BorderRadius.circular(1),
+        //   //   border: Border.all(color: Colors.grey),
+        //   // ),
+        //   child: SubListInputListOption(
+        //     controller: controllerNivel,
+        //     options: const ['Reportero Edan', 'Planilla de atencion'],
+        //   ),
+        // ),
         ButtonWidget(
           text: 'Iniciar Sesión',
-          ontap: () {
-            if (controllerCarnet.text.length < 3 ||
-                controllerNivel.text == '- Seleccione una opción -') {
+          ontap: () async {
+            if (controllerCarnet.text.length < 2 ||
+                controllerPass.text.length < 2) {
               CoolAlert.show(
                 context: context,
                 type: CoolAlertType.warning,
@@ -92,30 +104,47 @@ class _LoginPageState extends State<LoginPage> {
                 text: 'Por favor, llena correctamente los datos',
               );
             } else {
-              prefs.userIsRegister = true;
-              prefs.userCarnet = controllerCarnet.text;
-              prefs.userNivel = _nivel(controllerNivel.text);
-              CoolAlert.show(
-                  context: context,
-                  type: CoolAlertType.loading,
-                  text: 'Cargando..');
-              Future.delayed(const Duration(seconds: 1), () {
-                Navigator.pop(context);
-                if (prefs.userNivel == '1') {
-                  navigatorPushReplacement(context, const PageNotSend());
-                } else if (prefs.userNivel == '2') {
-                  navigatorPushReplacement(context, const PlanillaNoEnviada());
-                } else {
-                  CoolAlert.show(
+              DataBaseEdans db = DataBaseEdans();
+              await db.initDB();
+              String modelUsuarios = await db.getUsuarioLevel(
+                  controllerCarnet.text, controllerPass.text);
+              print(modelUsuarios);
+              db.closeDB();
+
+              if (modelUsuarios != 'null') {
+                prefs.userIsRegister = true;
+                prefs.userCarnet = controllerCarnet.text;
+                prefs.userNivel = modelUsuarios;
+                CoolAlert.show(
                     context: context,
-                    type: CoolAlertType.error,
-                    title: 'Oops...',
-                    text:
-                        'Algo salio mal, porfavor contactate con el administrador',
-                    loopAnimation: false,
-                  );
-                }
-              });
+                    type: CoolAlertType.loading,
+                    text: 'Cargando..');
+                Future.delayed(const Duration(seconds: 1), () {
+                  Navigator.pop(context);
+                  if (prefs.userNivel == '1') {
+                    navigatorPushReplacement(context, const PageNotSend());
+                  } else if (prefs.userNivel == '2') {
+                    navigatorPushReplacement(
+                        context, const PlanillaNoEnviada());
+                  } else {
+                    CoolAlert.show(
+                      context: context,
+                      type: CoolAlertType.error,
+                      title: 'Oops...',
+                      text:
+                          'Algo salio mal, porfavor contactate con el administrador, su nivel de usuario no esta habilitado para la app',
+                      loopAnimation: false,
+                    );
+                  }
+                });
+              } else {
+                CoolAlert.show(
+                  context: context,
+                  type: CoolAlertType.warning,
+                  title: 'Alerta!!',
+                  text: 'Usuario no encontrado, verifique sus datos',
+                );
+              }
             }
           },
         )

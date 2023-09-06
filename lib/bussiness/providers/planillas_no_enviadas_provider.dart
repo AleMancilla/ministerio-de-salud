@@ -20,6 +20,9 @@ class PlanillasNoEnviadasProvider with ChangeNotifier {
     DataBaseEdans db = DataBaseEdans();
     await db.initDB();
     _listPlanillasProvider = await db.getAllPlanillaDeAtencion();
+    _listPlanillasProvider = _listPlanillasProvider
+        .where((element) => element.enviado != 'SI')
+        .toList();
     print(_listPlanillasProvider);
     db.closeDB();
     notifyListeners();

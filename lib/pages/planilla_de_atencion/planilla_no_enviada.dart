@@ -124,6 +124,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
           children: [
             const SizedBox(width: double.infinity),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 planillasProvider.listPlanillasProvider.length > 0
                     ? Container(
@@ -224,7 +225,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                     .forEach((ModelPlanillaDeAtencion modelo) async {
                   if (modelo.controllerEnviar ?? false) {
                     int webPlanillaId = await getLastIdPlanilla();
-                    print(webPlanillaId);
+                    print(' LAST ID ===========>>>> $webPlanillaId');
 
                     bool resp = await insertPlanilla(modelo);
 

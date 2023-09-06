@@ -10,8 +10,8 @@ import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencion.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/modelo_planilla_detalle.dart';
 
-String apiBase = "http://186.121.214.199/ugred";
-// String apiBase = "http://192.168.1.200/ugred";
+String apiBase = "http://186.121.214.199/ugred"; // PROD
+// String apiBase = "http://192.168.1.200/ugred"; //dev
 
 // getMethod() async {
 //   try {
@@ -148,6 +148,12 @@ Future<bool> insertEdan(ModelEdan edan) async {
 
 Future<bool> insertPlanilla(ModelPlanillaDeAtencion modelo) async {
   String theUrl = "$apiBase/insertPlanilla.php";
+
+  if (modelo.fecha.toString().contains('/')) {
+    List fec = modelo.fecha.toString().split('/');
+    modelo.fecha = '${fec[2]}-${fec[1]}-${fec[0]}';
+  }
+  print(modelo);
   var res = await http.post(Uri.parse(theUrl), headers: {
     "Accept": "application/json"
   }, body: {

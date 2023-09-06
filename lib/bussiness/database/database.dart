@@ -12,6 +12,7 @@ import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_evento.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_lista_sintomas.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencion.dart';
+import 'package:ministerio_de_salud/bussiness/models.dart/model_usuarios.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/modelo_planilla_detalle.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -20,7 +21,7 @@ class DataBaseEdans {
 
   initDB() async {
     _db = await openDatabase(
-      'my_database26.db',
+      'my_database31.db',
       version: 1,
       onCreate: (Database db, int newVersion) async {
         Batch batch = db.batch();
@@ -139,6 +140,24 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
     List<Map<String, dynamic>> result = await _db.query('lista_sintomas');
     return result.map((map) => ModelListaSintomas.fromMap(map)).toList();
   } //ModelPlanillaDeAtencion
+
+  Future<List<ModelUsuarios>> getAllUsuarios() async {
+    List<Map<String, dynamic>> result = await _db.query('usuarios');
+    return result.map((map) => ModelUsuarios.fromMap(map)).toList();
+  } //ModelPlanillaDeAtencion
+
+  Future<String> getUsuarioLevel(String usuario, String pass) async {
+    var result = await _db.rawQuery(
+        'SELECT nivel_usuario as nivel from usuarios where usuario like \'${usuario}\' and contraseña like \'${pass}\'');
+    print('$result ---****');
+    if (result.length > 0) {
+      return result[0]['nivel'].toString() != 'null'
+          ? result[0]['nivel'].toString()
+          : '0';
+    } else {
+      return 'null';
+    }
+  }
 
   Future<List<ModelPlanillaDeAtencion>> getAllPlanillaDeAtencion() async {
     List<Map<String, dynamic>> result = await _db.query('planilla_atencion');
