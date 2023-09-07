@@ -7,6 +7,7 @@ import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_no_envia
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/button_widget.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/drawer.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/input_text_field.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_list_option.dart';
 import 'package:ministerio_de_salud/utils/navigator_route.dart';
@@ -28,11 +29,25 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
         appBar: PreferredSize(
           child: AppBarWidget(
-            size: size,
             backActivate: true,
+            size: size,
+            ontap: () {
+              showDialog(
+                context: context,
+                builder: (context) => InkWellDrawer(),
+              );
+              // InkWellDrawer();
+            },
           ),
           preferredSize: const Size(double.infinity, 50),
         ),
+        // appBar: PreferredSize(
+        //   child: AppBarWidget(
+        //     size: size,
+        //     backActivate: true,
+        //   ),
+        //   preferredSize: const Size(double.infinity, 50),
+        // ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(

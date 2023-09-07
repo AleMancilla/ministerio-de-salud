@@ -15,6 +15,9 @@ import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencio
 import 'package:ministerio_de_salud/bussiness/models.dart/model_usuarios.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/modelo_planilla_detalle.dart';
 import 'package:sqflite/sqflite.dart';
+import 'dart:convert';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 class DataBaseEdans {
   late Database _db;
@@ -376,5 +379,70 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
       // whereArgs: [id]
     );
     return result.map((map) => Desastrerequerimientos.fromMap(map)).toList();
+  }
+
+// Función para abrir la base de datos SQLite
+  // Future<Database> openDatabasess() async {
+  //   final databasePath = await getDatabasesPath();
+  //   final databasePathWithName = join(databasePath, 'my_database.db');
+  //   return openDatabase(databasePathWithName, version: 1,
+  //       onCreate: (Database db, int version) async {
+  //     // Crear la tabla "usuarios" si no existe
+  //     await db.execute('''
+  //     CREATE TABLE IF NOT EXISTS usuarios (
+  //       usuario_id INTEGER PRIMARY KEY,
+  //       nombre_completo TEXT,
+  //       cargo TEXT,
+  //       email TEXT,
+  //       contraseña TEXT,
+  //       nivel_usuario INTEGER,
+  //       usuario TEXT,
+  //       activado TEXT
+  //     )
+  //   ''');
+  //   });
+  // }
+
+// Función para actualizar la tabla de usuarios con datos del JSON
+  Future<void> updateUsuariosFromJson(String jsonData) async {
+    // final database = await openDatabase();
+    final List<dynamic> usuariosData = json.decode(jsonData);
+
+    for (final userData in usuariosData) {
+      final usuarioId = userData['usuario_id'];
+      final nombreCompleto = userData['nombre_completo'];
+      final cargo = userData['cargo'];
+      final email = userData['email'];
+      final contrasenia = userData['contraseña'];
+      final nivelUsuario = userData['nivel_usuario'];
+      final usuario = userData['usuario'];
+      final activado = userData['activado'];
+
+      await _db.rawInsert(
+        '''
+      INSERT OR REPLACE INTO usuarios (
+        usuario_id,
+        nombre_completo,
+        cargo,
+        email,
+        contraseña,
+        nivel_usuario,
+        usuario,
+        activado
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      ''',
+        [
+          usuarioId,
+          nombreCompleto,
+          cargo,
+          email,
+          contrasenia,
+          nivelUsuario,
+          usuario,
+          activado,
+        ],
+      );
+    }
   }
 }

@@ -5,6 +5,7 @@ import 'package:ministerio_de_salud/pages/login/login_page.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/app_bar_widget.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/body_app_bar.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/button_widget.dart';
+import 'package:ministerio_de_salud/pages/widgets/unit/drawer.dart';
 import 'package:ministerio_de_salud/utils/navigator_route.dart';
 import 'package:ministerio_de_salud/utils/user_preferens.dart';
 
@@ -23,9 +24,21 @@ class _RedirectPageState extends State<RedirectPage> {
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
-          child: AppBarWidget(size: size),
+          child: AppBarWidget(
+            size: size,
+            ontap: () {
+              showDialog(
+                context: context,
+                builder: (context) => InkWellDrawer(),
+              );
+              // InkWellDrawer();
+            },
+          ),
           preferredSize: const Size(double.infinity, 50),
-        ),
+        ), // appBar: PreferredSize(
+        //   child: AppBarWidget(size: size),
+        //   preferredSize: const Size(double.infinity, 50),
+        // ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(

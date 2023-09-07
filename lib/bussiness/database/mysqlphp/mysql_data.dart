@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:ministerio_de_salud/bussiness/database/database.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_danos_personal_de_salud.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_acciones.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_acciones2.dart';
@@ -37,6 +38,25 @@ Future<int> getLastIdEdan() async {
   var responseBody = json.decode(res.body);
   int lastId = int.parse(responseBody[0]['cod_edan'].toString()) + 1;
   return lastId;
+}
+
+Future<bool> upgradeAllUsers() async {
+  String theUrl = "$apiBase/getUsers.php";
+  var res = await http
+      .get(Uri.parse(theUrl), headers: {"Accept": "application/json"});
+  try {
+    var responseBody = json.decode(res.body);
+    // List<Map> dataUsers = responseBody;
+    DataBaseEdans db = DataBaseEdans();
+
+    await db.initDB();
+    await db.updateUsuariosFromJson(res.body);
+    await db.closeDB();
+    // int lastId = int.parse(responseBody[0]['cod_edan'].toString()) + 1;
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 
 Future<int> getLastIdPlanilla() async {

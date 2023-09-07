@@ -68,14 +68,14 @@ class _PageNotSendState extends State<PageNotSend> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        drawer: const InkWellDrawer(),
+        drawer: Container(),
         appBar: PreferredSize(
           child: AppBarWidget(
             size: size,
             ontap: () {
               showDialog(
                 context: context,
-                builder: (context) => InkWellDrawer(),
+                builder: (context) => Container(),
               );
               // InkWellDrawer();
             },
@@ -473,44 +473,6 @@ class _PageNotSendState extends State<PageNotSend> {
         return Colors.white;
       }
     }
-  }
-}
-
-class InkWellDrawer extends StatelessWidget {
-  const InkWellDrawer({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext ctxt) {
-    Size size = MediaQuery.of(ctxt).size;
-    return Material(
-      color: Colors.transparent,
-      child: Row(
-        children: [
-          Container(
-            height: size.height,
-            width: 250,
-            color: Colors.orange,
-            child: Column(
-              children: <Widget>[
-                Text(
-                  'Flutter',
-                  style: TextStyle(color: Colors.white, fontSize: 25.0),
-                )
-              ],
-            ),
-          ),
-          Expanded(
-              child: GestureDetector(
-            onTap: () {
-              Navigator.pop(ctxt);
-            },
-            child: Container(
-              color: Colors.transparent,
-            ),
-          ))
-        ],
-      ),
-    );
   }
 }
 
