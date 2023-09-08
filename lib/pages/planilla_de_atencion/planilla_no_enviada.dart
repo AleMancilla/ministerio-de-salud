@@ -407,7 +407,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                 .map((ModelPlanillaDeAtencion planillaModelo) {
               print(
                   '>>>>> == ${planillaModelo.enviado} == ${planillaModelo.evento} == ${planillaModelo.depto} == ${planillaModelo.municipio} == ${planillaModelo.comunidad} == ${planillaModelo.nomestablecimiento} == ${planillaModelo.fecha}');
-              // if (demo.enviado == 'no') {
+              // if (true) {
               if (planillaModelo.enviado == 'null' ||
                   planillaModelo.enviado == 'NO') {
                 i++;

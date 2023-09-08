@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:ministerio_de_salud/bussiness/database/database.dart';
@@ -10,6 +11,7 @@ import 'package:ministerio_de_salud/bussiness/models.dart/model_desastre_requeri
 import 'package:ministerio_de_salud/bussiness/models.dart/model_edan.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencion.dart';
 import 'package:ministerio_de_salud/bussiness/models.dart/modelo_planilla_detalle.dart';
+import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_de_atencion.dart';
 
 String apiBase = "http://186.121.214.199/ugred"; // PROD
 // String apiBase = "http://192.168.1.200/ugred"; //dev
@@ -174,6 +176,20 @@ Future<bool> insertPlanilla(ModelPlanillaDeAtencion modelo) async {
     modelo.fecha = '${fec[2]}-${fec[1]}-${fec[0]}';
   }
   print(modelo);
+  List<String> listPath = (modelo.foto ?? '').split(',');
+  String namesToFiles = '';
+  int i = 0;
+  for (var element in listPath) {
+    List stringNames = element.split('/');
+    int len = stringNames.length - 1;
+    if (i == 0) {
+      namesToFiles = namesToFiles + stringNames[len];
+    } else {
+      namesToFiles = namesToFiles + ", " + stringNames[len];
+    }
+    i = i + 1;
+  }
+
   var res = await http.post(Uri.parse(theUrl), headers: {
     "Accept": "application/json"
   }, body: {
@@ -192,8 +208,20 @@ Future<bool> insertPlanilla(ModelPlanillaDeAtencion modelo) async {
     "cargo_responsable": modelo.cargoResponsable,
     "telf_responsable": modelo.telfResponsable,
     "enviado": modelo.enviado,
-    "foto": modelo.foto,
+    "foto": namesToFiles,
   });
+
+  for (var element in listPath) {
+    File _tempFile = File(element);
+    FileAndDirection fileAndDirection =
+        FileAndDirection(file: _tempFile, direction: element);
+    print(' ====== enviando file');
+    await uploadFile(_tempFile);
+    print(' ====== termino enviando file');
+
+    // listOfSelectedFile.add(fileAndDirection);
+  }
+
   print('=====');
   print(res.body.toString());
   print('=====');
@@ -204,6 +232,20 @@ Future<bool> insertPlanilla(ModelPlanillaDeAtencion modelo) async {
   } else {
     print('- entro a false true');
     return true;
+  }
+}
+
+Future<void> uploadFile(File file) async {
+  var uri = Uri.parse('$apiBase/uploadImage.php');
+
+  var request = http.MultipartRequest('POST', uri)
+    ..files.add(await http.MultipartFile.fromPath('archivo', file.path));
+
+  var response = await request.send();
+  if (response.statusCode == 200) {
+    print('Archivo subido con éxito');
+  } else {
+    print('Error al subir el archivo: ${response.reasonPhrase}');
   }
 }
 
