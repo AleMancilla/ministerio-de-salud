@@ -94,7 +94,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
         connectionInternet = Container(
           width: double.infinity,
           child: const Text(
-            'No tienes coneccion a internet',
+            'No tienes conexión a internet',
             style: TextStyle(color: Colors.white),
           ),
           color: Colors.red,
@@ -182,7 +182,7 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                             }
                           },
                           color: Colors.grey[200],
-                          text: 'Enviar al PNCAD',
+                          text: 'Enviar a la UGRED',
                           textcolor: Colors.red,
                         ),
                       ],
@@ -220,14 +220,23 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
               ),
               onPressed: () async {
                 Navigator.pop(ctx);
+                CoolAlert.show(
+                    context: context,
+                    type: CoolAlertType.loading,
+                    text: 'Cargando..');
+                bool cerrar = true;
                 await db.initDB();
-                planillasProvider.listPlanillasProvider
-                    .forEach((ModelPlanillaDeAtencion modelo) async {
+                for (var modelo in planillasProvider.listPlanillasProvider) {
                   if (modelo.controllerEnviar ?? false) {
                     int webPlanillaId = await getLastIdPlanilla();
                     print(' LAST ID ===========>>>> $webPlanillaId');
 
-                    bool resp = await insertPlanilla(modelo);
+                    bool resp = await insertPlanilla(modelo)
+                        .timeout(
+                          Duration(seconds: 10),
+                          onTimeout: () => false,
+                        )
+                        .onError((error, stackTrace) => false);
 
                     List<ModeloDetallePlanilla> _listOfDetallesDePlanilla =
                         await db.getAllDetallesDePlanilla(
@@ -253,21 +262,9 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
                       await db.closeDB();
                       print(' xxxxxxxxxS ${modelo.enviado}');
                       setState(() {});
-
-                      CoolAlert.show(
-                        context: context,
-                        type: CoolAlertType.success,
-                        text: 'Los datos se cargaron correctamente',
-                        // autoCloseDuration: Duration(seconds: 2),
-                        onConfirmBtnTap: () {
-                          setState(() {});
-                          // Future.delayed(Duration(seconds: 1), () {
-                          //   setState(() {});
-                          // });
-                          Navigator.of(context, rootNavigator: true).pop();
-                        },
-                      );
                     } else {
+                      cerrar = false;
+                      Navigator.pop(context);
                       CoolAlert.show(
                           context: context,
                           type: CoolAlertType.error,
@@ -283,9 +280,26 @@ class _PageNotSendState extends State<PlanillaNoEnviada> {
 
                     //   bool resp = await insertdesastreestablecimiento(element);
                     // });
-
                   }
-                });
+                }
+                print(' ---- salio -----');
+                if (cerrar) {
+                  Navigator.pop(context);
+
+                  CoolAlert.show(
+                    context: context,
+                    type: CoolAlertType.success,
+                    text: 'Los datos se cargaron correctamente',
+                    // autoCloseDuration: Duration(seconds: 2),
+                    onConfirmBtnTap: () {
+                      setState(() {});
+                      // Future.delayed(Duration(seconds: 1), () {
+                      //   setState(() {});
+                      // });
+                      Navigator.of(context, rootNavigator: true).pop();
+                    },
+                  );
+                }
 
                 planillasProvider.setstate();
                 // edanProvider.listEdansProvider.forEach((ModelEdan edan) async {

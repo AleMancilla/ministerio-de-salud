@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ministerio_de_salud/pages/login/caratula_page.dart';
 import 'package:ministerio_de_salud/pages/login/login_page.dart';
 import 'package:ministerio_de_salud/pages/login/redirect_page.dart';
 import 'package:ministerio_de_salud/utils/navigator_route.dart';
@@ -83,7 +84,8 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           prefs.userIsRegister = false;
           prefs.userCarnet = '';
           prefs.userNivel = '0';
-          navigatorPushReplacement(context, const RedirectPage());
+          // navigatorPushReplacement(context, const RedirectPage());
+          navigatorPushReplacement(context, const CaratulaPage());
           // print('object');
         },
       );

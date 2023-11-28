@@ -12,6 +12,7 @@ import 'package:ministerio_de_salud/pages/widgets/unit/input_text_field.dart';
 import 'package:ministerio_de_salud/pages/widgets/unit/sublist_input_list_option.dart';
 import 'package:ministerio_de_salud/utils/navigator_route.dart';
 import 'package:ministerio_de_salud/utils/user_preferens.dart';
+import 'package:ministerio_de_salud/utils/utils.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -21,12 +22,23 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // Función para encriptar texto con MD5
+
   UserPreferences prefs = UserPreferences();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     String originalText = "OGRACEKELLYREPORTERA";
+        //     String encryptedText = encryptMD5(originalText);
+
+        //     print("Texto original: $originalText");
+        //     print("Texto encriptado (MD5): $encryptedText");
+        //   },
+        // ),
         appBar: PreferredSize(
           child: AppBarWidget(
             backActivate: true,
@@ -122,8 +134,10 @@ class _LoginPageState extends State<LoginPage> {
               DataBaseEdans db = DataBaseEdans();
               await db.initDB();
               String modelUsuarios = await db.getUsuarioLevel(
-                  controllerCarnet.text, controllerPass.text);
-              print(modelUsuarios);
+                  // controllerCarnet.text, controllerPass.text);
+                  controllerCarnet.text,
+                  encryptMD5(controllerPass.text));
+              // print(modelUsuarios);
               db.closeDB();
 
               if (modelUsuarios != 'null') {

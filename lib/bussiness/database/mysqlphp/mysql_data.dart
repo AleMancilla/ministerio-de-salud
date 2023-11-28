@@ -13,8 +13,9 @@ import 'package:ministerio_de_salud/bussiness/models.dart/model_planilla_atencio
 import 'package:ministerio_de_salud/bussiness/models.dart/modelo_planilla_detalle.dart';
 import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_de_atencion.dart';
 
-String apiBase = "http://186.121.214.199/ugred"; // PROD
+String apiBase = "https://desastres.minsalud.gob.bo"; // PROD
 // String apiBase = "http://192.168.1.200/ugred"; //dev
+// https://desastres.minsalud.gob.bo
 
 // getMethod() async {
 //   try {
@@ -211,17 +212,26 @@ Future<bool> insertPlanilla(ModelPlanillaDeAtencion modelo) async {
     "foto": namesToFiles,
   });
 
-  for (var element in listPath) {
-    File _tempFile = File(element);
-    FileAndDirection fileAndDirection =
-        FileAndDirection(file: _tempFile, direction: element);
-    print(' ====== enviando file');
-    await uploadFile(_tempFile);
-    print(' ====== termino enviando file');
+  print(' =====>>>>> ');
+  print(listPath);
+  print(' =====>>>>> ');
+  print(listPath.length);
 
-    // listOfSelectedFile.add(fileAndDirection);
+  if (listPath.length > 0) {
+    for (var element in listPath) {
+      print(' _____${element}_____ ');
+      if (element != '' && element != ' ') {
+        File _tempFile = File(element);
+        FileAndDirection fileAndDirection =
+            FileAndDirection(file: _tempFile, direction: element);
+        print(' ====== enviando file');
+        await uploadFile(_tempFile);
+        print(' ====== termino enviando file');
+      }
+
+      // listOfSelectedFile.add(fileAndDirection);
+    }
   }
-
   print('=====');
   print(res.body.toString());
   print('=====');

@@ -106,7 +106,7 @@ class _PageNotSendState extends State<PageNotSend> {
         connectionInternet = Container(
           width: double.infinity,
           child: const Text(
-            'No tienes coneccion a internet',
+            'No tienes conexión a internet',
             style: TextStyle(color: Colors.white),
           ),
           color: Colors.red,

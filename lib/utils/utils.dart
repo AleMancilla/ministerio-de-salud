@@ -4,14 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ministerio_de_salud/pages/widgets/group/m_loading.dart';
 
-void navigatorPushReplacement(BuildContext context, Widget route) {
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute<void>(
-      builder: (BuildContext context) => route,
-    ),
-  );
-}
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:crypto/crypto.dart';
+import 'package:ministerio_de_salud/utils/navigator_route.dart';
+
+// void navigatorPushReplacement(BuildContext context, Widget route) {
+//   Navigator.pushReplacement(
+//     context,
+//     MaterialPageRoute<void>(
+//       builder: (BuildContext context) => route,
+//     ),
+//   );
+// }
 
 void navigatorPushReplacementWithDelay(BuildContext context, Widget route,
     {int seconds = 2}) {
@@ -138,4 +143,10 @@ Widget buttonPlus({required Function()? onTap}) {
       ),
     ),
   );
+}
+
+String encryptMD5(String input) {
+  var bytes = utf8.encode(input);
+  var digest = md5.convert(bytes);
+  return digest.toString();
 }

@@ -7,6 +7,7 @@ import 'package:ministerio_de_salud/bussiness/my_sql_connect.dart';
 import 'package:ministerio_de_salud/bussiness/providers/edan_provider.dart';
 import 'package:ministerio_de_salud/bussiness/providers/planillas_no_enviadas_provider.dart';
 import 'package:ministerio_de_salud/pages/list_edans/page_not_send.dart';
+import 'package:ministerio_de_salud/pages/login/caratula_page.dart';
 import 'package:ministerio_de_salud/pages/login/login_page.dart';
 import 'package:ministerio_de_salud/pages/login/redirect_page.dart';
 import 'package:ministerio_de_salud/pages/planilla_de_atencion/planilla_no_enviada.dart';
@@ -65,7 +66,8 @@ class MyApp extends StatelessWidget {
   Widget _pageHome() {
     if (!prefs.userIsRegister) {
       if (prefs.userNivel == '0' || prefs.userNivel == '') {
-        return const RedirectPage();
+        return const CaratulaPage();
+        // return const RedirectPage();
       } else {
         return const LoginPage();
       }
@@ -75,7 +77,8 @@ class MyApp extends StatelessWidget {
       } else if (prefs.userNivel == '2') {
         return const PlanillaNoEnviada();
       } else {
-        return const RedirectPage();
+        return const CaratulaPage();
+        // return const RedirectPage();
       }
     }
   }

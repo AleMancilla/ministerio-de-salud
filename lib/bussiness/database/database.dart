@@ -24,7 +24,7 @@ class DataBaseEdans {
 
   initDB() async {
     _db = await openDatabase(
-      'my_database31.db',
+      'my_database32.db',
       version: 1,
       onCreate: (Database db, int newVersion) async {
         Batch batch = db.batch();
@@ -152,7 +152,8 @@ INSERT INTO evento VALUES (3, 'Mazamorra', 'Otros', 22);''');
   Future<String> getUsuarioLevel(String usuario, String pass) async {
     var result = await _db.rawQuery(
         'SELECT nivel_usuario as nivel from usuarios where usuario like \'${usuario}\' and contraseña like \'${pass}\'');
-    print('$result ---****');
+    // var result2 = await _db.rawQuery('SELECT * from usuarios');
+    // print('$result ---****');
     if (result.length > 0) {
       return result[0]['nivel'].toString() != 'null'
           ? result[0]['nivel'].toString()

@@ -207,30 +207,6 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                 ),
                 _datosGenerales(size),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: _groupDetallesDePlanilla(size),
-                ),
-                Container(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  child: Material(
-                    color: Colors.grey.shade100,
-                    child: InkWell(
-                      onTap: () async {
-                        planillasNoEnviadasProvider.addModelDetalleDePlanilla();
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blueGrey.shade200),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        child: const Icon(Icons.add),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
@@ -320,6 +296,33 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
                     return Container();
                   }
                 }).toList(),
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: _groupDetallesDePlanilla(size),
+                ),
+                Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  child: Material(
+                    color: Colors.grey.shade100,
+                    child: InkWell(
+                      onTap: () async {
+                        planillasNoEnviadasProvider.addModelDetalleDePlanilla();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.blueGrey.shade200),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        padding: const EdgeInsets.all(10),
+                        child: const Icon(Icons.add),
+                      ),
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Row(
@@ -545,11 +548,39 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
               color: Colors.blueGrey.withOpacity(0.2),
               borderRadius: BorderRadius.circular(100)),
         ),
-        InputExpanded(
+        InputListOption(
           title: 'Evento',
           controller: controllerEvento,
+          onselect: () {
+            setState(() {
+              print(controllerEvento.text);
+            });
+          },
           isRequired: true,
+          options: const [
+            'Accidentes por prod. y sust. peligrosas',
+            'Convulsión social',
+            'Covid 20',
+            'Deslizamiento',
+            'Desporde de rio(inund. rapida)',
+            'Granizada',
+            'Helada',
+            'Incendio',
+            'Inundación lenta',
+            'Mazamorra',
+            'Nevada',
+            'Otros',
+            'Plagas',
+            'Riada',
+            'Sequia',
+            'Sismo (temblor, terremoto)',
+          ],
         ),
+        // InputExpanded(
+        //   title: 'Evento',
+        //   controller: controllerEvento,
+        //   isRequired: true,
+        // ),
         InputListOption(
           title: 'Departamento',
           controller: controllerDepartamento,
@@ -652,7 +683,7 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
     ).show(context);
   }
 
-  ScrollController scrollControllerEdansNoEnviados = ScrollController();
+  // ScrollController scrollControllerEdansNoEnviados = ScrollController();
 
   Widget _groupDetallesDePlanilla(Size size) {
     int i = 0;
@@ -667,7 +698,7 @@ class _PagePlanillaAtencionState extends State<PagePlanillaAtencion> {
         Scrollbar(
           isAlwaysShown: true,
           showTrackOnHover: true,
-          controller: scrollControllerEdansNoEnviados,
+          // controller: scrollControllerEdansNoEnviados,
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Container(
@@ -882,8 +913,9 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   void _filterItems(String query) {
     setState(() {
       filteredItems = widget.items
-          .where((item) =>
-              (item.sintoma ?? '').toLowerCase().contains(query.toLowerCase()))
+          .where((item) => ('${item.codigoSintoma} - ${item.sintoma}')
+              .toLowerCase()
+              .contains(query.toLowerCase()))
           .toList();
     });
   }
@@ -924,7 +956,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                             ),
                             children: highlightOccurrences(
                                 controllerBuscador!.text,
-                                (filteredItems[index].sintoma ?? '_')),
+                                ('${filteredItems[index].codigoSintoma} - ${filteredItems[index].sintoma}')),
                           ),
                         ),
                       ),

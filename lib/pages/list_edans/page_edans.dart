@@ -1148,6 +1148,7 @@ class _PageEdansState extends State<PageEdans> {
                 'Afectado',
                 'Destruido',
                 'Es Transitable',
+                'No existe',
               ],
             ),
             InputListBoolean(
@@ -1158,6 +1159,7 @@ class _PageEdansState extends State<PageEdans> {
                 'Afectado',
                 'Destruido',
                 'Es Transitable',
+                'No existe',
               ],
             ),
             InputListBoolean(
@@ -1168,6 +1170,7 @@ class _PageEdansState extends State<PageEdans> {
                 'Afectado',
                 'Destruido',
                 'Es Transitable',
+                'No existe',
               ],
             ),
             InputListBoolean(
@@ -1178,6 +1181,7 @@ class _PageEdansState extends State<PageEdans> {
                 'Afectado',
                 'Destruido',
                 'Es Transitable',
+                'No existe',
               ],
             ),
 
@@ -1186,7 +1190,7 @@ class _PageEdansState extends State<PageEdans> {
               controller: controllerParaLlegar,
             ),
             InputExpanded(
-                title: 'Tiempo de llegada al lugar (en horas)',
+                title: 'Tiempo de llegada al lugar (en horas y minutos)',
                 controller: controllerTiempoLlegada),
 
             InputListSelectedCheck(
@@ -1324,14 +1328,14 @@ class _PageEdansState extends State<PageEdans> {
             ),
 
             InputExpanded(
-              title: '2.3 Cant. Niños vulnerables',
+              title: '2.3 Cant. Niños',
               controller: controllerNinosVulnerables,
               isRequired: true,
               isNumber: true,
               initValue: controllerNinosVulnerables.text,
             ),
             InputExpanded(
-              title: 'Cant. Niñas vulnerables',
+              title: 'Cant. Niñas',
               controller: controllerNinasVulnerables,
               isRequired: true,
               isNumber: true,
@@ -1469,23 +1473,22 @@ class _PageEdansState extends State<PageEdans> {
               initValue: controllerDesaparecidos.text,
               isRequired: true,
             ),
-            InputExpanded(
-              title: '3.4 Cant. Lesionados',
-              controller: controllerLesionados,
-              isNumber: true,
-              initValue: controllerLesionados.text,
-            ),
+            // InputExpanded(
+            //   title: '3.4 Cant. Lesionados',
+            //   controller: controllerLesionados,
+            //   isNumber: true,
+            //   initValue: controllerLesionados.text,
+            // ),
             ExpansionTile(
               initiallyExpanded: true,
               title: const TitleExpansion(
-                  texto: '3.5 Daños a establecimientos de salud'),
+                  texto: '3.4 Daños a establecimientos de salud'),
               children: [_groupDaniosEstablecimiendosDeSalud(size)],
             ),
             ExpansionTile(
               initiallyExpanded: true,
-              title: const TitleExpansion(
-                  texto:
-                      '3.6 Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),
+              title:
+                  const TitleExpansion(texto: '3.5 Daños al personal de salud'),
               children: [_groupDaniosAlPersonalDeSalud(size)],
             )
           ],
@@ -1529,7 +1532,7 @@ class _PageEdansState extends State<PageEdans> {
             // ExpansionTile(
             //   title: const TitleExpansion(
             //       texto:
-            //           'Daños al personal de salud(muertos, heridos, disponibles y desaparecidos)'),
+            //           'Daños al personal de salud'),
             //   children: [_groupDaniosAlPersonalDeSalud(size)],
             // )
           ],
@@ -1849,8 +1852,9 @@ class _PageEdansState extends State<PageEdans> {
                           'Enfermeras',
                           'Medicos',
                           'Medicos tradicionales',
-                          'Otros professionales en salud',
-                          'tecnicos'
+                          'Otros profesionales en salud',
+                          'tecnicos',
+                          'Personal Administrativo'
                         ],
                       ),
                     ),
